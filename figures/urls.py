@@ -17,6 +17,8 @@ urlpatterns = [
     path('delete_figure/<int:figure_id>/', views.delete_figure, name='delete_figure'),
     url(r'^clear/$', views.delete_all_figures, name='delete_all_figures'),
 
+    path('categorize_media/<int:figure_id>/<media_category>', views.categorize_media, name='categorize_media'),
+
     # NOT USED. REMOVE AFTER TESTING AND BEFORE PRODUCTION
     # url(r'^upload/$', views.ProgressBarUploadView.as_view(), name='progress_bar_upload'),
     # url(r'^upload/(?P<problem_id>[0-9]{1,9})/$', views.ProgressBarUploadView.as_view(), name='progress_bar_upload'),

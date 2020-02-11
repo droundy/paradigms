@@ -14,6 +14,7 @@ $(function () {
 
     stop: function (e) {
       $("#modal-progress").modal("hide");
+      location.reload(true);
     },
 
     progressall: function (e, data) {
@@ -27,7 +28,7 @@ $(function () {
       if (data.result.is_valid) {
         // alert('Data.result: ' + data.result.url + 'yyyyy' + data.result.name)
         $("#gallery tbody").prepend(
-          "<tr><td><img src='" + data.result.url + "' width='100px'><a href='" + data.result.url + "'>" + data.result.name + "</a> <a class='btn btn-danger' role='button' href=\"/figures/delete_figure/" + data.result.newFigureID + "\">Delete</a></td></tr>"
+          "<tr><td><img src='" + data.result.url + "' width='100px'></td><td><a href='" + data.result.url + "'>" + data.result.name + "</a><br><a class='btn btn-warning btn-sm' role='button' href=\"/figures/delete_figure/" + data.result.newFigureID + "\"><span class=\"oi oi-trash\" title=\"Delete this uploaded item.\" alt=\"Delete this uploaded item.\"></span> Delete</a></td></tr>"
         )
       }
     }

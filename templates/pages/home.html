@@ -1,8 +1,44 @@
-<h1>/templates/pages/home.html (NOT USED)</h1>
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}
-<p><a href="{% url 'logout' %}">Log out</a></p>
-{% else %}
-<p><a href="{% url 'signup' %}">Sign Up</a></p>
-<p><a href="{% url 'login' %}">Log In </a></p>
-{% endif %}
+{% extends 'public_app/base_multi_editor.html' %}
+{% load socialaccount %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>OSU Paradigms Home</h1>
+    </div>
+  </div>
+  <div class="container">
+    {% if user.is_authenticated %}
+      <h4>Welcome {{ user.get_username }}</h4>
+    {% endif %}
+    <dl class="row">
+      <dt class="col-sm-3">OSU Paradigms</dt>
+      <dd class="col-sm-9"><a href="{% url 'about' %}">Learn about OSU Paradigms</a></dd>
+      <dt class="col-sm-3">OSU PER</dt>
+      <dd class="col-sm-9"><a href="https://osuper.science.oregonstate.edu/" target="_blank">OSU Physics Education Research Group <span class="oi oi-external-link"></span></a></dd>
+      <dt class="col-sm-3">News</dt>
+      <dd class="col-sm-9">News(links to papers, etc, a news app)</dd>
+      <dt class="col-sm-3">Search</dt>
+      <dd class="col-sm-9"><form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
+      <!-- <form class="form-inline my-2 my-lg-0" method="get" action="/directory/homework/search/"> -->
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" name="q" id="q" placeholder="Title or Topic">
+        <select class="form-control" name="search_type" id="search_type_home">
+          <option value="Both">Activities &amp; Homework</option>
+          <option value="Activities">Activities</option>
+          <option value="Homework">Homework</option>
+      </select>
+ <button class="btn btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search homework problems or activities by title or topic."></span> Search</button>
+      </form></dd>
+    </dl>
+
+  {% if request.META.HTTP_REFERER == "https://osu.wiki/accounts/logout/" %}
+    <p>You have been logged out. Please close your browser window if you are on a public or untusted computer.</p>
+    <p><a href="https://support.google.com/chrome/answer/9159867?hl=en">Sign Out of Google Chrome Browser Profile to prevent other users of this computer from using your credentials on this site.</a></p>
+  {% else %}
+
+  {% endif %}
+  </div>
+  <!-- http://dev.osu.wiki:8000/accounts/logout/  -->
+  <!-- https://osu.wiki/accounts/logout/ -->
+
+{% endblock %}

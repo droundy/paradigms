@@ -15,6 +15,11 @@ urlpatterns = [
 
     # Dissassociate a media and delete the file.
     path('delete_media/<int:media_id>/', views.delete_media, name='delete_media'),
+
+    path('categorize_media/<int:media_id>/<media_category>', views.categorize_media, name='categorize_media'),
+
+    # url(r'^categorize_media/<int:media_id>/(?P<media_category>[\w\-]+)/$', views.categorize_media, name='categorize_media'),
+
     url(r'^clear/$', views.delete_all_media, name='delete_all_media'),
 
     # NOT USED. REMOVE AFTER TESTING AND BEFORE PRODUCTION

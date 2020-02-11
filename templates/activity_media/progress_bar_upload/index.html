@@ -72,13 +72,25 @@ Click Here To Select Files
       <table id="gallery" class="table table-bordered" style="margin-top: 15px">
         <thead>
           <tr>
-            <th>Media</th>
+            <th colspan="2">Media</th>
           </tr>
         </thead>
         <tbody>
           {% for item in media %}
             <tr>
-              <td><img src="{{ item.file.url }}" alt="{{ item.file.url }}" width="100px"> <a href="{{ item.file.url }}">{{ item.file.name }}</a> <a class='btn btn-warning btn-sm' role='button' href="{% url 'activity_media:delete_media' media_id=item.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a></td>
+              <td>{% if item.extension != '.pdf' %}<img src="{{ item.file.url }}" alt="{{ item.file.url }}" width="100px">{% else %}<span class="oi oi-file" title="PDF" alt="PDF"> PDF</span>{% endif %}</td>
+              <td><a href="{{ item.file.url }}">{{ item.file.name }}</a><p>
+                <!-- loop through category options  -->
+                {% for this_category in media_categories %}
+                  <!-- activate the currently selected category option -->
+                  {% if item.media_category == this_category.0 %}                  
+                    <a class='btn btn-success btn-sm' role='button' href="{% url 'activity_media:categorize_media' media_id=item.pk media_category=this_category.0 %}"><span class="oi oi-star" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span> {{ this_category.0 }}</a>
+                  {% else %}
+                    <a class='btn btn-outline-secondary btn-sm' role='button' href="{% url 'activity_media:categorize_media' media_id=item.pk media_category=this_category.0 %}"><span class="oi oi-ban" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span>  {{ this_category.0 }}</a>
+                  {% endif %}
+                {% endfor %}</p>
+                <a class='btn btn-warning btn-sm' role='button' href="{% url 'activity_media:delete_media' media_id=item.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>

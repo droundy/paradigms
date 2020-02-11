@@ -108,7 +108,7 @@ def edit_problem_set(request, problem_set_id):
     }
     return render(request, 'problem_sets/problem_set_edit.html', context)
 
-
+@permission_required('admin_app.can_edit_problem_set',login_url='/')
 def list_problem_sets(request):
     problem_set_list = ProblemSet.objects.all().order_by('title')
     # print(problem_set_list)
@@ -117,6 +117,7 @@ def list_problem_sets(request):
     }
     return render(request, 'problem_sets/problem_set_list.html', context)
 
+@permission_required('admin_app.can_edit_problem_set',login_url='/')
 def problem_set_details(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)

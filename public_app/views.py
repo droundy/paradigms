@@ -16,11 +16,13 @@ import subprocess, os
 import unicodedata
 import logging
 
+@permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_list(request):
     #problems = Problem.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     problems = Problem.objects.all().order_by('problem_title')
     return render(request, 'public_app/problem_list.html', {'problems': problems})
 
+@permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_detail(request, pk):
     latex_problem = get_object_or_404(Problem, pk=pk)
     return render(request, 'public_app/problem_detail.html', {'latex_problem': latex_problem})
@@ -185,6 +187,7 @@ def problem_display_html_solution(request, pk):
     }
     return render(request, 'public_app/problem_display.html', context)
 
+@permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_display_html(request, pk):
     latex_problem = get_object_or_404(Problem, pk=pk)
     data = get_problem_html(str(pk))
@@ -203,6 +206,7 @@ def problem_display_html(request, pk):
 
 # For display within site layout.
 #@csrf_exempt
+
 def problem_display_pdf(request, pk):
     data = get_problem_pdf
     response = HttpResponse(data, content_type='application/pdf', status=200)

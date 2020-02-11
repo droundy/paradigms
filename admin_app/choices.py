@@ -54,3 +54,20 @@ PUBLICATIONSTATUSCHOICES = (
     (PSCPUBLISHED, "Published"),
     (PSCPOSTPUBLICATIONDRAFT, "Post-Publication Draft"),
 )
+
+CODE = "Code"
+GUIDE = "Guide"
+HANDOUT = "Handout"
+PROMPT = "Prompt"
+SOLUTION = "Solution"
+SLIDES = "Slides"
+
+# Media Type Choices
+MEDIATYPECHOICES = (
+    (GUIDE, "Guide"),
+    (HANDOUT, "Handout"),
+    (CODE, "Code"),
+    (SOLUTION, "Solution"),
+    (SLIDES, "Slides"),
+    (PROMPT, "Prompt"),
+)

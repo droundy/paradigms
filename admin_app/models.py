@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+import os
 # from admin_app.choices import *
 
 # Create your models here.
@@ -11,6 +12,11 @@ class Figure(models.Model):
     # file = models.FileField(upload_to='figures/')
     file = models.FileField(upload_to='figures/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    media_category = models.CharField(max_length=255, blank=True)
+
+    def extension(self):
+        name, extension = os.path.splitext(self.file.name)
+        return extension
 
 class ProblemSet(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -76,9 +82,13 @@ class FigureAssociations(models.Model):
 
 class ActivityMedia(models.Model):
     title = models.CharField(max_length=255, blank=True)
-    media_type = models.TextField()
+    media_category = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to='activity_media/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def extension(self):
+        name, extension = os.path.splitext(self.file.name)
+        return extension
 
 class Activity(models.Model):
     title = models.CharField(max_length=255, blank=True)

@@ -7,6 +7,7 @@ from django.urls import resolve, include, path
 from django.views import View
 
 from .forms import MediaForm
+from admin_app.choices import *
 from admin_app.models import ActivityMedia, Activity, MediaAssociation
 
 # This retrieves a Python logging instance (or creates it)
@@ -33,10 +34,12 @@ class ProgressBarUploadViewMedia(View):
         activity = get_object_or_404(Activity, pk=activity_id)
         media_list = Activity.objects.get(id=activity_id).media.all()
         thisActivityID = activity.pk
+        media_categories = MEDIATYPECHOICES
         context = {
             'thisActivityID': thisActivityID,
             'media': media_list,
             'activity': activity,
+            'media_categories': media_categories,
         }
         return render(self.request, 'activity_media/progress_bar_upload/index.html', context)
 
@@ -121,3 +124,9 @@ def delete_all_media(request):
         media.file.delete()
         media.delete()
     return redirect(request.POST.get('next'))
+
+def categorize_media(request, media_id, media_category):
+    med = ActivityMedia.objects.get(pk=media_id)
+    med.media_category = media_category
+    med.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

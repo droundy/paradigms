@@ -7,6 +7,7 @@ from django.urls import resolve, include, path
 from django.views import View
 
 from .forms import FigureForm
+from admin_app.choices import *
 from admin_app.models import Figure, Problem, FigureAssociations
 
 # This retrieves a Python logging instance (or creates it)
@@ -64,10 +65,12 @@ class ProgressBarUploadView(View):
         latex_problem = get_object_or_404(Problem, pk=problem_id)
         figures_list = Problem.objects.get(id=problem_id).figures.all()
         thisProblemID = latex_problem.pk
+        media_categories = MEDIATYPECHOICES
         context = {
             'thisProblemID': thisProblemID,
             'figures': figures_list,
             'latex_problem': latex_problem,
+            'media_categories': media_categories,
         }
         return render(self.request, 'figures/progress_bar_upload/index.html', context)
 
@@ -151,3 +154,9 @@ def delete_all_figures(request):
         figure.file.delete()
         figure.delete()
     return redirect(request.POST.get('next'))
+
+def categorize_media(request, figure_id, media_category):
+    med = Figure.objects.get(pk=figure_id)
+    med.media_category = media_category
+    med.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
