@@ -1,0 +1,20 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    {% if perms.admin_app.can_add_sequence %}
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <p>Add homework problems and activities after saving.</p>
+      <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to this sequence button."></span> Save Sequence</button>
+      </form>
+    {% else %}
+    <p>No permission to add.</p>
+    {% endif %}
+{% endblock %}

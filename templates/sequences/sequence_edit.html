@@ -1,0 +1,122 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    {% if perms.admin_app.can_add_sequence %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+        <li class="breadcrumb-item"><a href="{% url 'sequence_list' %}">Sequences</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'sequence_detail' pk=sequence.pk %}">{{ sequence.title }}</a>
+        <li class="breadcrumb-item"><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">View with Solution</a>
+        <li class="breadcrumb-item">Edit</li>
+      </ol>
+    </nav>
+    <form method="POST" class="sequence-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col">
+            {{ form|crispy }}
+            <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this sequence button."></span> Save Sequence Changes </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h3>Sequence Content and Order</h3>
+          {% if item_formset %}
+            {{ item_formset.management_form }}
+            {% for item in item_formset %}
+            <div class="item-formset">
+                <h5>{{ item_title_dict|get_item:forloop.counter0 }}</h5>
+                {{ item|crispy }}
+                <!-- {% if item.activity.value %}{{ item.activity.value }}{% endif %}{% if item.problem.value %}{{ item.problem.value }}{% endif %} -->
+            </div>
+            {% endfor %}
+            <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this sequence button."></span> Save Sequence Changes</button>
+          {% endif %}
+          <!-- <h3>Sequence Items</h3>
+          {% for item in item_list %}
+              {{ item_title_dict|get_item:forloop.counter0 }} {{ item }}
+          {% endfor %} -->
+        </div>
+      </form>
+      <div class="col">
+
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="headingActivity">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseActivities" aria-expanded="true" aria-controls="collapseActivities">
+                <h5 class="mb-0">Activities</h5>
+              </button>
+            </div>
+            <div id="collapseActivities" class="collapse show" aria-labelledby="headingActivity" data-parent="#accordion">
+              <div class="card-body">
+                <!-- Activities -->
+                <div class="row overflow-auto" style="max-height: 400px">
+                    <!-- Available Activities -->
+                    <div class="col">
+                      {% if activities.count %}
+                        <ul class="list-group list-group-flush">
+                        {% for activity in activities.all|dictsort:"title" %}
+                          <li class="list-group-item">
+                            <form action="{% url 'associate_activity' sequence.id activity.id %}" method="post">
+                              {% csrf_token %}
+                              <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-arrow-left" title="Associate Activity Button." alt="Associate this activity with this sequence."></span>Add </button> {{ activity.title }}
+                            </form>
+                          </li>
+                        {% endfor %}
+                        </ul>
+                      {% else %}
+                        <h5>{{cat.name}} Already Has All Activities Available</h5>
+                      {% endif %}
+                    </div><!-- end col -->
+                  </div><!-- end row -->
+                  <!-- End Activities -->
+
+                </div><!-- end card body -->
+              </div>
+            </div><!-- End Card -->
+            <div class="card">
+              <div class="card-header" id="headingProblem">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseProblem" aria-expanded="true" aria-controls="collapseProblem">
+                  <h5 class="mb-0">Homework Problems</h5>
+                </button>
+              </div>
+              <div id="collapseProblem" class="collapse show" aria-labelledby="headingProblem" data-parent="#accordion">
+                <div class="card-body">
+                  <!-- Homework Problems -->
+                  <div class="row overflow-auto" style="max-height: 400px">
+                    <!-- Available Problems -->
+                    <div class="col">
+                      {% if problems.count %}
+                        <ul class="list-group list-group-flush">
+                        {% for problem in problems.all|dictsort:"problem_title" %}
+                          <li class="list-group-item">
+                            <form action="{% url 'associate_problem' sequence.id problem.id %}" method="post">
+                              {% csrf_token %}
+                              <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-arrow-left" title="Associate Problem Button." alt="Associate this problem with this sequence."></span>Add </button> {{ problem.problem_title }}
+                            </form>
+                          </li>
+                        {% endfor %}
+                        </ul>
+                      {% else %}
+                        <h5>{{problem.name}} Already Has All Problems Available</h5>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <!-- End Homework Problems -->
+                </div><!-- End Card body -->
+              </div><!-- End -->
+            </div><!-- End Card -->
+          </div><!-- End Accordion -->
+      </div>
+    {% else %}
+    <p>No permission to add.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>Homework Problems</h1>
+    </div>
+  </div>
+
+  <div class="container">
+  <!-- <p>This is the templates/public_app/problem_list.html file.</p> -->
+    {% if perms.admin_app.can_add_problem %}
+    <p><a class="btn btn-sm btn-success" href="{% url 'problem_new' %}" class="top-menu"><span class="oi oi-plus" title="Add new problem button" alt="Create a new homework problem."></span> Add Problem</a></p>
+    {% endif %}
+    <div class="row">
+    {% for problem in problems %}
+        <div class="col-sm-4">
+          <div class="card" style="margin-bottom: 10px">
+            <div class="card-body">
+              <h5 class="card-title">{{ problem.problem_title }}</h5>
+              <!-- <h6 class="card-subtitle">{{ problem.created_date }}</h6> -->
+              <!-- <p class="card-text">Problem preview of some sort</p> -->
+              <!-- <div class="date">
+                  {{ problem.created_date }}
+              </div> -->
+              {% if perms.admin_app.can_view_solution %}
+                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
+                  <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html_solution' pk=problem.pk %}">View</a>
+                  <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=problem.pk %}">Edit</a>
+                </div>
+              {% else %}
+              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% if forloop.last %}
+          </div>
+        {% else %}
+          {% if forloop.counter|divisibleby:"3" %}
+            </div><div class="row">
+          {% endif %}
+        {% endif %}
+    {% endfor %}
+    </div><!-- end row iteration of problems with formatting for cards -->
+  </div>
+{% endblock %}

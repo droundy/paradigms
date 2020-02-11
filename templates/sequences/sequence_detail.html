@@ -1,0 +1,70 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+  {% endfor %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+      <li class="breadcrumb-item"><a href="{% url 'sequence_list' %}">Sequences</a></li>
+      <!-- If this is the solution view page, show link to view only, disable link on solution -->
+      {% if view_name == 'sequence_detail_solution' %}
+        {% if sequence.title %}<li class="breadcrumb-item"><a href="{% url 'sequence_detail' pk=sequence.pk %}">{{ sequence.title }}</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">View with Solutions</li>
+      {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{{ sequence.title }}</li>
+        {% if perms.admin_app.can_add_sequence %}<li class="breadcrumb-item"><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">View with Solution</a></li>{% endif %}
+      {% endif %}
+      {% if perms.admin_app.can_add_sequence %}<li class="breadcrumb-item"><a href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}</li>
+    </ol>
+  </nav>
+  <h2>{{ sequence.title }}</h2>
+    <p class="card-text">{{ sequence.overview_paragraph }}</p>
+
+    {% if sequence_items %}
+      {% for item in sequence_items %}
+      <div class="card" style="margin-bottom: 10px">
+        <div class="card-body">
+          <h5 class="card-title">{% if item.title %}{{ item.title }}{% else %}{{ item.problem_title }}{% endif %}</h5>
+
+          {% if perms.admin_app.can_view_solution %}
+          <!-- show edit buttons for people with perms -->
+
+            {% if item.problem_latex %}<!-- This is a problem -->
+                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+                  <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html_solution' pk=item.problem_id %}">View</a>
+                  <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem_id %}">Edit</a>
+                </div>
+            {% else %}<!-- this is an activity -->
+                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+                  <a class="btn btn-primary btn-sm" href="{% url 'activity_detail_solution' pk=item.activity_id %}">View</a>
+                  <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=item.activity_id %}">Edit</a>
+                </div>
+            {% endif %}
+          {% else %}
+            {% if item.problem_latex %}
+              <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+                <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=item.problem_id %}">View</a>
+              </div>
+            {% else %}
+              <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+                <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=item.activity_id %}">View</a>
+              </div>
+            {% endif %}
+
+          {% endif %}
+
+          <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="activity_role{{ forloop.counter }}">{{ item.role_in_sequence }}</h6>
+          <div class="card-body latextorender tex2jax_ignore" id="activity{{ forloop.counter }}">{{ item.overview_paragraph }}{{ item.problem_latex }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}
+
+{% endblock %}

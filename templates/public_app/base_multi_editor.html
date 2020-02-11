@@ -1,0 +1,750 @@
+<!doctype html>
+{% load static %}
+{% load socialaccount %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Literata&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'public_app/public_app.css' %}">
+    <link rel="stylesheet" href="{% static 'open-iconic/font/css/open-iconic-bootstrap.min.css' %}">
+
+    <style type="text/css" media="screen">
+      .preview h5 {
+        font-size: 1em;
+        font-color: #000;
+      }
+      .ace_editor {
+        width: 100%;
+      }
+      aside {
+          float: right;
+          width: 100%;
+      }
+      .ace_content {
+        color: #5C5C5C;
+      }
+      /* The preview window */
+      .preview {
+          background-color: #FFF;
+          /* margin-left: 50%; */
+          width: 100%;
+          position: absolute;
+          color: #5C5C5C;
+          border: 1px solid #ced4da;
+          padding: 0.5em;
+      }
+      div.center {
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+      }
+      /* .solution {
+          margin-bottom: 0.5em;
+          color: #000;
+          border: 1px solid #ced4da;
+          padding: 1em;
+
+      } */
+      .solution {
+        margin: 0 auto;
+        padding: 1em;
+        border-left: 5px solid #999;
+      }
+      .solution:before {
+        display: none;
+      }
+      .solution:not(:first-of-type) {
+        margin-top: .5em;
+      }
+      .solution p {
+        color: #555;
+        font-size: 12pt;
+        line-height: 1.4;
+        font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
+      }
+      .solution footer {
+        margin-top: .5em;
+        padding: 0;
+        color: #777;
+        font-size: 12pt;
+        text-align: left;
+        font-style: italic;
+      }
+      .solution footer:before {
+        content: '— ';
+      }
+      .solution:nth-of-type(even) {
+        text-align: left;
+        border-left: 5px solid #999;
+        border-right: none;
+      }
+      .solution:nth-of-type(even) footer {
+        text-align: left;
+      }
+      .solution:nth-of-type(even) footer:before {
+        content: '';
+      }
+      .solution:nth-of-type(even) footer:after {
+        content: ' —';
+      }
+      @element '.solution' and (min-width: 300px) {
+        .solution {
+          padding: 1em 20% 1em 1em;
+        }
+        .solution p {
+          font-size: 14pt;
+        }
+        .solution:nth-of-type(even) {
+          padding: 1em 1em 1em 20%;
+        }
+      }
+      .error {
+          background-color: #ff6666;
+      }
+      .warning {
+          background-color: #ffff66;
+      }
+      #id_problem_latex {
+        width: inherit !important;
+      }
+    </style>
+    <title>Paradigms at Oregon State University</title>
+    {{ form.media }}
+  </head>
+  <body>
+  <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3366cc;">
+    <a class="navbar-brand" href="/">
+      <img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;">
+      Paradigms @ OSU</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNavTop" aria-controls="publicNavTop" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="publicNavTop">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/activities">Activities</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Activities
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
+            <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
+            <a class="dropdown-item" href="{% url 'courses' %}">Courses</a>
+            <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>
+            <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>
+          </div>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'white_papers' %}">Whitepapers</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            About
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'about' %}">About</a>
+            <a class="dropdown-item" href="{% url 'history' %}">History</a>
+          </div>
+
+        </li>
+
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
+          </div>
+        </li>
+        {%  else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
+            <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% provider_login_url 'google' %}">Log In (Google)</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+      <!-- <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for Activities">
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search Activities</button>
+      </form>  -->
+      <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
+      <!-- <form class="form-inline my-2 my-lg-0" method="get" action="/directory/homework/search/"> -->
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" name="q" id="q" placeholder="Search Activities &amp; Homework">
+        <input type="hidden" name="search_type" value="Both">
+        <button class="btn btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search Homework or Activities by title or topic"></span> Search</button>
+
+
+      </form>
+    </div>
+  </nav>
+  <!-- END NAVIGATION   -->
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+              {% block content %}
+                <!-- <div class="row">
+                  <div class="col">
+                    <h3>Figure Manager</h3>
+                  </div>
+                </div> -->
+
+                {% block figure_content %}
+                {% endblock %}
+              {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="{% static 'js/django-dynamic-formset/src/jquery.formset.js' %}"></script>
+    <script>
+        $('.item-formset').formset({
+            addText: '',
+            deleteText: 'remove',
+        });
+        $('.formset_row').formset({
+            addText: 'add problem',
+            deleteText: 'remove',
+            // prefix: 'familymember_set'
+        });
+
+        // Sort every select drop-down alphabetically
+        // // id_problemsetitems_set-0-problem
+        var formsetSelects = document.querySelectorAll("[id^=id_problemsetitems_set-]");
+        formsetSelects.forEach(function(editElement) {
+          // Limit search to the ids that end in -problem
+          var thisID = editElement.id
+          if( thisID.endsWith("problem") ) {
+            // alert(thisID)
+            var sel = $('#' + thisID);
+            var selected = sel.val(); // cache selected value, before reordering
+            var opts_list = sel.find('option');
+            opts_list.sort(function(a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
+            sel.html('').append(opts_list);
+            sel.val(selected); // set cached selected value
+          }
+        })
+
+
+  // select default item after sorting (first item)
+  // $('select').get(0).selectedIndex = 0;
+    </script>
+
+    <script src="/static/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    {% block javascript %}
+    {% endblock %}
+    <script type="module">
+    // Use ES module import syntax to import functionality from the module
+    // that we have compiled.
+    //
+    // Note that the `default` import is an initialization function which
+    // will "boot" the module and make it ready to use. Currently browsers
+    // don't support natively imported WebAssembly as an ES module, but
+    // eventually the manual initialization won't be required!
+    import init, { html_with_solution, html_omit_solution } from
+    '/static/public_app/js/latex_snippet.js';
+
+    async function run() {
+        // First up we need to actually load the wasm file, so we use the
+        // default export to inform it where the wasm file is located on the
+        // server, and then we wait on the returned promise to wait for the
+        // wasm to be loaded.
+        // It may look like this: `await init('./pkg/without_a_bundler_bg.wasm');`,
+        // but there is also a handy default inside `init` function, which uses
+        // `import.meta` to locate the wasm file relatively to js file
+        //
+        // Note that instead of a string here you can also pass in an instance
+        // of `WebAssembly.Module` which allows you to compile your own module.
+        // Also note that the promise, when resolved, yields the wasm module's
+        // exports which is the same as importing the `*_bg` module in other
+        // modes
+        await init();
+
+        var latexEditors = document.querySelectorAll(".latexeditor");
+        // var latexEditors = document.querySelectorAll(".django-ace-editor");
+
+        latexEditors.forEach(function(editElement) {
+
+            // Define the name of the buffer and preview for targeting
+            // by looking up the id of the div defined as latexeditor
+            // and replace the ace_ in the div id with preview or buffer.
+            var previewName = editElement.id.replace(/ace/g, "preview")
+            var bufferName = editElement.id.replace(/ace/g, "buffer")
+            var updateName = editElement.id.replace(/ace/g, "id")
+
+            // alert("UPDATE NAME: " + updateName)
+
+            // And afterwards we can use all the functionality defined in wasm.
+            var Preview = {
+                delay: 150,        // delay after keystroke before updating
+                preview: null,     // filled in by Init below
+                buffer: null,      // filled in by Init below
+                timeout: null,     // store setTimout id
+                mjRunning: false,  // true when MathJax is processing
+                mjPending: false,  // true when a typeset has been queued
+                oldText: null,     // used to check if an update is needed
+                math_html: null,   // used to store the new html we want
+
+                //
+                //  Create the preview and buffer DIV's
+                //
+                Init: function () {
+                    // Create a buffer and preview div
+                    this.preview = document.createElement( 'div' );
+                    this.buffer = document.createElement( 'div' );
+                    // Assign the semi-generic "preview" class to each
+                    this.buffer.classList.add('preview');
+                    this.preview.classList.add('preview');
+                    // Assign devault visibility to hidden.
+                    this.preview.visibility = "hidden";
+                    this.buffer.visibility = "hidden";
+                    // Insert the divs into the existing structure (needs fine-tuning)
+                    // editElement.parentNode.insertBefore( this.preview, editElement );
+                    editElement.parentNode.parentNode.lastElementChild.appendChild(this.preview)
+                    // editElement.parentNode.insertBefore( this.buffer, editElement );
+                    editElement.parentNode.parentNode.lastElementChild.appendChild(this.buffer)
+                },
+
+                //
+                //  Switch the buffer and preview, and display the right one.
+                //  (We use visibility:hidden rather than display:none since
+                //  the results of running MathJax are more accurate that way.)
+                //
+                SwapBuffers: function () {
+                    var buffer = this.preview, preview = this.buffer;
+                    this.buffer = buffer; this.preview = preview;
+                    buffer.style.visibility = "hidden"; //
+                    buffer.style.position = "absolute";
+                    // preview.style.position = "";
+                    preview.style.visibility = "";
+                },
+
+                //
+                //  Creates the preview and runs MathJax on it.
+                //  If MathJax is already trying to render the code, return
+                //  If the text hasn't changed, return
+                //  Otherwise, indicate that MathJax is running, and start the
+                //    typesetting.  After it is done, call PreviewDone.
+                //
+                CreatePreview: function () {
+                    Preview.timeout = null;
+                    if (this.mjPending) return;
+                    var text = this.math_html;
+                    if (text === this.oldtext) return;
+                    if (this.mjRunning) {
+                        this.mjPending = true;
+                        MathJax.Hub.Queue(["CreatePreview",this]);
+                    } else {
+                        this.buffer.innerHTML = this.oldtext = text;
+                        this.mjRunning = true;
+                        MathJax.Hub.Queue(
+                            function () {
+                                if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                                    MathJax.InputJax.TeX.resetEquationNumbers();
+                                }
+                            },
+                            // ["resetEquationNumbers",MathJax.InputJax.TeX],
+                            ["Typeset",MathJax.Hub,this.buffer],
+                          ["PreviewDone",this]
+                        );
+                    }
+                    // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+                    // This limits the width, but may need to be changed to the .figure class
+                    var images = document.querySelectorAll(".preview img");
+                    var i;
+                    for(i = 0; i < images.length; i++) {
+                        images[i].className += " img-fluid";
+                    }
+                },
+
+                //
+                //  Indicate that MathJax is no longer running,
+                //  and swap the buffers to show the results.
+                //
+                PreviewDone: function () {
+                    this.mjRunning = this.mjPending = false;
+                    this.SwapBuffers();
+                }
+            };
+
+            //
+            //  Cache a callback to the CreatePreview action
+            //
+            Preview.Init();
+            Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+            // make sure it can run more than once
+            Preview.callback.autoReset = true;
+            var my_timeout = null;
+            function update_preview() {
+                Preview.math_html = html_with_solution(editor.getValue());
+                // Update the hidden element used to submit the values to the database
+                document.getElementById(updateName).value = editor.getValue();
+                // document.getElementById("id_problem_latex").value = editor.getValue();
+                Preview.CreatePreview();
+
+            }
+            var editor = ace.edit(editElement, {
+                mode: "ace/mode/latex",
+                // autoScrollEditorIntoView: true,
+                maxLines: 4000,
+                minLines: 15,
+                wrap: true,
+            });
+            // editor.session.setMode("ace/mode/latex");
+            editor.renderer.setShowGutter(false);
+            update_preview(editor.getValue());
+
+
+            editor.session.on('change', function(delta) {
+                if (my_timeout) {
+                    clearTimeout(my_timeout);
+                }
+                my_timeout = setTimeout(update_preview, 150);
+            });
+            if(document.getElementById("guide_readonly").value == "1") {
+              editor.setReadOnly(true)
+            }
+
+        });
+    }
+
+    run();
+
+    </script>
+
+    <!-- TEMP TESTING -->
+    <script>
+      $(function() {
+
+          var Preview = {
+            delay: 150,        // delay after keystroke before updating
+            preview: null,     // filled in by Init below
+            buffer: null,      // filled in by Init below
+            timeout: null,     // store setTimout id
+            mjRunning: false,  // true when MathJax is processing
+            mjPending: false,  // true when a typeset has been queued
+            oldText: null,     // used to check if an update is needed
+            math_html: null,   // used to store the new html we want
+            //
+            //  Get the preview and buffer DIV's
+            //
+            Init: function () {
+              this.preview = document.getElementById("preview");
+              this.buffer = document.getElementById("buffer");
+            },
+
+            //
+            //  Switch the buffer and preview, and display the right one.
+            //  (We use visibility:hidden rather than display:none since
+            //  the results of running MathJax are more accurate that way.)
+            //
+            SwapBuffers: function () {
+              var buffer = this.preview, preview = this.buffer;
+              this.buffer = buffer; this.preview = preview;
+              buffer.style.visibility = "hidden"; // buffer.style.position = "absolute";
+                  // preview.style.position = "";
+              preview.style.visibility = "";
+            },
+
+            //
+            //  Creates the preview and runs MathJax on it.
+            //  If MathJax is already trying to render the code, return
+            //  If the text hasn't changed, return
+            //  Otherwise, indicate that MathJax is running, and start the
+            //    typesetting.  After it is done, call PreviewDone.
+            //
+            CreatePreview: function () {
+              Preview.timeout = null;
+              if (this.mjPending) return;
+              var text = this.math_html;
+              if (text === this.oldtext) return;
+              if (this.mjRunning) {
+                this.mjPending = true;
+                MathJax.Hub.Queue(["CreatePreview",this]);
+              } else {
+                this.buffer.innerHTML = this.oldtext = text;
+                this.mjRunning = true;
+                // console.log('foo');
+                MathJax.Hub.Queue(
+                    // There is a confusing bug where apparently
+                    // resetEquationNumbers is sometimes undefined.  The if
+                    // statement here apparently works around that bug.
+                    function () {
+                        if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                            MathJax.InputJax.TeX.resetEquationNumbers();
+                        }
+                    },
+                    // ["resetEquationNumbers",MathJax.InputJax.TeX],
+                    ["Typeset",MathJax.Hub,this.buffer],
+              ["PreviewDone",this]
+                );
+              }
+              // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+              // This limits the width, but may need to be changed to the .figure class
+              var images = document.querySelectorAll(".preview img");
+              var i;
+              for(i = 0; i < images.length; i++) {
+                  images[i].className += " img-fluid";
+              }
+            },
+
+            //
+            //  Indicate that MathJax is no longer running,
+            //  and swap the buffers to show the results.
+            //
+            PreviewDone: function () {
+              this.mjRunning = this.mjPending = false;
+              this.SwapBuffers();
+              // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+              // This limits the width, but may need to be changed to the .figure class
+              var images = document.querySelectorAll(".preview img");
+              var i;
+              for(i = 0; i < images.length; i++) {
+                  images[i].className += " img-fluid";
+              }
+            }
+
+          };
+
+          //
+          //  Cache a callback to the CreatePreview action
+          //
+          Preview.Init();
+          Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+          // make sure it can run more than once
+          Preview.callback.autoReset = true;
+          var my_timeout = null;
+
+              function update_preview () {
+
+                // alert("SENDING: " + $("#id_problem_latex").html());
+
+                $.ajax({
+                  type : 'POST',
+                  url : '/problem/render/html',
+                  data : {
+                    problem_latex : $("#id_problem_latex").val()
+                    // problem_latex : $("#id_problem_latex").html()
+                  }, // end data
+                  success : function(data) {
+                    // alert("RECEIVED: " + data);
+                    Preview.math_html = data;
+                    // Success!
+                    Preview.CreatePreview();
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+                  }, // end success
+                  error : function(data) {
+                    Preview.math_html = data;
+                    // We reached our target server, but it returned an error
+                    Preview.CreatePreview();
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+                  } // end error
+
+                }) // end ajax
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+              } // end function update_preview
+
+              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#preview"]);
+              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#buffer"]);
+
+              var preview = $("#preview")
+
+              // ACE EDITOR SETTINGS ARE DEFINED IN forms.py IN AceWidget
+
+              update_preview($("#id_problem_latex").val());
+
+              $("body").on('DOMSubtreeModified', "#latex_editor", function() {
+                // alert("modified subtree")
+                if (my_timeout) {
+                    clearTimeout(my_timeout);
+                }
+                my_timeout = setTimeout(update_preview, 150);
+
+              });
+
+        });
+
+        // editor.setOption('showLineNumbers', false);
+        // editor.setOption('showGutter', false);
+    </script>
+    <script>
+      $(function() {
+        $(".preview > img").addClass("img-fluid")
+      })
+    </script>
+
+    <!-- MORE TESTING FOR DIV CONTENT COLLECTION AND RENDERING -->
+    <script type="module">
+
+    /*
+      This ugly bit of script pulls the contents of a div and pushes it through
+      David's script for rendering.
+      To use:
+      Add: latextorender tex2jax_ignore to the class for any div.
+      Make sure that the div has an id, and that the id is unique.
+      This needs to be rewritten with David's help.
+    */
+
+    import init, { html_with_solution, html_omit_solution } from
+    '/static/public_app/js/latex_snippet.js';
+
+    async function run() {
+
+        await init();
+
+        // find all of the divs with latextorender class
+        var latexDivs = document.querySelectorAll(".latextorender");
+
+        // Loop through each of these divs
+        latexDivs.forEach(function(editElement) {
+
+            // Collect the contents of the div that needs rendering
+            var divContent = document.getElementById(editElement.id);
+
+            // Needs to be modified to account for the fact that we aren't monitoring keystrokes, etc.
+            var Preview = {
+                delay: 150,        // delay after keystroke before updating
+                preview: null,     // filled in by Init below
+                buffer: null,      // filled in by Init below
+                timeout: null,     // store setTimout id
+                mjRunning: false,  // true when MathJax is processing
+                mjPending: false,  // true when a typeset has been queued
+                oldText: null,     // used to check if an update is needed
+                math_html: null,   // used to store the new html we want
+
+                // Needs modification/simplification
+                Init: function () {
+                    // Create a buffer and preview div
+                    this.preview = divContent;
+                    this.buffer = divContent;
+
+                    this.preview.classList.remove("tex2jax_ignore")
+                    this.buffer.classList.remove("tex2jax_ignore")
+
+                },
+
+                // Needs modification/simplification
+                // I don't understand most of what this is doing
+                CreatePreview: function () {
+                    Preview.timeout = null;
+                    if (this.mjPending) return;
+                    var text = this.math_html;
+                    if (text === this.oldtext) return;
+                    if (this.mjRunning) {
+                        this.mjPending = true;
+                        MathJax.Hub.Queue(["CreatePreview",this]);
+                    } else {
+                        this.buffer.innerHTML = this.oldtext = text;
+                        this.mjRunning = true;
+                        MathJax.Hub.Queue(
+                            function () {
+                                if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                                    MathJax.InputJax.TeX.resetEquationNumbers();
+                                }
+                            },
+                            // ["resetEquationNumbers",MathJax.InputJax.TeX],
+                            ["Typeset",MathJax.Hub,this.buffer],
+                          ["PreviewDone",this]
+                        );
+                    }
+                    // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+                    // This limits the width, but may need to be changed to the .figure class
+                    var images = document.querySelectorAll(".preview img");
+                    var i;
+                    for(i = 0; i < images.length; i++) {
+                        images[i].className += " img-fluid";
+                    }
+                },
+
+                //
+                //  Indicate that MathJax is no longer running,
+                PreviewDone: function () {
+                    this.mjRunning = this.mjPending = false;
+                }
+            };
+
+            //
+            //  Cache a callback to the CreatePreview action
+            //
+            // Needs modification/simplification
+            Preview.Init();
+            Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+            // make sure it can run more than once
+            Preview.callback.autoReset = true;
+            var my_timeout = null;
+            function update_preview() {
+                if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem_sets/solution/')) {
+                  Preview.math_html = html_with_solution(divContent.innerHTML);
+                } else {
+                  Preview.math_html = html_omit_solution(divContent.innerHTML);
+                }
+                Preview.CreatePreview();
+            }
+            // update the preview using the contents of the div
+            update_preview(divContent.innerHTML);
+
+        });
+    }
+
+    run();
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-latex.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } },
+        "CommonHTML": { availableFonts: ["TeX"] },
+        // enable inline equation rendering
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          processEscapes: true
+        }
+      });
+      MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
+        MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{
+          cancel: ["Extension","cancel"],
+          bcancel: ["Extension","cancel"],
+          xcancel: ["Extension","cancel"],
+          cancelto: ["Extension","cancel"]
+        });
+        TeX: {
+          equationNumbers: { autoNumber: "AMS" }
+        };
+      });
+    </script>
+
+  </body>
+</html>

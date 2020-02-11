@@ -1,0 +1,187 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    {% if perms.admin_app.can_add_activity %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+        <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
+        {% if this_key %}
+          {% if activity.title %}
+              <li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>
+          {% endif %}
+          <li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        {% if this_key %}
+        <li class="breadcrumb-item"><a href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}">Upload and Manage Media</a>-Save activity first!</li>{% endif %}
+      </ol>
+    </nav>
+    <form method="POST" class="activity-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a href="#base" class="nav-link active" data-toggle="tab">Base</a>
+          </li>
+          <li class="nav-item">
+              <a href="#guide" class="nav-link" data-toggle="tab">Instructor's Guide</a>
+          </li>
+          <li class="nav-item">
+              <a href="#details" class="nav-link" data-toggle="tab">Details</a>
+          </li>
+          <li class="nav-item">
+              <a href="#activityimage" class="nav-link" data-toggle="tab">Activity Image</a>
+          </li>
+          <!-- <li class="nav-item">
+              <a href="#materials" class="nav-link" data-toggle="tab">Media & Materials</a>
+          </li> -->
+          <li class="nav-item">
+              <a href="#publication" class="nav-link" data-toggle="tab">Publication</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <!-- FREQUENTLY USED FIELDS TAB -->
+            <div class="tab-pane fade show active" id="base">
+                <div class="form-row">
+                  <div class="form-group col-md-3 mb-0">
+                    {{ form.title|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    {{ form.time_estimate|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-3 mb-0">
+                    {{ form.type_of_beast|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    {{ form.old_name|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-2 mb-0">
+                    {{ form.course|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6 mb-0">
+                    {{ form.topics|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-6 mb-0">
+                    {{ form.equipment_required|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <div class="row">
+                      <div class="col">
+                        {% if figures %}
+                        <h4>Media and Figures</h4>
+                        <ul class="list-inline">
+                        {% for figure in figures %}
+                          <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+                        {% endfor %}
+                        </ul>
+                        {% else %}
+                          No figures have been uploaded for this problem.
+                        {% endif %}
+                      </div>
+                      <div class="col">
+                        {% if figures %}
+                        Some instructions on how to integrate image URL into latex. Drag and drop thumbnail to reveal URL? Need help here.
+                        <code>
+                          Example: https://paradigms.oregonstate.edu/figures/figures/IMG_1203.JPG
+                        </code>
+                        {% endif %}
+                        {% if thisPrimaryKey %}<p><a class='btn btn-sm btn-success' role='button' href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}"><span class="oi oi-cloud-upload" title="Upload and media manager button" alt="Go to media management and upload page."></span> Upload and Manage Media</a>-Save activity first!</p>{% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{ form.overview_paragraph|as_crispy_field }}
+                {{ form.what_students_learn|as_crispy_field }}
+                {{ form.notes|as_crispy_field }}
+            </div>
+
+          <!-- INSTRUCTOR'S GUIDE FIELDS TAB -->
+            <div class="tab-pane fade" id="guide">
+              <div class="form-row">
+                <div class="form-group col">
+                  <div class="row">
+                    <div class="col">
+                      {% if figures %}
+                      <h4>Media and Figures</h4>
+                      <ul class="list-inline">
+                      {% for figure in figures %}
+                        <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+                      {% endfor %}
+                      </ul>
+                      {% else %}
+                        No figures have been uploaded for this problem.
+                      {% endif %}
+                    </div>
+                    <div class="col">
+                      {% if figures %}
+                      Some instructions on how to integrate image URL into latex. Drag and drop thumbnail to reveal URL? Need help here.
+                      <code>
+                        Example: https://paradigms.oregonstate.edu/figures/figures/IMG_1203.JPG
+                      </code>
+                      {% endif %}
+                      {% if thisPrimaryKey %}<p><a class='btn btn-sm btn-success' role='button' href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}"><span class="oi oi-cloud-upload" title="Upload and media manager button" alt="Go to media management and upload page."></span> Upload and Manage Media</a>-Save activity first!</p>{% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="latexeditor tex2jax_ignore" id="ace_instructor_guide" required>{{ form.instructor_guide.value }}</div>
+                    <input type="hidden" id="id_instructor_guide" name="instructor_guide" value="{{ form.instructor_guide.value }}">
+                  </div>
+                  <div class="col"></div>
+                </div>
+            </div>
+          <!-- DETAILS FIELDS TAB -->
+            <div class="tab-pane fade" id="details">
+              {{ form.author|as_crispy_field }}
+              {{ form.author_info|as_crispy_field }}
+              <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                  {{ form.keywords|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  {{ form.associated_paper_links|as_crispy_field }}
+                </div>
+              </div>
+                {{ form.prerequisite_knowledge|as_crispy_field }}
+                {{ form.program_learning_outcomes|as_crispy_field }}
+                {{ form.course_learning_outcomes|as_crispy_field }}
+                {{ form.learning_progression_concepts|as_crispy_field }}
+            </div>
+            <!-- ACTIVITY IMAGE TAB -->
+            <div class="tab-pane fade" id="activityimage">
+              <h5>Upload a representative image for this activity. This image will show up in search results to help visually distinguish this activity from other activities.</h5>
+                {% if activity.activity_image %}<img src="{{ activity.activity_image.url }}" class="rounded" height="120px">{% endif %}
+                {{ form.activity_image|as_crispy_field }}
+            </div>
+            <!-- STUDENT MATERIALS FIELDS TAB -->
+            <!-- <div class="tab-pane fade" id="materials">
+                <p>Upload Student Materials and Activity Media/Figures here (Soon) ...</p>
+            </div> -->
+          <!-- PUBLICATION FIELDS TAB -->
+            <div class="tab-pane fade" id="publication">
+                {{ form.publication_status|as_crispy_field }}
+                {{ form.publication_date|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="save btn btn-sm btn-success">Save Activity</button>
+          </div>
+        </div>
+    </form>
+    {% else %}
+    <p>No permission to add.</p>
+    {% endif %}
+{% endblock %}

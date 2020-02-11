@@ -1,0 +1,53 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+        <li class="breadcrumb-item"><a href="{% url 'list_problem_sets' %}">Problem Sets</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'problem_set_details' problem_set_id=problem_set.pk%}">{{ problem_set.title }}</a></li>
+        {% if perms.admin_app.can_add_sequence %}
+        <li class="breadcrumb-item"><a href="{% url 'problem_set_details_solution' problem_set_id=problem_set.pk%}">View with Solution</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'edit_problem_set' problem_set_id=problem_set.pk%}">Edit</a></li>
+        {% endif %}
+      </ol>
+    </nav>
+    <h2>{{ problem_set.title }}</h2>
+    <h5>{{ problem_set.instructions }}</h5>
+    {% for item in problem_set_problems %}
+    <div class="card" style="margin-bottom: 10px">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.problem.problem_title }}</h5>
+
+        {% if perms.admin_app.can_view_solution %}
+        <!-- show edit buttons for people with perms -->
+
+              <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+                <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">View</a>
+                <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a>
+              </div>
+
+        {% else %}
+
+            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
+              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=item.problem.pk %}">View</a>
+            </div>
+
+        {% endif %}
+
+        <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="problem_instructions{{ forloop.counter }}">{{ item.item_instructions }}</h6>
+        <div class="card-body latextorender tex2jax_ignore" id="problem_latex{{forloop.counter}}">
+          {{ item.problem.problem_latex }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>{% endif %}
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+  {% endfor %}
+  {% if perms.admin_app.can_edit_problem %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
+        {% if thisPrimaryKey %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=thisPrimaryKey %}">View</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=thisPrimaryKey %}">Upload &amp; Manage Media</a></li>{% endif %}
+      </ol>
+    </nav>
+      <form method="POST" class="problem-form">
+        {% csrf_token %}
+        <p>{{ form.created_date.value }}</p>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework problem."></span>  Save</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">{{ form.problem_title|as_crispy_field }}</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {{ form.author|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.created_date|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.published_date|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.course|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {{ form.attribution|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.old_name|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.topics|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {% if figures %}
+            <h4>Media and Figures</h4>
+            <ul class="list-inline">
+            {% for figure in figures %}
+              <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+            {% endfor %}
+            </ul>
+            {% else %}
+              No figures have been uploaded for this problem.
+            {% endif %}
+          </div>
+          <div class="col">
+            {% if figures %}
+            Some instructions on how to integrate image URL into latex. Drag and drop thumbnail to reveal URL? Need help here.
+            <code>
+              Example: https://paradigms.oregonstate.edu/figures/figures/IMG_1203.JPG
+            </code>
+            {% endif %}
+            {% if thisPrimaryKey %}<p><a class='btn btn-sm btn-success' role='button' href="{% url 'figures:progress_bar_upload' problem_id=thisPrimaryKey %}"><span class="oi oi-cloud-upload" title="Upload and media manager button" alt="Go to media management and upload page."></span> Upload and Manage Media</a> - Save Problem First!</p>{% endif %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="latexeditor tex2jax_ignore" id="ace_problem_latex" required>{{ form.problem_latex.value }}</div>
+            <input type="hidden" id="id_problem_latex" name="problem_latex" value="">
+          </div>
+          <div class="col"></div>
+        </div>
+      </form>
+  {% else %}
+    <p>No permission to edit.</p>
+  {% endif %}
+{% endblock %}

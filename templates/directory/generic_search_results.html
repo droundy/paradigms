@@ -1,0 +1,85 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>Search Results for "{{ query }}"</h1>
+    </div>
+  </div>
+
+  <div class="container">
+
+    {% if activity_list %}
+      <h2>Activities</h2>
+      {% for activity in activity_list %}
+        <div class="card" style="margin-bottom: 10px;">
+          <div class="card-body">
+            <h5>{{ activity.title }}</h5>
+            <p class="card-text">{{ activity.publication_date }}</p>
+            {% if activity.overview_paragraph %}
+            <p class="card-text text-truncate">{{ activity.overview_paragraph|truncatewords:25 }}</p>
+            {% endif %}
+            {% if perms.admin_app.can_view_solution %}
+            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
+              <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
+              <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=activity.pk %}">Edit</a>
+
+            </div>
+            {% else %}
+            <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {% if search_type == "Both" or search_type == "Activities" %}<div class="row">
+        <div class="col">
+          <h3>No Activity results found for "{{ query }}"</h3>
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+
+    <h2>Homework</h2>
+    {% if problem_list %}
+    <div class="row">
+    {% for problem in problem_list %}
+        <div class="col">
+          <div class="card" style="margin-bottom: 10px">
+            <div class="card-body">
+              <h5 class="card-title">{{ problem.problem_title }}</h5>
+              <!-- <h6 class="card-subtitle">{{ problem.created_date }}</h6> -->
+              <!-- <p class="card-text">Problem preview of some sort</p> -->
+              <!-- <div class="date">
+                  {{ problem.created_date }}
+              </div> -->
+              {% if perms.admin_app.can_view_solution %}
+                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
+                  <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
+                  <a class="btn btn-secondary btn-sm" href="{% url 'problem_display_html_solution' pk=problem.pk %}">Edit</a>
+                </div>
+              {% else %}
+              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% if forloop.last %}
+          </div>
+        {% else %}
+          {% if forloop.counter|divisibleby:"1" %}
+            </div><div class="row">
+          {% endif %}
+        {% endif %}
+    {% endfor %}
+    </div><!-- end row iteration of problems with formatting for cards -->
+    {% else %}
+      {% if search_type == "Both" or search_type == "Homework" %}<div class="row">
+        <div class="col">
+          <h3>No Homework results found for "{{ query }}"</h3>
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+{% endblock %}

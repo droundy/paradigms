@@ -1,0 +1,102 @@
+{% extends 'public_app/base_multi_editor.html' %}
+<!--  extends 'activity_media/base.html'  -->
+
+{% load static %}
+
+{% block title %}Progress Bar Upload{% endblock %}
+
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+  {# FIGURES PAGE SCRIPTS #}
+  <script src="{% static 'activity_media/js/progress-bar-upload.js' %}"></script>
+{% endblock %}
+
+{% block figure_content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+    <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
+    {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></li>{% endif %}
+    <li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=activity.pk %}">View with Solution</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'activity_edit' pk=activity.pk %}">Edit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Upload and Manage Media</li>
+  </ol>
+</nav>
+  <div style="margin-bottom: 20px;">
+    <div class="well text-muted" style="padding-top: 4rem; padding-bottom: 4rem;">
+      <div class="text-center" style="margin-bottom: 45px">
+        <button type="button" class="btn btn-sm btn-primary js-upload-photos text-center">
+          <span class="oi oi-cloud-upload" title="File selection button." alt="Click here to select files."></span>
+Click Here To Select Files
+        </button>
+        <h3>Or, Drag and Drop Media Here to Upload</h3>
+    </div>
+    <div class="container">
+      <h4>Instructions and Notes</h4>
+      <dl class="row">
+        <dt class="col-md-3"><span class="oi oi-data-transfer-download" title="data-transfer-download"></span> All Media Available To Download<dt>
+        <dd class="col-md-9">All media uploaded, whether used in the latex for this activity or not, will be available in the Media Downloads area for this activity. Remove anything you don't want to be available to download.</dd>
+        <dt class="col-md-3"><span class="oi oi-check" title="Prefered File Types" alt="JPG and PNG files work for both on-screen and print viewing."></span> Prefered File Types</dt>
+        <dd class="col-md-9">Prefered File Types for Use in Latex: JPG and PNG. These file types work for both print and on-screen viewing.</dd>
+        <dt class="col-md-3"><span class="oi oi-warning" title="File type warning" alt="Certain file types require companions for on-screen or print viewing."></span> Accepted File Types</dt>
+        <dd class="col-md-9">Accepted File Types for Use in Latex: SVG and PDF.<br>SVGs work only for on-screen viewing so you will need to upload a matching JPG, PNG or PDF file with the same name: (media1.svg and media1.jpg|pdf|png)<br>PDFs work only for print so you will need to upload a matching JPG, SVG or PNG file with the same file name: (media1.pdf and media1.jpg|png|svg)</dd>
+      </dl>
+    </div>
+
+    </div>
+    <input id="fileupload" type="file" name="file" multiple
+           style="display: none;"
+           data-url="{% url 'activity_media:progress_bar_upload' %}"
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}", "origin_path": "{{ request.path }}"}'>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <form method="post" action="{% url 'activity_media:delete_media_for_activity' activity_id=thisActivityID %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button type="submit" class="btn btn-sm btn-danger pull-right">
+            <span class="oi oi-trash" title="Delete activity media button." alt="Delete Media for this activity."></span> Delete Media For This Activity
+          </button>
+        </form>
+      </div>
+      <div class="col">
+        <a class="btn btn-sm btn-success" href="{% url 'activity_edit' pk=thisActivityID %}"><span class="oi oi-arrow-thick-left" title="Back to Activity Editor Button" alt="Go back to activity editor."></span> Return to Activity</a>
+      </div>
+    </div>
+    <div class="row">
+      <table id="gallery" class="table table-bordered" style="margin-top: 15px">
+        <thead>
+          <tr>
+            <th>Media</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in media %}
+            <tr>
+              <td><img src="{{ item.file.url }}" alt="{{ item.file.url }}" width="100px"> <a href="{{ item.file.url }}">{{ item.file.name }}</a> <a class='btn btn-warning btn-sm' role='button' href="{% url 'activity_media:delete_media' media_id=item.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Uploading...</h4>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

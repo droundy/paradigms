@@ -1,0 +1,27 @@
+{% extends 'public_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% if perms.admin_app.can_add_problem %}
+    <h2>Problem</h2>
+    <form method="POST" class="problem-form">
+        {% csrf_token %}
+        {{ form.problem_title|as_crispy_field }}
+        {{ form.problem_latex|as_crispy_field }}
+        <div class="row">
+          <div class="col-4">
+            {{ form.author|as_crispy_field }}
+          </div>
+          <div class="col-4">
+            {{ form.created_date|as_crispy_field }}
+          </div>
+          <div class="col-4">
+            {{ form.published_date|as_crispy_field }}
+          </div>
+        </div>
+
+        <button type="submit" class="save btn btn-success">Save</button>
+    </form>
+    {% else %}
+    <p>No permission to add.</p>
+    {% endif %}
+{% endblock %}

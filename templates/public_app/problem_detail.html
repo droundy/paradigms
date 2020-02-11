@@ -1,0 +1,22 @@
+{% extends 'public_app/base_multi_eidtor.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    {% if perms.admin_app.can_add_problem %}
+      <p>Can Add Problems</p>
+    {% endif %}
+  {% endif %}
+    <div class="latex_problem">
+        <h2>{{ latex_problem.problem_title }}</h2>
+        <p>{{ latex_problem.problem_latex|linebreaks }}</p>
+        {% if latex_problem.published_date %}
+            <div class="date">
+                Published {{ latex_problem.published_date }}
+            </div>
+        {% endif %}
+        Created {{ latex_problem.created_date }}
+    {% if perms.admin_app.can_edit_problem %}
+         <p><a class="btn btn-success" href="{% url 'problem_edit' pk=latex_problem.pk %}">Edit</a><a class="btn btn-success" href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit (Beta)</a></p>
+    {% endif %}
+    </div>
+{% endblock %}
