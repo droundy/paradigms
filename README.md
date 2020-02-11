@@ -13,6 +13,6 @@ running the project.
 
 This should be as simple as running
 ```
-./manage.py test
+python3 ./manage.py test
 ```
 in the osu_www directory.
