@@ -108,17 +108,6 @@ def problem_edit_preview(request, pk):
 
 ####
 
-def white_papers(request):
-    return render(request, 'public_app/white_papers.html', {})
-
-def about(request):
-    return render(request, 'public_app/about.html', {})
-
-def history(request):
-    return render(request, 'public_app/history.html', {})
-
-def courses(request):
-    return render(request, 'public_app/courses.html', {})
 
 def sequences(request):
     return render(request, 'public_app/sequences.html', {})

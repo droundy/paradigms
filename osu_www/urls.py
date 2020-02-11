@@ -19,17 +19,14 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 from public_app import views
+from pages import views
 
 urlpatterns = [
+    # About, home/index, history, and courses are all contained in the Pages app
     path('', include('pages.urls')),
+    
     #path('', views.index, name='index'),
-    path('problem/',include('public_app.urls')),
-    path('whitepapers/', views.white_papers, name='white_papers'),
-    path('about/', views.about, name='about'),
-    path('history/', views.history, name='history'),
-    path('courses/', views.courses, name='courses'),
-
-    # path('figures/', include('figures.urls'), name='figures'),
+    path('problem/',include('public_app.urls')),    
 
     path('sequences/',include('sequences.urls')),
     url(r'^figures/', include(('figures.urls', 'figures'), namespace='figures')),
@@ -38,7 +35,7 @@ urlpatterns = [
 
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
 
-    path('directory/',include('site_directory.urls')),
+    path('search/',include('site_directory.urls')),
 
     # Django Admin
     path('admin/', admin.site.urls),
