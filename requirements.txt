@@ -10,7 +10,6 @@ mysql-connector-python==8.0.16
 mysqlclient==1.4.2.post1
 oauthlib==3.0.2
 Pillow==6.1.0
-pkg-resources==0.0.0
 protobuf==3.9.0
 pydjax==0.2
 python3-openid==3.1.0
