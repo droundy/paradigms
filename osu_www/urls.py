@@ -20,6 +20,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from public_app import views
 from pages import views
+from pages.views import renderpage
 
 urlpatterns = [
     # About, home/index, history, and courses are all contained in the Pages app
@@ -28,14 +29,13 @@ urlpatterns = [
     #path('', views.index, name='index'),
     path('problem/',include('public_app.urls')),    
 
-    path('sequences/',include('sequences.urls')),
+    # Load urls for various apps
+    path('sequences/', include('sequences.urls')),
     url(r'^figures/', include(('figures.urls', 'figures'), namespace='figures')),
-    path('activities/',include('activities.urls')),
-    path('problem_sets/',include('problem_sets.urls')),
-
+    path('activities/', include('activities.urls')),
+    path('problem_sets/', include('problem_sets.urls')),
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
-
-    path('search/',include('site_directory.urls')),
+    path('search/', include('site_directory.urls')),
 
     # Django Admin
     path('admin/', admin.site.urls),

@@ -138,22 +138,22 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
             <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
-            <a class="dropdown-item" href="{% url 'courses' %}">Courses</a>
+            <a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>
             <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>
             <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>
           </div>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'white_papers' %}">Whitepapers</a>
+          <a class="nav-link" href="{% url 'page_display' pagename='whitepapers' %}">Whitepapers</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             About
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'about' %}">About</a>
-            <a class="dropdown-item" href="{% url 'history' %}">History</a>
+            <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
+            <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
           </div>
 
         </li>

@@ -61,8 +61,14 @@ def HomeworkKeywordView(request, searchterm):
     problem_list = Problem.objects.filter(
         Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query)
     )
+    activity_list = Activity.objects.filter(
+        Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
+    )
     context = {
         'problem_list': problem_list,
+        'activity_list': activity_list,
+        'search_type': 'Both',
         'query': query,
     }
-    return render(request, 'directory/homework_search_results.html', context)
+    return render(request, 'directory/generic_search_results.html', context)
+    # return render(request, 'directory/homework_search_results.html', context)
