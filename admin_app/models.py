@@ -3,8 +3,31 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from autoslug import AutoSlugField
 import os
 # from admin_app.choices import *
+
+class Pages(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    slug = AutoSlugField(populate_from='title')
+    page_content = models.TextField(blank=True, null=True)
+    keywords = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics or keywords: adiabatic susceptibility,entropy")
+    published_date = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        permissions = (
+            ("can_edit_pages", "Edit Pages"),
+            ("can_add_pages","Add Pages"),)
+
+    def get_absolute_url(self):
+        return reverse('page_display', kwargs={'slug': self.slug})
 
 # Create your models here.
 class Figure(models.Model):

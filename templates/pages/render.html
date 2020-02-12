@@ -1,0 +1,13 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load socialaccount %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>{{ this_page.title }}</h1>
+    </div>
+  {% if perms.admin_app.can_edit_pages %}<a class="btn btn-success btn-sm" href="{% url 'page_edit' pagename=this_page.slug %}">Edit</a>{% endif %}
+  <div class="latextorender tex2jax_ignore" id="page_content">{{ this_page.page_content }}</div>
+  {{ this_page.keywords }}
+
+</div>
+{% endblock %}
