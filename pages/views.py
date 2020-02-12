@@ -33,17 +33,22 @@ def courses(request):
 
 def renderpage(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
+        keyword_list = this_page.keywords.split(",")
         context = {
                 'pagename': pagename,
-                'this_page': this_page,    
+                'this_page': this_page,
+                'keyword_list': keyword_list   
         }
         return render(request, 'pages/render.html', context)
 
+# Url for home page is handled slightly differently because it doesn't use a slug/pagename to identify itself
 def renderhomepage(request):
         this_page = get_object_or_404(Pages, slug='home')
+        keyword_list = this_page.keywords.split(",")
         context = {
                 'pagename': this_page.title,
-                'this_page': this_page,    
+                'this_page': this_page,
+                'keyword_list': keyword_list,    
         }
         return render(request, 'pages/render.html', context)
 
