@@ -5,6 +5,7 @@ Django==2.2.3
 django-ace==1.0.5
 django-allauth==0.39.1
 django-crispy-forms==1.7.2
+django-autoslug==1.9.6
 idna==2.8
 mysql-connector-python==8.0.16
 mysqlclient==1.4.2.post1
