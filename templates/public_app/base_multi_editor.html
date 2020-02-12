@@ -284,6 +284,39 @@
         // modes
         await init();
 
+        // find all of the divs with latextorender class
+        var latexDivs = document.querySelectorAll(".latextorender");
+
+        // Loop through each of these divs
+        latexDivs.forEach(function(renderElement) {
+
+            // Collect the contents of the div that needs rendering
+            var divContent = document.getElementById(renderElement.id);
+            divContent.classList.remove("tex2jax_ignore")
+
+            if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem_sets/solution/')) {
+                divContent.innerHTML = html_with_solution(divContent.innerHTML);
+            } else {
+                divContent.innerHTML = html_omit_solution(divContent.innerHTML);
+            }
+            MathJax.Hub.Queue(
+                function () {
+                    if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                        MathJax.InputJax.TeX.resetEquationNumbers();
+                    }
+                },
+                // ["resetEquationNumbers",MathJax.InputJax.TeX],
+                ["Typeset",MathJax.Hub,divContent]
+            );
+            // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+            // This limits the width, but may need to be changed to the .figure class
+            var images = document.querySelectorAll(".preview img");
+            var i;
+            for(i = 0; i < images.length; i++) {
+                images[i].className += " img-fluid";
+            }
+        });
+
         var latexEditors = document.querySelectorAll(".latexeditor");
         // var latexEditors = document.querySelectorAll(".django-ace-editor");
 
@@ -598,123 +631,6 @@
       $(function() {
         $(".preview > img").addClass("img-fluid")
       })
-    </script>
-
-    <!-- MORE TESTING FOR DIV CONTENT COLLECTION AND RENDERING -->
-    <script type="module">
-
-    /*
-      This ugly bit of script pulls the contents of a div and pushes it through
-      David's script for rendering.
-      To use:
-      Add: latextorender tex2jax_ignore to the class for any div.
-      Make sure that the div has an id, and that the id is unique.
-      This needs to be rewritten with David's help.
-    */
-
-    import init, { html_with_solution, html_omit_solution } from
-    '/static/public_app/js/latex_snippet.js';
-
-    async function run() {
-
-        await init();
-
-        // find all of the divs with latextorender class
-        var latexDivs = document.querySelectorAll(".latextorender");
-
-        // Loop through each of these divs
-        latexDivs.forEach(function(editElement) {
-
-            // Collect the contents of the div that needs rendering
-            var divContent = document.getElementById(editElement.id);
-
-            // Needs to be modified to account for the fact that we aren't monitoring keystrokes, etc.
-            var Preview = {
-                delay: 150,        // delay after keystroke before updating
-                preview: null,     // filled in by Init below
-                buffer: null,      // filled in by Init below
-                timeout: null,     // store setTimout id
-                mjRunning: false,  // true when MathJax is processing
-                mjPending: false,  // true when a typeset has been queued
-                oldText: null,     // used to check if an update is needed
-                math_html: null,   // used to store the new html we want
-
-                // Needs modification/simplification
-                Init: function () {
-                    // Create a buffer and preview div
-                    this.preview = divContent;
-                    this.buffer = divContent;
-
-                    this.preview.classList.remove("tex2jax_ignore")
-                    this.buffer.classList.remove("tex2jax_ignore")
-
-                },
-
-                // Needs modification/simplification
-                // I don't understand most of what this is doing
-                CreatePreview: function () {
-                    Preview.timeout = null;
-                    if (this.mjPending) return;
-                    var text = this.math_html;
-                    if (text === this.oldtext) return;
-                    if (this.mjRunning) {
-                        this.mjPending = true;
-                        MathJax.Hub.Queue(["CreatePreview",this]);
-                    } else {
-                        this.buffer.innerHTML = this.oldtext = text;
-                        this.mjRunning = true;
-                        MathJax.Hub.Queue(
-                            function () {
-                                if (MathJax.InputJax.TeX.resetEquationNumbers) {
-                                    MathJax.InputJax.TeX.resetEquationNumbers();
-                                }
-                            },
-                            // ["resetEquationNumbers",MathJax.InputJax.TeX],
-                            ["Typeset",MathJax.Hub,this.buffer],
-                          ["PreviewDone",this]
-                        );
-                    }
-                    // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-                    // This limits the width, but may need to be changed to the .figure class
-                    var images = document.querySelectorAll(".preview img");
-                    var i;
-                    for(i = 0; i < images.length; i++) {
-                        images[i].className += " img-fluid";
-                    }
-                },
-
-                //
-                //  Indicate that MathJax is no longer running,
-                PreviewDone: function () {
-                    this.mjRunning = this.mjPending = false;
-                }
-            };
-
-            //
-            //  Cache a callback to the CreatePreview action
-            //
-            // Needs modification/simplification
-            Preview.Init();
-            Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
-            // make sure it can run more than once
-            Preview.callback.autoReset = true;
-            var my_timeout = null;
-            function update_preview() {
-                if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem_sets/solution/')) {
-                  Preview.math_html = html_with_solution(divContent.innerHTML);
-                } else {
-                  Preview.math_html = html_omit_solution(divContent.innerHTML);
-                }
-                Preview.CreatePreview();
-            }
-            // update the preview using the contents of the div
-            update_preview(divContent.innerHTML);
-
-        });
-    }
-
-    run();
-
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-latex.js" type="text/javascript" charset="utf-8"></script>
