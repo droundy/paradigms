@@ -19,7 +19,7 @@
   </div>
   <div class="row">
   	<div class="col">
-  	Created {{ latex_problem.created_date }}
+    Date {{ latex_problem.created_date }}
   	</div>
   	{% if perms.admin_app.can_edit_problem %}
   	<div class="col">
@@ -40,11 +40,7 @@
   </div>
   {% endif %}
   <div class="row">
-    <div class="col">
-      <div id="preview" class="preview">preview</div>
-      <div id="buffer" class="preview">buffer</div>
-    </div>
+    <div class="col latextorender tex2jax_ignore" id="problem_latex">{{ latex_problem.problem_latex }}</div>
   </div>
-
   </div><!-- End container -->
 {% endblock %}

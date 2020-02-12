@@ -292,9 +292,10 @@
 
             // Collect the contents of the div that needs rendering
             var divContent = document.getElementById(renderElement.id);
+            
             divContent.classList.remove("tex2jax_ignore")
 
-            if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem_sets/solution/')) {
+            if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
                 divContent.innerHTML = html_with_solution(divContent.innerHTML);
             } else {
                 divContent.innerHTML = html_omit_solution(divContent.innerHTML);
