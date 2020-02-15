@@ -16,11 +16,7 @@
         <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
           <div class="card-body">
             <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></h5>
-            <p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock"></span> {{ activity.time_estimate }} min. {{ activity.topics|tagbuttons }}
-            
-              
-            
-            </p>
+            <p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min. <span style="margin-left: 1em;">{{ activity.topics|tagbuttons }}</span></p>
             
             {% if activity.overview_paragraph %}
               {% if forloop.counter == 1 %}
