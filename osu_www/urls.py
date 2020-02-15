@@ -23,6 +23,9 @@ from pages import views
 from pages.views import renderpage
 
 urlpatterns = [
+    # Django Admin
+    path('admin/', admin.site.urls),
+    
     # About, home/index, history, and courses are all contained in the Pages app
     path('', include('pages.urls')),
     
@@ -37,8 +40,7 @@ urlpatterns = [
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
     path('search/', include('site_directory.urls')),
 
-    # Django Admin
-    path('admin/', admin.site.urls),
+    
     # User management
     # Need to set up templates for these user login/logout/signup links
     # Add the following to lib/python3.6/site-packages/allauth/templates/account/*.html files
