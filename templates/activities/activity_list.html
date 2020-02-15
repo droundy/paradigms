@@ -1,4 +1,5 @@
 {% extends 'public_app/base_multi_editor.html' %}
+{% load activity_extras %}
 {% block content %}
   <div class="container">
     <div class="page-header">
@@ -14,16 +15,13 @@
     {% for activity in activities %}
         <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
           <div class="card-body">
-            <h5>{{ activity.title }}</h5>
-            <p class="card-text" style="margin-bottom: 5px;">{{ activity.publication_date }}</p>
-            {% if perms.admin_app.can_view_solution %}
-            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
-              <a class="btn btn-primary btn-sm" href="{% url 'activity_detail_solution' pk=activity.pk %}">View</a>
-              <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=activity.pk %}">Edit</a>
-            </div>
-            {% else %}
-            <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
-            {% endif %}
+            <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></h5>
+            <p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock"></span> {{ activity.time_estimate }} min. {{ activity.topics|tagbuttons }}
+            
+              
+            
+            </p>
+            
             {% if activity.overview_paragraph %}
               {% if forloop.counter == 1 %}
                 <p class="latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph }}</p>
@@ -31,6 +29,14 @@
                 <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph }}</p>
               {% endif %}
             {% endif %}
+            <!-- {% if perms.admin_app.can_view_solution %}
+            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
+              <a class="btn btn-primary btn-sm" href="{% url 'activity_detail_solution' pk=activity.pk %}">View</a>
+              <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=activity.pk %}">Edit</a>
+            </div>
+            {% else %}
+            <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
+            {% endif %} -->
           </div>
         </div>
     {% endfor %}

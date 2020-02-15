@@ -1,5 +1,6 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load crispy_forms_tags %}
+{% load activity_extras %}
 {% block content %}
   {% for message in messages %}
     <div class="alert alert-success">
@@ -26,68 +27,80 @@
     </ol>
   </nav>
   {% endif %}
-  <dl class="row">
-    {% if activity.title %}<dt class="col-sm-3">Title</dt>
-    <dd class="col-sm-9" id="activity_title">{{ activity.title }}</dd>{% endif %}
 
-    {% if activity.old_name %}<dt class="col-sm-3">Old Name</dt>
-    <dd class="col-sm-9" id="old_name">{{ activity.old_name }}</dd>{% endif %}
+  <div class="container">
+      {% if activity.title %}<h2>{{ activity.title }}</h2>{% endif %}
+    
+      {% if activity.overview_paragraph %}<p class="lead">{{ activity.overview_paragraph }}</p>{% endif %}
 
-    {% if activity.time_estimate %}<dt class="col-sm-3">Time Estimate</dt>
-    <dd class="col-sm-9" id="activity_time_estimate">{{ activity.time_estimate }}</dd>{% endif %}
+      <hr>
 
-    {% if activity.type_of_beast %}<dt class="col-sm-3 text-truncate">Type of Beast</dt>
-    <dd class="col-sm-9" id="activity_type_of_beast">{{ activity.type_of_beast }}</dd>{% endif %}
+      <!-- {% if perms.admin_app.can_add_activity %}{% if activity.old_name %}<p>Old Name: {{ activity.old_name }}</p>{% endif %}{% endif %} -->
 
-    {% if activity.topics %}<dt class="col-sm-3">Topics</dt>
-    <dd class="col-sm-9" id="activity_topics">{{ activity.topics }}</dd>{% endif %}
+      {% if activity.type_of_beast %}<span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} activity {% endif %}
 
-    {% if activity.equipment_required %}<dt class="col-sm-3">Equipment required</dt>
-    <dd class="col-sm-9" id="activity_equipment_required">{{ activity.equipment_required }}</dd>{% endif %}
+      {% if activity.time_estimate %}<span class="oi oi-clock"></span> {{ activity.time_estimate }} min. {% endif %}
 
-    {% if activity.overview_paragraph %}<dt class="col-sm-3">Overview</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_overview_paragraph">{{ activity.overview_paragraph }}</dd>{% endif %}
+      {% if activity.equipment_required %}<span class="oi oi-wrench"></span> {{ activity.equipment_required }} {% endif %}
 
-    {% if activity.what_students_learn %}<dt class="col-sm-3">What students learn</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_what_students_learn">{{ activity.what_students_learn }}</dd>{% endif %}
+      {% if activity.topics %}<p>{{ activity.topics|tagbuttons }}</p>{% endif %}
+      
+      <hr>
+      
+      {% if activity.what_students_learn %}<dl><dt class="col-sm-3">What students learn</dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_what_students_learn">{{ activity.what_students_learn }}</dd></dl>{% endif %}
 
-    {% if activity.notes %}<dt class="col-sm-3"></dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_notes">{{ activity.notes }}</dd>{% endif %}
+      {% if activity.notes %}<dt class="col-sm-3"></dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_notes">{{ activity.notes }}</dd>{% endif %}
+      
+      {% if activity.instructor_guide %}
+      <hr>
+      <h5>Instructor's Guide</h5>
+      <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_instructor_guide">{{ activity.instructor_guide }}</span>{% endif %}
+      
+      <hr>      
+      <h5>Media</h5>
+      <ul>        
+      {% for figure in figures %}
+        <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+      {% endfor %}
+      </ul>
 
-    {% if activity.instructor_guide and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Instructor's Guide</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_instructor_guide">{{ activity.instructor_guide }}</dd>{% endif %}
+      <hr>
+        
+      <dl>
+      {% if activity.author %}<dt class="col-sm-3">Editor</dt>
+      <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
 
-    {% if activity.author %}<dt class="col-sm-3">Editor</dt>
-    <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
+      {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
+      <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
 
-    {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
-    <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
+      {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
+      <dd class="col-sm-9" id="activity_keywords">{{ activity.topics|tagbuttons }}</dd>{% endif %}
 
-    {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
-    <dd class="col-sm-9" id="activity_keywords">{{ activity.keywords }}</dd>{% endif %}
+      {% if activity.associated_paper_links %}<dt class="col-sm-3">Associated Papers</dt>
+      <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
 
-    {% if activity.associated_paper_links %}<dt class="col-sm-3">Associated Papers</dt>
-    <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
+      {% if activity.prerequisite_knowledge %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_prerequisite_knowledge">{{ activity.prerequisite_knowledge }}</dd>{% endif %}
 
-    {% if activity.prerequisite_knowledge %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_prerequisite_knowledge">{{ activity.prerequisite_knowledge }}</dd>{% endif %}
+      {% if activity.program_learning_outcomes %}<dt class="col-sm-3">Program Learning Outcomes</dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_program_learning_outcomes">{{ activity.program_learning_outcomes }}</dd>{% endif %}
 
-    {% if activity.program_learning_outcomes %}<dt class="col-sm-3">Program Learning Outcomes</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_program_learning_outcomes">{{ activity.program_learning_outcomes }}</dd>{% endif %}
+      {% if activity.course_learning_outcomes %}<dt class="col-sm-3">Course Learning Outcomes</dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_course_learning_outcomes">{{ activity.course_learning_outcomes }}</dd>{% endif %}
 
-    {% if activity.course_learning_outcomes %}<dt class="col-sm-3">Course Learning Outcomes</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_course_learning_outcomes">{{ activity.course_learning_outcomes }}</dd>{% endif %}
+      {% if activity.learning_progression_concepts %}<dt class="col-sm-3">Learning Progression Concepts</dt>
+      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_learning_progression_concepts">{{ activity.learning_progression_concepts }}</dd>{% endif %}
 
-    {% if activity.learning_progression_concepts %}<dt class="col-sm-3">Learning Progression Concepts</dt>
-    <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_learning_progression_concepts">{{ activity.learning_progression_concepts }}</dd>{% endif %}
+      {% if activity.activity_image %}<dt class="col-sm-3">Activity Image</dt>
+      <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
 
-    {% if activity.activity_image %}<dt class="col-sm-3">Activity Image</dt>
-    <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
+      {% if activity.publication_status and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Status</dt>
+      <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
 
-    {% if activity.publication_status %}<dt class="col-sm-3">Publication Status</dt>
-    <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
-
-    {% if activity.publication_date %}<dt class="col-sm-3">Publication Date</dt>
-    <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
-  </dl>
+      {% if activity.publication_date and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Date</dt>
+      <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
+    </dl>
+  </div>
 {% endblock %}

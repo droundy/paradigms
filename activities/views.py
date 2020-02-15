@@ -74,26 +74,40 @@ def activity_list(request):
 
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
+    topic_list = activity.topics.strip().rstrip(",").split(",")
+    topic_list = map(str.strip, topic_list)
+    tob = activity.type_of_beast.strip("('")
+    tob = tob.strip("'),")
     this_key = pk
+    figures_list = Activity.objects.get(id=this_key).media.all()
     view_name = 'activity_detail'
     form = ActivityFormReadOnly(instance=activity)
     context = {
         'activity': activity,
+        'tob': tob,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
+        'topic_list': topic_list,
+        'figures': figures_list
     }
     return render(request, 'activities/activity_detail.html', context)
 
 def activity_detail_solution(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
+    topic_list = activity.topics.strip().rstrip(",").split(",")
+    topic_list = map(str.strip, topic_list)
     this_key = pk
     view_name = 'activity_detail_solution'
     form = ActivityFormReadOnly(instance=activity)
+    tob = activity.type_of_beast.strip("('")
+    tob = tob.strip("'),")
     context = {
         'activity': activity,
+        'tob': tob,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
+        'topic_list': topic_list,
     }
     return render(request, 'activities/activity_detail.html', context)
