@@ -103,6 +103,7 @@ def problem_edit_preview(request, pk):
             'thisPrimaryKey' : thisPrimaryKey,
             'form' : form,
             'figures': figures_list,
+            'latex_problem': problem,
         }
     return render(request, 'public_app/problem_multi_edit_preview.html', context)
 

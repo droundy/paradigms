@@ -44,13 +44,13 @@
         {% if activity.topics %}<li class="list-group-item">{{ activity.topics|tagbuttons }}</li>{% endif %}
       </ul>
       <div class="card-body">{% if activity.what_students_learn %}What students learn
-        <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_what_students_learn_card">{{ activity.what_students_learn }}</span>{% endif %}</div>      
+        <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_what_students_learn_card">{{ activity.what_students_learn }}</span>{% endif %}
+      </div>
+      {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
+        <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_notes">{{ activity.notes }}</span></li></ul>{% endif %}
     </div>
-  
-      {% if activity.notes %}<dt class="col-sm-3"></dt>
-      <dd class="col-sm-9 latextorender tex2jax_ignore" id="activity_notes">{{ activity.notes }}</dd>{% endif %}
-      
-      {% if activity.instructor_guide %}
+
+    {% if activity.instructor_guide %}
       
       <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_instructor_guide">{{ activity.instructor_guide }}</span>{% endif %}
       

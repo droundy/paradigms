@@ -1,46 +1,36 @@
 {% extends 'public_app/base_multi_editor.html' %}
+{% load problem_extras %}
 {% block content %}
   <input type="hidden" name="problem_latex" id="id_problem_latex" value="{% autoescape off %}{{ page_problem }}{% endautoescape %}">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
       <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
-      <li class="breadcrumb-item active" aria-current="page">View</li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View with Solution</a></li>
       {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
       <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=latex_problem.pk %}">Upload &amp; Manage Media</a></li>
       {% endif %}
     </ol>
   </nav>
   <div class="container">
-  <div class="row">
-    <div class="col">
-      <h2>{{ latex_problem.problem_title }}</h2>
-    </div>
-  </div>
-  <div class="row">
-  	<div class="col">
-    Date {{ latex_problem.created_date }}
-  	</div>
-  	{% if perms.admin_app.can_edit_problem %}
-  	<div class="col">
-  		<a class="btn btn-sm btn-success" href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit <span class="oi oi-arrow-thick-right" title="Edit problem button" alt="Go to problem editor"></span></a>
-  	</div>
-  	{% endif %}
-  </div>
-  {% if figures %}
-  <div class="row">
-    <div class="col" style="padding-left: 2.5em">
-      <h4>Figures and Materials</h4>
-      <ul class="list-inline">
-      {% for figure in figures %}
-        <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
-      {% endfor %}
+    <div class="card">
+      <h2 class="card-header">
+        {{ latex_problem.problem_title }}
+      </h2>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ latex_problem.topics|problemtopicbuttons }}</li>
+        <li class="list-group-item latextorender tex2jax_ignore" id="problem_latexs">{{ latex_problem.problem_latex }}</li>
+        {% if figures %}
+          <li class="list-inline-item">
+            <h6 style="margin-left: 1em;">Media &amp; Figures</h6>
+            <ul>
+            {% for figure in figures %}
+              <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+            {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
       </ul>
-    </div>
-  </div>
-  {% endif %}
-  <div class="row">
-    <div class="col latextorender tex2jax_ignore" id="problem_latex">{{ latex_problem.problem_latex }}</div>
-  </div>
+    </div><!-- End Card -->
   </div><!-- End container -->
 {% endblock %}

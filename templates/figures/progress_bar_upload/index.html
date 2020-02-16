@@ -18,9 +18,8 @@
 {% block figure_content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
-    <li class="breadcrumb-item active"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View</a></li>
+    <li class="breadcrumb-item active"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
     {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
     <li class="breadcrumb-item active" aria-current="page">Upload &amp; Manage Media</li>
     {% endif %}

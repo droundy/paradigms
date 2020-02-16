@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import TemplateView, ListView, View
-from admin_app.models import Problem, Figure, FigureAssociations, Activity
+from admin_app.models import Problem, Figure, FigureAssociations, Activity, Sequence
 from public_app.forms import ProblemForm
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
@@ -31,7 +31,10 @@ def HomeworkSearchView(request):
     if search_type == "Activities" or search_type == "Both":
         # print("retrieving activities")
         activity_list = Activity.objects.filter(
-            Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
+            Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)        
+        )
+        sequence_list = Sequence.objects.filter(
+            Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
         )
         # print(activity_list)
     if search_type == "Activities":
@@ -50,6 +53,7 @@ def HomeworkSearchView(request):
         context = {
             'problem_list': problem_list,
             'activity_list': activity_list,
+            'sequence_list': sequence_list,
             'search_type': search_type,
             'query': query,
         }
@@ -64,9 +68,14 @@ def HomeworkKeywordView(request, searchterm):
     activity_list = Activity.objects.filter(
         Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
     )
+    sequence_list = Sequence.objects.filter(
+        Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
+    )
+
     context = {
         'problem_list': problem_list,
         'activity_list': activity_list,
+        'sequence_list': sequence_list,
         'search_type': 'Both',
         'query': query,
     }

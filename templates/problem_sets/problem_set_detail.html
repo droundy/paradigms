@@ -18,36 +18,33 @@
         {% endif %}
       </ol>
     </nav>
-    <h2>{{ problem_set.title }}</h2>
-    <h5>{{ problem_set.instructions }}</h5>
-    {% for item in problem_set_problems %}
-    <div class="card" style="margin-bottom: 10px">
-      <div class="card-body">
-        <h5 class="card-title">{{ item.problem.problem_title }}</h5>
 
-        {% if perms.admin_app.can_view_solution %}
-        <!-- show edit buttons for people with perms -->
 
-              <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
-                <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">View</a>
-                <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a>
-              </div>
+    <div class="container">
+      <div class="card">
+        <h2 class="card-header">
+          {{ problem_set.title }} {% if perms.admin_app.can_add_sequence %} <a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>{% endif %}
+        </h2>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">{{ problem_set.instructions }}</blockquote>
+        </div>
 
-        {% else %}
-
-            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ item.problem_title }}{{ item.title }}" style="margin-bottom: 5px;">
-              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=item.problem.pk %}">View</a>
-            </div>
-
-        {% endif %}
-
-        <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="problem_instructions{{ forloop.counter }}">{{ item.item_instructions }}</h6>
-        <div class="card-body latextorender tex2jax_ignore" id="problem_latex{{forloop.counter}}">
-          {{ item.problem.problem_latex }}
+      </div><!-- End Card-->
+      
+      <div class="container">
+      {% for item in problem_set_problems %}
+      <div class="card" style="margin-bottom: 10px">
+        <div class="card-body">
+          <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a></h5>
+          <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="problem_instructions{{ forloop.counter }}">{{ item.item_instructions }}</h6>
+          <div class="card-body latextorender tex2jax_ignore" id="problem_latex{{forloop.counter}}">
+            {{ item.problem.problem_latex }}
+          </div>
         </div>
       </div>
-    </div>
-    {% endfor %}
+      {% endfor %}
 
-    {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>{% endif %}
+    </div> <!-- End Container -->
+
+  </div> <!-- End Container -->
 {% endblock %}

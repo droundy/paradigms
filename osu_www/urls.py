@@ -25,9 +25,10 @@ from pages.views import renderpage
 urlpatterns = [
     # Django Admin
     path('admin/', admin.site.urls),
+
+    path('search/', include('site_directory.urls')),
+
     
-    # About, home/index, history, and courses are all contained in the Pages app
-    path('', include('pages.urls')),
     
     #path('', views.index, name='index'),
     path('problem/',include('public_app.urls')),    
@@ -38,7 +39,7 @@ urlpatterns = [
     path('activities/', include('activities.urls')),
     path('problem_sets/', include('problem_sets.urls')),
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
-    path('search/', include('site_directory.urls')),
+    
 
     
     # User management
@@ -47,7 +48,10 @@ urlpatterns = [
     # {% extends "public_app/base.html" %}
     # <!-- "account/base.html" -->
     path('users/', include('users.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),\
+    
+    # About, home/index, history, and courses are all contained in the Pages app
+    path('', include('pages.urls')),
 ]
 
 if settings.DEBUG:

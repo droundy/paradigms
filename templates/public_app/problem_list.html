@@ -1,4 +1,5 @@
 {% extends 'public_app/base_multi_editor.html' %}
+{% load problem_extras %}
 {% block content %}
   <div class="container">
     <div class="page-header">
@@ -14,22 +15,10 @@
     <div class="row">
     {% for problem in problems %}
         <div class="col-sm-4">
-          <div class="card" style="margin-bottom: 10px">
+          <div class="card" style="margin-bottom: 10px">            
             <div class="card-body">
-              <h5 class="card-title">{{ problem.problem_title }}</h5>
-              <!-- <h6 class="card-subtitle">{{ problem.created_date }}</h6> -->
-              <!-- <p class="card-text">Problem preview of some sort</p> -->
-              <!-- <div class="date">
-                  {{ problem.created_date }}
-              </div> -->
-              {% if perms.admin_app.can_view_solution %}
-                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
-                  <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html_solution' pk=problem.pk %}">View</a>
-                  <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=problem.pk %}">Edit</a>
-                </div>
-              {% else %}
-              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
-              {% endif %}
+              <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }}</a></h5>
+              {{ problem.topics|problemtopicbuttons }}
             </div>
           </div>
         </div>

@@ -14,16 +14,7 @@
     {% for problem_set in problem_set_list %}
         <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
           <div class="card-body">
-            <h5>{{ problem_set.title }}</h5>
-            <p class="card-text" style="margin-bottom: 5px;">{{ problem_set.publication_date }}</p>
-            {% if perms.admin_app.can_view_solution %}
-            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
-              <a class="btn btn-primary btn-sm" href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">View</a>
-              <a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>
-            </div>
-            {% else %}
-            <a class="btn btn-primary btn-sm" href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">View</a>
-            {% endif %}
+            <h5><a href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">{{ problem_set.title }}</a></h5>            
             {% if problem_set.instructions %}
               {% if forloop.counter == 1 %}
                 <p class="latextorender tex2jax_ignore" id="problem_set_instructions{{ forloop.counter }}">{{ problem_set.instructions }}</p>

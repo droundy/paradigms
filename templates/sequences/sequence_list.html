@@ -14,16 +14,15 @@
     {% for sequence in sequences %}
         <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
           <div class="card-body">
-            <h5>{{ sequence.title }}</h5>
-            <p class="card-text" style="margin-bottom: 5px;">{{ sequence.publication_date }}</p>
-            {% if perms.admin_app.can_view_solution %}
+            <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
+            <!-- {% if perms.admin_app.can_view_solution %}
             <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
               <a class="btn btn-primary btn-sm" href="{% url 'sequence_detail_solution' pk=sequence.pk %}">View</a>
               <a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>
             </div>
             {% else %}
             <a class="btn btn-primary btn-sm" href="{% url 'sequence_detail' pk=sequence.pk %}">View</a>
-            {% endif %}
+            {% endif %} -->
             {% if sequence.overview_paragraph %}
               {% if forloop.counter == 1 %}
                 <p class="latextorender tex2jax_ignore" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph }}</p>

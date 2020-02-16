@@ -1,85 +1,88 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% block content %}
-  <div class="container">
+{% load problem_extras %}
+{% load activity_extras %}
+  <!-- <div class="container">
     <div class="page-header">
       <h1>Search Results for "{{ query }}"</h1>
     </div>
-  </div>
+  </div> -->
 
-  <div class="container">
-
-    {% if activity_list %}
-      <h2>Activities</h2>
+  {% if activity_list %}
+    <h2 class="display-4">Activities: "{{ query }}"</h2>
+    <div class="container">
+    
       {% for activity in activity_list %}
-        <div class="card" style="margin-bottom: 10px;">
-          <div class="card-body">
-            <h5>{{ activity.title }}</h5>
-            <p class="card-text">{{ activity.publication_date }}</p>
-            {% if activity.overview_paragraph %}
-            <p class="card-text text-truncate">{{ activity.overview_paragraph|truncatewords:25 }}</p>
-            {% endif %}
-            {% if perms.admin_app.can_view_solution %}
-            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
-              <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
-              <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=activity.pk %}">Edit</a>
-
-            </div>
+      <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
+        <div class="card-body">
+          <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></h5>
+          <p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min. <span style="margin-left: 1em;">{{ activity.topics|tagbuttons }}</span></p>
+          
+          {% if activity.overview_paragraph %}
+            {% if forloop.counter == 1 %}
+              <p class="latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
             {% else %}
-            <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
+              <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
             {% endif %}
-          </div>
+          {% endif %}
         </div>
+      </div> <!-- End Activity Card -->        
       {% endfor %}
-    {% else %}
-      {% if search_type == "Both" or search_type == "Activities" %}<div class="row">
-        <div class="col">
-          <h3>No Activity results found for "{{ query }}"</h3>
-        </div>
-      </div>
-      {% endif %}
-    {% endif %}
+    
+    </div> <!-- End Activity Container-->
+  {% endif %}  
 
-    <h2>Homework</h2>
-    {% if problem_list %}
-    <div class="row">
-    {% for problem in problem_list %}
-        <div class="col">
-          <div class="card" style="margin-bottom: 10px">
+        
+  {% if problem_list %}
+    <h2 class="display-4">Homework: "{{ query }}"</h2>
+    <div class="container">
+      
+      <div class="row">
+
+        {% for problem in problem_list %}
+          <div class="col-sm-4">
+            <div class="card" style="margin-bottom: 10px">            
+              <div class="card-body">
+                <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }}</a></h5>
+                {{ problem.topics|problemtopicbuttons }}
+              </div>
+            </div>
+          </div>
+          {% if forloop.last %}
+          </div>
+          {% else %}
+            {% if forloop.counter|divisibleby:"3" %}
+              </div><div class="row">
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      
+      </div><!-- end row -->
+
+
+  {% endif %}
+  
+    {% if sequence_list %}
+      
+      <h2 class="display-4">Sequences: "{{ query }}"</h2>
+      <div class="container">
+      {% for sequence in sequence_list %}
+          <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
             <div class="card-body">
-              <h5 class="card-title">{{ problem.problem_title }}</h5>
-              <!-- <h6 class="card-subtitle">{{ problem.created_date }}</h6> -->
-              <!-- <p class="card-text">Problem preview of some sort</p> -->
-              <!-- <div class="date">
-                  {{ problem.created_date }}
-              </div> -->
-              {% if perms.admin_app.can_view_solution %}
-                <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}">
-                  <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
-                  <a class="btn btn-secondary btn-sm" href="{% url 'problem_display_html_solution' pk=problem.pk %}">Edit</a>
-                </div>
-              {% else %}
-              <a class="btn btn-primary btn-sm" href="{% url 'problem_display_html' pk=problem.pk %}">View</a>
+              <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
+              {% if sequence.overview_paragraph %}
+                {% if forloop.counter == 1 %}
+                  <p class="latextorender tex2jax_ignore" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                {% else %}
+                  <p class="overflow-auto latextorender tex2jax_ignore" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                {% endif %}
               {% endif %}
             </div>
           </div>
-        </div>
-        {% if forloop.last %}
-          </div>
-        {% else %}
-          {% if forloop.counter|divisibleby:"1" %}
-            </div><div class="row">
-          {% endif %}
-        {% endif %}
-    {% endfor %}
-    </div><!-- end row iteration of problems with formatting for cards -->
-    {% else %}
-      {% if search_type == "Both" or search_type == "Homework" %}<div class="row">
-        <div class="col">
-          <h3>No Homework results found for "{{ query }}"</h3>
-        </div>
+      {% endfor %}
       </div>
-      {% endif %}
-    {% endif %}
 
-  </div>
+    {% endif %}
+    
+  </div> <!-- End Content Container -->
 {% endblock %}
