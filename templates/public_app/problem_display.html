@@ -2,7 +2,7 @@
 {% load problem_extras %}
 {% block content %}
   <input type="hidden" name="problem_latex" id="id_problem_latex" value="{% autoescape off %}{{ page_problem }}{% endautoescape %}">
-  <nav aria-label="breadcrumb">
+  <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
       <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>

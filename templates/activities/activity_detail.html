@@ -9,7 +9,7 @@
     </div>
   {% endfor %}
   {% if perms.admin_app.can_add_activity %}
-  <nav aria-label="breadcrumb">
+  <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
       <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
       <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
