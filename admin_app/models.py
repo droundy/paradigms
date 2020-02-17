@@ -73,6 +73,7 @@ class Problem(models.Model):
     topics = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics: adiabatic susceptibility,entropy")
     figures = models.ManyToManyField(Figure, through='FigureAssociations', related_name='problems')
     course = models.CharField(max_length=255, blank=True, null=True)
+    publication = models.BooleanField(blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
 
     def publish(self):
         self.published_date = timezone.now()

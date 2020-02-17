@@ -6,8 +6,8 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
       <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View with Solution</a></li>
-      {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
+      {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View with Solution</a></li>
+      <li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
       <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=latex_problem.pk %}">Upload &amp; Manage Media</a></li>
       {% endif %}
     </ol>

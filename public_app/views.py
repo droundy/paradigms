@@ -6,7 +6,7 @@ from django.utils import timezone
 from admin_app.models import Problem, Figure, FigureAssociations
 from public_app.forms import ProblemForm
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, Permission
 from django.contrib.auth import get_user_model
 user = get_user_model()
 from django.contrib import messages
@@ -16,16 +16,13 @@ import subprocess, os
 import unicodedata
 import logging
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+# @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_list(request):
-    #problems = Problem.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    problems = Problem.objects.all().order_by('problem_title')
+    if request.user.has_perm("admin_app.change_problem"):
+        problems = Problem.objects.all().order_by('problem_title')
+    else:
+        problems = Problem.objects.filter(publication=1).order_by('problem_title')
     return render(request, 'public_app/problem_list.html', {'problems': problems})
-
-@permission_required('admin_app.can_edit_problem',login_url='/')
-def problem_detail(request, pk):
-    latex_problem = get_object_or_404(Problem, pk=pk)
-    return render(request, 'public_app/problem_detail.html', {'latex_problem': latex_problem})
 
 #@login_required
 # @permission_required('admin_app.can_add_problem',login_url='/')
@@ -177,22 +174,26 @@ def problem_display_html_solution(request, pk):
     }
     return render(request, 'public_app/problem_display.html', context)
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+# @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_display_html(request, pk):
     latex_problem = get_object_or_404(Problem, pk=pk)
-    data = get_problem_html(str(pk))
-    # this_key = URL.split("/")[-1]
-    this_key = pk
-    figures_list = Problem.objects.get(id=this_key).figures.all()
-    # print(this_key)
-    # print(data)
-    context = {
-        'page_problem': data,
-        'latex_problem': latex_problem,
-        'this_key' : this_key,
-        'figures': figures_list,
-    }
-    return render(request, 'public_app/problem_display.html', context)
+    if latex_problem.publication == 1 or request.user.has_perm("admin_app.change_problem"):
+        data = get_problem_html(str(pk))
+        # this_key = URL.split("/")[-1]
+        this_key = pk
+        figures_list = Problem.objects.get(id=this_key).figures.all()
+        # print(this_key)
+        # print(data)
+        context = {
+            'page_problem': data,
+            'latex_problem': latex_problem,
+            'this_key' : this_key,
+            'figures': figures_list,
+        }
+        return render(request, 'public_app/problem_display.html', context)
+    else:
+        return redirect('/login/?next=%s' % request.path)
+    
 
 # For display within site layout.
 #@csrf_exempt
