@@ -41,13 +41,12 @@
         <div class="card-body">
           <h5 class="card-title">
             {% if item.title %}
-              {{ forloop.counter }}. <a href="{% url 'activity_detail' pk=item.activity_id %}">{{ item.title }}</a>
+              {{ forloop.counter }}. <a href="{% url 'activity_detail' pk=item.activity_id %}">Activity: {{ item.title }}</a>
             {% else %}
-              <a href="{% url 'problem_display_html' pk=item.problem_id %}">{{ item.problem_title }}</a>
+              {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
             {% endif %}</h5>
-
           <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="activity_role{{ forloop.counter }}">{{ item.role_in_sequence }}</h6>
-          <div class="card-body latextorender tex2jax_ignore" id="activity{{ forloop.counter }}">{{ item.overview_paragraph }}{{ item.problem_latex }}</div>
+          <div class="card-body latextorender tex2jax_ignore" id="activity{{ forloop.counter }}">{% if item.overview_paragraph %}{{ item.overview_paragraph }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex }}{% endif %}</div>
         </div>
       </div>
       {% endfor %}
