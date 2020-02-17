@@ -28,7 +28,9 @@
           {% if forloop.counter|divisibleby:"3" %}
             </div><div class="row">
           {% endif %}
-        {% endif %}        
+        {% endif %}
+    {% empty %}
+        <div class="container"><h4>No problems have been published at this time.</h4></div>
     {% endfor %}
     </div><!-- end row iteration of problems with formatting for cards -->
   </div>
