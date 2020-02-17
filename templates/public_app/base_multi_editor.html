@@ -146,9 +146,9 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
             <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
-            <a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>
-            <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>
-            <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>
+            {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
+            <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>{% if perms.admin_app.can_edit_problem %}
+            <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
           </div>
 
         </li>
