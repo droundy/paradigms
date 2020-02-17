@@ -74,8 +74,8 @@ def activity_list(request):
 
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
-    topic_list = activity.topics.strip().rstrip(",").split(",")
-    topic_list = map(str.strip, topic_list)
+    # topic_list = activity.topics.strip().rstrip(",").split(",")
+    # topic_list = map(str.strip, topic_list)
     # tob = activity.type_of_beast.strip("('")
     # tob = tob.strip("'),")
     this_key = pk
@@ -100,11 +100,11 @@ def activity_detail_solution(request, pk):
     this_key = pk
     view_name = 'activity_detail_solution'
     form = ActivityFormReadOnly(instance=activity)
-    tob = activity.type_of_beast.strip("('")
-    tob = tob.strip("'),")
+    # tob = activity.type_of_beast.strip("('")
+    # tob = tob.strip("'),")
     context = {
         'activity': activity,
-        'tob': tob,
+        # 'tob': tob,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
