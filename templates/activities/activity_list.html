@@ -13,7 +13,7 @@
     <p><a class="btn-sm btn btn-success" href="{% url 'activity_new' %}" class="top-menu"><span class="oi oi-plus" title="Add new activity button" alt="Create a new activity."></span> Add Activity </a></p>
     {% endif %}
     {% for activity in activities %}
-        <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
+        <div class="card overflow-auto" style="margin-bottom: 10px;">
           <div class="card-body">
             <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></h5>
             {% if activity.type_of_beast %}<p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity {% endif %}{% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min. {% endif %}{% if activity.topics %}<span style="margin-left: 1em;">{{ activity.topics|tagbuttons }}</span>{% endif %}</p>

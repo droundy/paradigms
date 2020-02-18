@@ -24,21 +24,6 @@ def problem_list(request):
         problems = Problem.objects.filter(publication=1).order_by('problem_title')
     return render(request, 'public_app/problem_list.html', {'problems': problems})
 
-#@login_required
-# @permission_required('admin_app.can_add_problem',login_url='/')
-# def problem_new(request):
-#     if request.method == "POST":
-#         form = ProblemForm(request.POST)
-#         if form.is_valid():
-#             problem = form.save(commit=False)
-#             problem.author = request.user
-#             problem.published_date = timezone.now()
-#             problem.save()
-#             return redirect('problem_display_html', pk=problem.pk)
-#     else:
-#         form = ProblemForm()
-#     return render(request, 'public_app/problem_add.html', {'form': form})
-
 @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_new(request):
     # problem = get_object_or_404(Problem, pk=pk)

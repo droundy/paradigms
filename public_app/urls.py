@@ -4,7 +4,6 @@ from public_app import views
 urlpatterns = [
         path('', views.problem_list, name='problem_list'),
         path('list', views.problem_list, name='problem_list'),
-        #path('<int:pk>/', views.problem_detail, name='problem_detail'),
         path('<int:pk>/', views.problem_display_html, name='problem_display_html'),
         path('new/', views.problem_new, name='problem_new'),
         path('edit/<int:pk>', views.problem_edit, name='problem_edit_preview'),

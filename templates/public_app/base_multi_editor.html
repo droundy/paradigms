@@ -111,7 +111,21 @@
       }
       #id_problem_latex {
         width: inherit !important;
-      }      
+      }
+
+      .latextorender ol {
+          counter-reset: list;
+      }
+      .latextorender ol > li {
+          list-style: none;
+          position: relative;
+      }
+      .latextorender ol > li:before {
+          counter-increment: list;
+          content: counter(list, lower-alpha) ") ";
+          position: absolute;
+          left: -1.4em;
+      }  
     </style>
     <style type="text/css" media="print">
       @media print {
@@ -126,84 +140,70 @@
   </head>
   <body>
   <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3366cc;">
-    <a class="navbar-brand" href="/">
-      <img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;">
-      Paradigms @ OSU</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNavTop" aria-controls="publicNavTop" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3366cc;">
+      
+      <a class="navbar-brand" href="/"><img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;"> Paradigms @ OSU</a>
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNavTop" aria-controls="publicNavTop" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="publicNavTop">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="/activities">Activities</a>
-        </li> -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Activities
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
-            <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
-            {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
-            <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>{% if perms.admin_app.can_edit_problem %}
-            <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
-          </div>
-
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'page_display' pagename='whitepapers' %}">Whitepapers</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            About
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
-            <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
-          </div>
-
-        </li>
+      <div class="collapse navbar-collapse" id="publicNavTop">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="/activities">Activities</a>
+          </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Activities</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
+              <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
+              {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
+              <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>{% if perms.admin_app.can_edit_problem %}
+              <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'page_display' pagename='whitepapers' %}">Whitepapers</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
+              <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
+            </div>
+          </li>
 
         {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
-          </div>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
+            </div>
+          </li>
         {%  else %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
-            <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% provider_login_url 'google' %}">Log In (Google)</a>
-          </div>
-        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
+              <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% provider_login_url 'google' %}">Log In (Google)</a>
+            </div>
+          </li>
         {% endif %}
-      </ul>
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search for Activities">
-        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search Activities</button>
-      </form>  -->
-      <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
-      <!-- <form class="form-inline my-2 my-lg-0" method="get" action="/directory/homework/search/"> -->
-        {% csrf_token %}
-        <input class="form-control mr-sm-2" type="search" name="q" id="q" placeholder="Search Activities &amp; Homework">
-        <input type="hidden" name="search_type" value="Both">
-        <button class="btn btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search Homework or Activities by title or topic"></span> Search</button>
+        </ul>
+        
+        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
+          {% csrf_token %}
+          <input class="form-control-sm mr-sm-1" type="search" name="q" id="q" placeholder="Search">
+          <input type="hidden" name="search_type" value="Both">
+          <button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search Homework or Activities by title or topic"></span></button>
+        </form>
+        
+      </div>
+    </nav>
 
-
-      </form>
-    </div>
-  </nav>
   <!-- END NAVIGATION   -->
     <div class="content container-fluid">
         <div class="row">
