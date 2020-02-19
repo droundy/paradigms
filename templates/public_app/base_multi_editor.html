@@ -304,21 +304,21 @@
             divContent.classList.remove("tex2jax_ignore")
 
             if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
-                console.log('data-latex');
-                console.log(divContent.dataset.latex);
-                console.log('innerHTML')
-                console.log(divContent.innerHTML);
-                console.log(html_with_solution(divContent.innerHTML));
-                divContent.innerHTML = html_with_solution(divContent.innerHTML);
+                var latex;
+                if (divContent.dataset.hasOwnProperty('latex')) {
+                    latex = divContent.dataset.latex;
+                } else {
+                    latex = divContent.innerHTML;
+                }
+                divContent.innerHTML = html_with_solution(latex);
             } else {
-                console.log('data-latex');
-                console.log(divContent.dataset.latex);
-                console.log('innerHTML')
-                console.log(divContent.innerHTML);
-                console.log(html_with_solution(divContent.innerHTML));
-                console.log(html_omit_solution(divContent.innerHTML));
-                // divContent.innerHTML = html_omit_solution(divContent.dataset.latex);
-                divContent.innerHTML = html_omit_solution(divContent.innerHTML);
+                var latex;
+                if (divContent.dataset.hasOwnProperty('latex')) {
+                    latex = divContent.dataset.latex;
+                } else {
+                    latex = divContent.innerHTML;
+                }
+                divContent.innerHTML = html_omit_solution(latex);
             }
             MathJax.Hub.Queue(
                 function () {
