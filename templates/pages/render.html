@@ -7,7 +7,7 @@
       <h1>{{ this_page.title }}</h1>
     </div>
   {% if perms.admin_app.can_edit_pages %}<a class="btn btn-success btn-sm" href="{% url 'page_edit' pagename=this_page.slug %}">Edit</a>{% endif %}
-  <div class="latextorender tex2jax_ignore" id="page_content" data-latex="{{this_page.page_content|escapejs}}"">{{ this_page.page_content }}</div>
+  <div class="latextorender tex2jax_ignore" id="page_content" data-latex="{{this_page.page_content}}"">{{ this_page.page_content }}</div>
 
   {% for keyword in keyword_list %}
     <a class="badge badge-secondary" href="{% url 'homework_keyword' searchterm=keyword %}">{{ keyword }}</a>  
