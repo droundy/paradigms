@@ -654,15 +654,15 @@
 
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
+        "fast-preview": {
+            disabled: true
+        },
         TeX: { equationNumbers: { autoNumber: "AMS" } },
         "CommonHTML": { availableFonts: ["TeX"] },
         // enable inline equation rendering
         tex2jax: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
-        }
-        "fast-preview": {
-            disabled: true
         }
       });
       MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
