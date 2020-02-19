@@ -309,7 +309,7 @@
                 console.log('innerHTML')
                 console.log(divContent.innerHTML);
                 console.log(html_with_solution(divContent.innerHTML));
-                divContent.innerHTML = html_with_solution(divContent.dataset.latex);
+                divContent.innerHTML = html_with_solution(divContent.innerHTML);
             } else {
                 console.log('data-latex');
                 console.log(divContent.dataset.latex);
@@ -317,7 +317,8 @@
                 console.log(divContent.innerHTML);
                 console.log(html_with_solution(divContent.innerHTML));
                 console.log(html_omit_solution(divContent.innerHTML));
-                divContent.innerHTML = html_omit_solution(divContent.dataset.latex);
+                // divContent.innerHTML = html_omit_solution(divContent.dataset.latex);
+                divContent.innerHTML = html_omit_solution(divContent.innerHTML);
             }
             MathJax.Hub.Queue(
                 function () {
