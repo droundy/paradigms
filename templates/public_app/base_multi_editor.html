@@ -311,9 +311,13 @@
                 console.log(html_with_solution(divContent.innerHTML));
                 divContent.innerHTML = html_with_solution(divContent.dataset.latex);
             } else {
+                console.log('data-latex');
+                console.log(divContent.dataset.latex);
+                console.log('innerHTML')
                 console.log(divContent.innerHTML);
+                console.log(html_with_solution(divContent.innerHTML));
                 console.log(html_omit_solution(divContent.innerHTML));
-                divContent.innerHTML = html_omit_solution(divContent.innerHTML);
+                divContent.innerHTML = html_omit_solution(divContent.dataset.latex);
             }
             MathJax.Hub.Queue(
                 function () {
