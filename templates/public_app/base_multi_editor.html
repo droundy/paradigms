@@ -661,6 +661,9 @@
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
           processEscapes: true
         }
+        "fast-preview": {
+            disabled: true
+        }
       });
       MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
         MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{
