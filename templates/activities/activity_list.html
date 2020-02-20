@@ -22,7 +22,7 @@
               {% if forloop.counter == 1 %}
                 <p class="latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}" data-latex="{{ activity.overview_paragraph }}">{{ activity.overview_paragraph }}</p>
               {% else %}
-                <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph }}</p>
+                <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}" data-latex="{{ activity.overview_paragraph }}">{{ activity.overview_paragraph }}</p>
               {% endif %}
             {% endif %}
             <!-- {% if perms.admin_app.can_view_solution %}

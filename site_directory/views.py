@@ -30,14 +30,18 @@ def HomeworkSearchView(request):
             )
         else:
             problem_list = Problem.objects.filter(
-                Q(problem_title__icontains=query) & Q(publication__icontains='1')
+                (Q(problem_title__icontains=query) & Q(publication__icontains='1')) | (Q(topics__icontains=query) & Q(publication__icontains='1')) | (Q(course__icontains=query) & Q(publication__icontains='1'))
             )
         # print(problem_list)
     if search_type == "Activities" or search_type == "Both":
-        # print("retrieving activities")
-        activity_list = Activity.objects.filter(
-            Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)        
-        )
+        if request.user.has_perm("admin_app.change_problem"):
+            activity_list = Activity.objects.filter(
+                Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
+            )
+        else:
+            activity_list = Activity.objects.filter(
+                (Q(title__icontains=query) and Q(publication_status="Published")) | (Q(topics__icontains=query) and Q(publication_status="Published")) | (Q(course__icontains=query) and Q(publication_status="Published")) | (Q(old_name__icontains=query) and Q(publication_status="Published")) | (Q(keywords__icontains=query) and Q(publication_status="Published")) | (Q(type_of_beast__icontains=query) and Q(publication_status="Published"))
+            )
         sequence_list = Sequence.objects.filter(
             Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
         )
@@ -75,10 +79,16 @@ def HomeworkKeywordView(request, searchterm):
         problem_list = Problem.objects.filter(
             (Q(problem_title__icontains=query) & Q(publication__icontains=1)) | (Q(topics__icontains=query) & Q(publication__icontains=1)) | (Q(course__icontains=query) & Q(publication__icontains=1))
         )
+# publication_status
+    if request.user.has_perm("admin_app.change_problem"):
+        activity_list = Activity.objects.filter(
+            Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
+        )
+    else:
+        activity_list = Activity.objects.filter(
+            (Q(title__icontains=query) and Q(publication_status="Published")) | (Q(topics__icontains=query) and Q(publication_status="Published")) | (Q(course__icontains=query) and Q(publication_status="Published")) | (Q(old_name__icontains=query) and Q(publication_status="Published")) | (Q(keywords__icontains=query) and Q(publication_status="Published")) | (Q(type_of_beast__icontains=query) and Q(publication_status="Published"))
+        )
 
-    activity_list = Activity.objects.filter(
-        Q(title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(keywords__icontains=query) | Q(type_of_beast__icontains=query)
-    )
     sequence_list = Sequence.objects.filter(
         Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
     )
