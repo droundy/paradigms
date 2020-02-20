@@ -52,6 +52,14 @@ def activitysequencepager(sequenceid, activityid, autoescape=True):
         return_html = ""
         bigger_html = ""
         smaller_html = ""
+
+        # create a query that at least finds the name of the sequence if no position is available
+        sequence_name_sql = 'SELECT s.id, s.title as sequence_title FROM admin_app_sequence s WHERE s.id = "' + str(sequenceid) + '"'
+
+        for sequence in Sequence.objects.raw(sequence_name_sql): 
+            sequence_html = ' <strong><a href="/sequences/' + str(sequenceid) + '"/>' + str(sequence.sequence_title) + '</a></strong>'
+
+            print(sequence_html)
         
         item_position_sql = 'SELECT id, item_position FROM admin_app_sequenceitems WHERE sequence_id = "' + str(sequenceid) + '" AND activity_id = "' + str(activityid) + '"'
         
@@ -104,6 +112,10 @@ def activitysequencepager(sequenceid, activityid, autoescape=True):
 
             if bigger_html and not smaller_html:
                 return_html = '<strong>' + sequence_html + '</strong> | ' + bigger_html
+
+
+            if not bigger_html and not smaller_html: 
+                return_html = sequence_html
 
         return mark_safe(return_html)
     
