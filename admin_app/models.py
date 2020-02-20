@@ -128,7 +128,6 @@ class Activity(models.Model):
     publication_status = models.TextField(blank=True, null=True)
     publication_date = models.DateTimeField(blank=True, null=True)
     prerequisite_knowledge = models.TextField(blank=True, null=True)
-    # activity_image = models.ImageField(blank=True, null=True, upload_to='activity_images/')
     activity_image = models.ImageField(blank=True, null=True, upload_to='activity_images/')
     keywords = models.TextField(blank=True, null=True)
     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

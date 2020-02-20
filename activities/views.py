@@ -3,7 +3,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from admin_app.models import Activity, ActivityMedia, MediaAssociation
+from admin_app.models import Activity, ActivityMedia, MediaAssociation, Sequence, SequenceItems
 from activities.forms import ActivityForm, ActivityFormReadOnly
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
@@ -76,40 +76,33 @@ def activity_list(request):
 
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
-    # topic_list = activity.topics.strip().rstrip(",").split(",")
-    # topic_list = map(str.strip, topic_list)
-    # tob = activity.type_of_beast.strip("('")
-    # tob = tob.strip("'),")
     this_key = pk
     figures_list = Activity.objects.get(id=this_key).media.all()
     view_name = 'activity_detail'
     form = ActivityFormReadOnly(instance=activity)
+
+    # Find the sequence(s) in which this Activity has been assigned
+    activity_sequences = Sequence.objects.filter(activities=activity)
+
     context = {
         'activity': activity,
-        # 'tob': tob,
+        'activity_sequences': activity_sequences,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
-        # 'topic_list': topic_list,
         'figures': figures_list
     }
     return render(request, 'activities/activity_detail.html', context)
 
 def activity_detail_solution(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
-    # topic_list = activity.topics.strip().rstrip(",").split(",")
-    # topic_list = map(str.strip, topic_list)
     this_key = pk
     view_name = 'activity_detail_solution'
     form = ActivityFormReadOnly(instance=activity)
-    # tob = activity.type_of_beast.strip("('")
-    # tob = tob.strip("'),")
     context = {
         'activity': activity,
-        # 'tob': tob,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
-        # 'topic_list': topic_list,
     }
     return render(request, 'activities/activity_detail.html', context)

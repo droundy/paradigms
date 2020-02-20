@@ -8,6 +8,7 @@
         {{ message }}
     </div>
   {% endfor %}
+  
   {% if perms.admin_app.can_add_activity %}
   <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
@@ -28,92 +29,116 @@
   </nav>
   {% endif %}
 
-  <div class="container">
+  {% if activity.publication_status == 'Published' or perms.admin_app.can_add_activity %}
+    <div class="container">
+      <div class="card">
+        <h2 class="card-header">
+          Activity: {{ activity.title }}
+        </h2>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">{{ activity.overview_paragraph }}</blockquote>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }} activity {% endif %}
+          {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span> {{ activity.time_estimate }} min. {% endif %}
+          {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span> {{ activity.equipment_required }}{% endif %}</li>
+          {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}</li>{% endif %}
+        </ul>
 
+        {% if activity_sequences %}
+        <ul class="list-group list-group-flush">          
+          <li class="list-group-item">
+            This activity is used in the following sequences
+            {% for sequence in activity_sequences %}
+              <p>{{ forloop.counter }}. {{ sequence.pk|activitysequencepager:activity.pk }}</p>
+            {% endfor %}
+          </li>
+        </ul>
+        {% endif %}
+
+        <div class="card-body">{% if activity.what_students_learn %}What students learn
+          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.what_students_learn }}" id="activity_what_students_learn_card">{{ activity.what_students_learn }}</span>{% endif %}
+        </div>
+        {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
+          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.notes }}" id="activity_notes">{{ activity.notes }}</span></li></ul>{% endif %}
+        {% if figures %}
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Media
+              <ul>      
+              {% for figure in figures %}
+                <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+              {% empty %}
+                <li class="list-inline-item">No Media Available</li>
+              {% endfor %}
+            </li>
+          </ul>
+        {% endif %}
+      </div>
+
+      {% if activity.instructor_guide %}
+        
+        <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.instructor_guide }}" id="activity_instructor_guide">{{ activity.instructor_guide }}</span>{% endif %}
+        
+        <!-- {% if figures %}
+          <hr>      
+          <h5>Media</h5>
+          <ul>        
+          {% for figure in figures %}
+            <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+          {% empty %}
+          <li class="list-inline-item">No Media Available</li>
+          {% endfor %}
+          </ul>
+        {% endif %} -->
+
+        <hr>
+          
+        <dl>
+        {% if activity.author and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Editor</dt>
+        <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
+
+        {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
+        <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
+
+        {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
+        <dd class="col-sm-9" id="activity_keywords">{{ activity.topics|tagbuttons }}</dd>{% endif %}
+
+        {% if activity.associated_paper_links and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Associated Papers</dt>
+        <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
+
+        {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.prerequisite_knowledge }}" id="activity_prerequisite_knowledge">{{ activity.prerequisite_knowledge }}</dd>{% endif %}
+
+        {% if activity.program_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Program Learning Outcomes</dt>
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.program_learning_outcomes }}" id="activity_program_learning_outcomes">{{ activity.program_learning_outcomes }}</dd>{% endif %}
+
+        {% if activity.course_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Course Learning Outcomes</dt>
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.course_learning_outcomes }}" id="activity_course_learning_outcomes">{{ activity.course_learning_outcomes }}</dd>{% endif %}
+
+        {% if activity.learning_progression_concepts and perms.admin_app.can_add_activity%}<dt class="col-sm-3">Learning Progression Concepts</dt>
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.learning_progression_concepts }}" id="activity_learning_progression_concepts">{{ activity.learning_progression_concepts }}</dd>{% endif %}
+
+        {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
+        <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
+
+        {% if activity.publication_status and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Status</dt>
+        <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
+
+        {% if activity.publication_date and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Date</dt>
+        <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
+      </dl>
+    </div>
+  {% else %} <!--Unpublished -->
+  <div class="container">
     <div class="card">
       <h2 class="card-header">
         Activity: {{ activity.title }}
       </h2>
       <div class="card-body">
-        <blockquote class="blockquote mb-0">{{ activity.overview_paragraph }}</blockquote>
+        <blockquote class="blockquote mb-0">This Activity is not available to the public at this time.</blockquote>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }} activity {% endif %}
-        {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span> {{ activity.time_estimate }} min. {% endif %}
-        {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span> {{ activity.equipment_required }}{% endif %}</li>
-        {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}</li>{% endif %}
-      </ul>
-      <div class="card-body">{% if activity.what_students_learn %}What students learn
-        <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.what_students_learn }} id="activity_what_students_learn_card">{{ activity.what_students_learn }}</span>{% endif %}
-      </div>
-      {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
-        <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.notes }} id="activity_notes">{{ activity.notes }}</span></li></ul>{% endif %}
-      {% if figures %}
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Media
-            <ul>      
-            {% for figure in figures %}
-              <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
-            {% empty %}
-              <li class="list-inline-item">No Media Available</li>
-            {% endfor %}
-          </li>
-        </ul>
-      {% endif %}
     </div>
-
-    {% if activity.instructor_guide %}
-      
-      <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.instructor_guide }}" id="activity_instructor_guide">{{ activity.instructor_guide }}</span>{% endif %}
-      
-      <!-- {% if figures %}
-        <hr>      
-        <h5>Media</h5>
-        <ul>        
-        {% for figure in figures %}
-          <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
-        {% empty %}
-        <li class="list-inline-item">No Media Available</li>
-        {% endfor %}
-        </ul>
-      {% endif %} -->
-
-      <hr>
-        
-      <dl>
-      {% if activity.author and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Editor</dt>
-      <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
-
-      {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
-      <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
-
-      {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
-      <dd class="col-sm-9" id="activity_keywords">{{ activity.topics|tagbuttons }}</dd>{% endif %}
-
-      {% if activity.associated_paper_links and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Associated Papers</dt>
-      <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
-
-      {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
-      <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.prerequisite_knowledge }}" id="activity_prerequisite_knowledge">{{ activity.prerequisite_knowledge }}</dd>{% endif %}
-
-      {% if activity.program_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Program Learning Outcomes</dt>
-      <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.program_learning_outcomes }}" id="activity_program_learning_outcomes">{{ activity.program_learning_outcomes }}</dd>{% endif %}
-
-      {% if activity.course_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Course Learning Outcomes</dt>
-      <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.course_learning_outcomes }}" id="activity_course_learning_outcomes">{{ activity.course_learning_outcomes }}</dd>{% endif %}
-
-      {% if activity.learning_progression_concepts and perms.admin_app.can_add_activity%}<dt class="col-sm-3">Learning Progression Concepts</dt>
-      <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.learning_progression_concepts }}" id="activity_learning_progression_concepts">{{ activity.learning_progression_concepts }}</dd>{% endif %}
-
-      {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
-      <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
-
-      {% if activity.publication_status and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Status</dt>
-      <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
-
-      {% if activity.publication_date and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Date</dt>
-      <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
-    </dl>
   </div>
+  {% endif %}
 {% endblock %}
