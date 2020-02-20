@@ -48,6 +48,19 @@
       </div>
       {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
         <span class="col-sm-9 latextorender tex2jax_ignore" id="activity_notes">{{ activity.notes }}</span></li></ul>{% endif %}
+      {% if figures %}
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Media
+            <ul>      
+            {% for figure in figures %}
+              <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+            {% empty %}
+              <li class="list-inline-item">No Media Available</li>
+            {% endfor %}
+          </li>
+        </ul>
+      {% endif %}
     </div>
 
     {% if activity.instructor_guide %}
