@@ -13,16 +13,16 @@
     <div class="container">
     
       {% for activity in activity_list %}
-      <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
+      <div class="card overflow-auto" style="margin-bottom: 10px;">
         <div class="card-body">
           <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}</a></h5>
           <p class="card-text" style="margin-bottom: 5px;"><span class="oi oi-badge"></span> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min. <span style="margin-left: 1em;">{{ activity.topics|tagbuttons }}</span></p>
           
           {% if activity.overview_paragraph %}
             {% if forloop.counter == 1 %}
-              <p class="latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
+              <p class="latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
             {% else %}
-              <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
+              <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
             {% endif %}
           {% endif %}
         </div>
@@ -67,14 +67,14 @@
       <h2 class="display-4">Sequences: "{{ query }}"</h2>
       <div class="container">
       {% for sequence in sequence_list %}
-          <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
+          <div class="card overflow-auto" style="margin-bottom: 10px;">
             <div class="card-body">
               <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
               {% if sequence.overview_paragraph %}
                 {% if forloop.counter == 1 %}
-                  <p class="latextorender tex2jax_ignore" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                  <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
                 {% else %}
-                  <p class="overflow-auto latextorender tex2jax_ignore" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                  <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
                 {% endif %}
               {% endif %}
             </div>
