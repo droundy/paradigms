@@ -10,7 +10,7 @@ from admin_app.choices import *
 class SequenceForm(forms.ModelForm):
     class Meta:
         model = Sequence
-        fields = ('title','date_added','overview_paragraph','author_info')
+        fields = ('title','publication','date_added','overview_paragraph','author_info')
         exclude=()
 
     overview_paragraph = forms.CharField(

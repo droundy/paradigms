@@ -68,8 +68,10 @@ def activity_edit(request, pk):
     return render(request, 'activities/activity_edit.html', context)
 
 def activity_list(request):
-    #problems = Problem.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    activities = Activity.objects.all().order_by('title')
+    if request.user.has_perm("admin_app.change_problem"):
+        activities = Activity.objects.all().order_by('title')
+    else:
+        activities = Activity.objects.filter(publication_status='Published').order_by('title')
     return render(request, 'activities/activity_list.html', {'activities': activities})
 
 def activity_detail(request, pk):

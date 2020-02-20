@@ -42,9 +42,16 @@ def HomeworkSearchView(request):
             activity_list = Activity.objects.filter(
                 (Q(title__icontains=query) and Q(publication_status="Published")) | (Q(topics__icontains=query) and Q(publication_status="Published")) | (Q(course__icontains=query) and Q(publication_status="Published")) | (Q(old_name__icontains=query) and Q(publication_status="Published")) | (Q(keywords__icontains=query) and Q(publication_status="Published")) | (Q(type_of_beast__icontains=query) and Q(publication_status="Published"))
             )
-        sequence_list = Sequence.objects.filter(
-            Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
-        )
+        
+        if request.user.has_perm("admin_app.change_problem"):
+            sequence_list = Sequence.objects.filter(
+                Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
+            )
+        else:
+            sequence_list = Sequence.objects.filter(
+                (Q(title__icontains=query) & Q(publication__icontains=1)) | (Q(overview_paragraph__icontains=query) & Q(publication__icontains=1))
+            )
+
         # print(activity_list)
     if search_type == "Activities":
         context = {
@@ -89,9 +96,14 @@ def HomeworkKeywordView(request, searchterm):
             (Q(title__icontains=query) and Q(publication_status="Published")) | (Q(topics__icontains=query) and Q(publication_status="Published")) | (Q(course__icontains=query) and Q(publication_status="Published")) | (Q(old_name__icontains=query) and Q(publication_status="Published")) | (Q(keywords__icontains=query) and Q(publication_status="Published")) | (Q(type_of_beast__icontains=query) and Q(publication_status="Published"))
         )
 
-    sequence_list = Sequence.objects.filter(
-        Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
-    )
+    if request.user.has_perm("admin_app.change_problem"):
+        sequence_list = Sequence.objects.filter(
+            Q(title__icontains=query) | Q(overview_paragraph__icontains=query)
+        )
+    else:
+        sequence_list = Sequence.objects.filter(
+            (Q(title__icontains=query) & Q(publication__icontains=1)) | (Q(overview_paragraph__icontains=query) & Q(publication__icontains=1))
+        )
 
     context = {
         'problem_list': problem_list,

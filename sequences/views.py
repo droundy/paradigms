@@ -148,7 +148,11 @@ def sequence_edit(request, pk):
 
 def sequence_list(request):
     #problems = Problem.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    sequences = Sequence.objects.all().order_by('title')
+    
+    if request.user.has_perm("admin_app.change_problem"):
+        sequences = Sequence.objects.all().order_by('title')
+    else:
+        sequences = Sequence.objects.filter(publication=1).order_by('title')
     return render(request, 'sequences/sequence_list.html', {'sequences': sequences})
 
 def sequence_detail(request, pk):
