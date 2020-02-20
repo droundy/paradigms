@@ -170,6 +170,7 @@ class Sequence(models.Model):
     activities = models.ManyToManyField(Activity, through='SequenceItems', related_name='activities')
     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
+    publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
 
     def __str__(self):
         return self.title
