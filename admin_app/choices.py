@@ -75,6 +75,8 @@ HANDOUT = "Handout"
 PROMPT = "Prompt"
 SOLUTION = "Solution"
 SLIDES = "Slides"
+FIGURE = "Figure"
+OTHER = "Other"
 
 # Media Type Choices
 MEDIATYPECHOICES = (
@@ -84,4 +86,6 @@ MEDIATYPECHOICES = (
     (SOLUTION, "Solution"),
     (SLIDES, "Slides"),
     (PROMPT, "Prompt"),
+    (FIGURE, "Figure"),
+    (OTHER, "Other"),
 )
