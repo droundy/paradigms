@@ -25,11 +25,12 @@ TIMEESTIMATECHOICES = (
 TBCSMALLGROUP = "Small Group Activity"
 TBCSMALLBOARD = "Small White Board Question"
 TBCMATHEMATICA = "Mathematica Activity"
-TBCKINESTHETIC = "Kinesthetic",
+TBCKINESTHETIC = "Kinesthetic"
 TBCQUIZ = "Quiz"
 TBCWHOLECLASS = "Whole Class Activity"
 TBCEXPERIMENT = "Experiment"
 TBCCOMPUTERSIM = "Computer Simulation"
+TBCLECTURE = "Lecture"
 # TBCHOMEWORK = "Homework"
 
 TYPEOFBEASTCHOICES = (
@@ -41,7 +42,20 @@ TYPEOFBEASTCHOICES = (
     (TBCWHOLECLASS, "Whole Class Activity"),
     (TBCEXPERIMENT, "Experiment"),
     (TBCCOMPUTERSIM, "Computer Simulation"),
+    (TBCLECTURE, "Lecture"),
     # (TBCHOMEWORK, "Homework"),
+)
+
+BEASTICONS = (
+    (TBCSMALLGROUP, "puzzle-piece"),
+    (TBCSMALLBOARD, "person"),
+    (TBCMATHEMATICA, "code"),
+    (TBCKINESTHETIC, "bolt"),
+    (TBCQUIZ, "question-mark"),
+    (TBCWHOLECLASS, "people"),
+    (TBCEXPERIMENT, "beaker"),
+    (TBCCOMPUTERSIM, "laptop"),
+    (TBCLECTURE, "microphone"),
 )
 
 # Activity Publication Status Choices
