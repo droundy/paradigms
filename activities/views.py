@@ -82,7 +82,7 @@ def activity_detail(request, pk):
     form = ActivityFormReadOnly(instance=activity)
 
     # Find the sequence(s) in which this Activity has been assigned
-    activity_sequences = Sequence.objects.filter(activities=activity)
+    activity_sequences = Sequence.objects.filter(activities=activity).filter(publication="1")
 
     context = {
         'activity': activity,
