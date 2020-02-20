@@ -177,7 +177,7 @@ def problem_display_html(request, pk):
         }
         return render(request, 'public_app/problem_display.html', context)
     else:
-        return redirect('/login/?next=%s' % request.path)
+        return redirect('/accounts/login/?next=%s' % request.path)
     
 
 # For display within site layout.

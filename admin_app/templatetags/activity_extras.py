@@ -1,6 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from admin_app.choices import *
 
 register = template.Library()
 
@@ -21,7 +22,11 @@ def trimtob(value):
     if value:
         tob = value.strip("('")
         tob = tob.strip("'),")
-        return tob
+        # iterate through possible choices for type of beast
+        for beast in BEASTICONS:
+            if tob == beast[0]:
+                tob = '<span class="oi oi-' + beast[1] + '"></span> ' + tob
+        return mark_safe(tob)
     else:
         return value
 

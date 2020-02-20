@@ -36,8 +36,8 @@
       <div class="card" style="margin-bottom: 10px">
         <div class="card-body">
           <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a></h5>
-          <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" id="problem_instructions{{ forloop.counter }}">{{ item.item_instructions }}</h6>
-          <div class="card-body latextorender tex2jax_ignore" id="problem_latex{{forloop.counter}}">
+          <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" data-latex="{{ item.item_instructions }}" id="problem_instructions{{ forloop.counter }}">{{ item.item_instructions }}</h6>
+          <div class="card-body latextorender tex2jax_ignore" data-latex="{{ item.problem.problem_latex }}" id="problem_latex{{forloop.counter}}">
             {{ item.problem.problem_latex }}
           </div>
         </div>
