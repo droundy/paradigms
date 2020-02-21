@@ -161,6 +161,7 @@
               {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
               <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>{% if perms.admin_app.can_edit_problem %}
               <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
+              <a class="dropdown-item" href="{% url 'page_display' pagename='props-and-equipment' %}">Props &amp; Equipment</a>
             </div>
           </li>
           <li class="nav-item">
@@ -171,6 +172,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
               <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
+              <a class="dropdown-item" target="_blank" href="https://physics.oregonstate.edu/mathbook/P20/">Study of the Paradigms</a>
             </div>
           </li>
 
