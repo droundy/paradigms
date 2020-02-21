@@ -74,6 +74,11 @@ def activity_list(request):
         activities = Activity.objects.filter(publication_status='Published').order_by('title')
     return render(request, 'activities/activity_list.html', {'activities': activities})
 
+def activity_title(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    activity_title = activity.title
+    return HttpResponse(activity_title)
+
 def activity_detail(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
