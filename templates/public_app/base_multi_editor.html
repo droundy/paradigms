@@ -281,11 +281,19 @@
     async function renderLatex(renderElement) {
         renderElement.classList.remove("tex2jax_ignore")
 
+        let html;
         if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
-            renderElement.innerHTML = html_with_solution(renderElement.dataset.latex);
+            html = html_with_solution(renderElement.dataset.latex);
         } else {
-            renderElement.innerHTML = html_omit_solution(renderElement.dataset.latex);
+            html = html_omit_solution(renderElement.dataset.latex);
         }
+        let betterhtml = html.replace(/<a href="(\/[^"]+)">(\/[^<]+)<\/a>/, function(match, url, title, offset, string) {
+            if (url != title) {
+                return match;
+            }
+            return ['<a href="', url, '"><iframe src="', url, '/title" onload="this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe></a>'].join('');
+        });
+        renderElement.innerHTML = html;
         MathJax.Hub.Queue(
             function () {
                 if (MathJax.InputJax.TeX.resetEquationNumbers) {
