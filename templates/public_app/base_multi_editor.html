@@ -276,6 +276,32 @@
     import init, { html_with_solution, html_omit_solution } from
     '/static/public_app/js/latex_snippet.js';
 
+    async function renderLatex(renderElement) {
+        renderElement.classList.remove("tex2jax_ignore")
+
+        if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
+            renderElement.innerHTML = html_with_solution(renderElement.dataset.latex);
+        } else {
+            renderElement.innerHTML = html_omit_solution(renderElement.dataset.latex);
+        }
+        MathJax.Hub.Queue(
+            function () {
+                if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                    MathJax.InputJax.TeX.resetEquationNumbers();
+                }
+            },
+            // ["resetEquationNumbers",MathJax.InputJax.TeX],
+            ["Typeset",MathJax.Hub,renderElement]
+        );
+        // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
+        // This limits the width, but may need to be changed to the .figure class
+        var images = document.querySelectorAll(".preview img");
+        var i;
+        for(i = 0; i < images.length; i++) {
+            images[i].className += " img-fluid";
+        }
+    }
+
     async function run() {
         // First up we need to actually load the wasm file, so we use the
         // default export to inform it where the wasm file is located on the
@@ -297,29 +323,9 @@
 
         // Loop through each of these divs
         latexDivs.forEach(function(renderElement) {
-            renderElement.classList.remove("tex2jax_ignore")
-
-            if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
-                renderElement.innerHTML = html_with_solution(renderElement.dataset.latex);
-            } else {
-                renderElement.innerHTML = html_omit_solution(renderElement.dataset.latex);
-            }
-            MathJax.Hub.Queue(
-                function () {
-                    if (MathJax.InputJax.TeX.resetEquationNumbers) {
-                        MathJax.InputJax.TeX.resetEquationNumbers();
-                    }
-                },
-                // ["resetEquationNumbers",MathJax.InputJax.TeX],
-                ["Typeset",MathJax.Hub,renderElement]
-            );
-            // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-            // This limits the width, but may need to be changed to the .figure class
-            var images = document.querySelectorAll(".preview img");
-            var i;
-            for(i = 0; i < images.length; i++) {
-                images[i].className += " img-fluid";
-            }
+            // use await with async function so display can be updated
+            // before we go through ALL of the latex rendering.
+            await renderLatex(renderElement);
         });
 
         var latexEditors = document.querySelectorAll(".latexeditor");
