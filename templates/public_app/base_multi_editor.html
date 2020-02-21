@@ -287,7 +287,7 @@
         } else {
             html = html_omit_solution(renderElement.dataset.latex);
         }
-        let betterhtml = html.replace(/<a href="(\/[^"]+)">(\/[^<]+)<\/a>/, function(match, url, title, offset, string) {
+        html = html.replace(/<a href="(\/[^"]+)">(\/[^<]+)<\/a>/, function(match, url, title, offset, string) {
             if (url != title) {
                 return match;
             }
