@@ -17,9 +17,9 @@
             <h5><a href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">{{ problem_set.title }}</a></h5>            
             {% if problem_set.instructions %}
               {% if forloop.counter == 1 %}
-                <p class="latextorender tex2jax_ignore" data-latex="{{ problem_set.instructions }}" id="problem_set_instructions{{ forloop.counter }}">{{ problem_set.instructions }}</p>
+                <p class="latextorender tex2jax_ignore" data-latex="{{ problem_set.instructions }}" id="problem_set_instructions{{ forloop.counter }}"></p>
               {% else %}
-                <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ problem_set.instructions }}" id="problem_set_instructions{{ forloop.counter }}">{{ problem_set.instructions }}</p>
+                <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ problem_set.instructions }}" id="problem_set_instructions{{ forloop.counter }}"></p>
               {% endif %}
             {% endif %}
           </div>

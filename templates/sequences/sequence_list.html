@@ -25,9 +25,9 @@
             {% endif %} -->
             {% if sequence.overview_paragraph %}
               {% if forloop.counter == 1 %}
-                <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph }}</p>
+                <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
               {% else %}
-                <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph }}</p>
+                <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
               {% endif %}
             {% endif %}
           </div>

@@ -20,9 +20,9 @@
           
           {% if activity.overview_paragraph %}
             {% if forloop.counter == 1 %}
-              <p class="latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
+              <p class="latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}"></p>
             {% else %}
-              <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}">{{ activity.overview_paragraph|truncatewords:25 }}</p>
+              <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}"></p>
             {% endif %}
           {% endif %}
         </div>
@@ -72,9 +72,9 @@
               <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
               {% if sequence.overview_paragraph %}
                 {% if forloop.counter == 1 %}
-                  <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                  <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
                 {% else %}
-                  <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}">{{ sequence.overview_paragraph|truncatewords:25 }}</p>
+                  <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
                 {% endif %}
               {% endif %}
             </div>

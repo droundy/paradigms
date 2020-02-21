@@ -47,8 +47,8 @@
               {% else %}
                 {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
               {% endif %}</h5>
-            <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" data-latex="{{ item.role_in_sequence }}" id="activity_role{{ forloop.counter }}">{{ item.role_in_sequence }}</h6>
-            <div class="card-body latextorender tex2jax_ignore" data-latex="{% if item.overview_paragraph %}{{ item.overview_paragraph }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex }}{% endif %}" id="activity{{ forloop.counter }}">{% if item.overview_paragraph %}{{ item.overview_paragraph }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex }}{% endif %}</div>
+            <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" data-latex="{{ item.role_in_sequence }}" id="activity_role{{ forloop.counter }}"></h6>
+            <div class="card-body latextorender tex2jax_ignore" data-latex="{% if item.overview_paragraph %}{{ item.overview_paragraph }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex }}{% endif %}" id="activity{{ forloop.counter }}"></div>
           </div>
         </div>
         {% endfor %}

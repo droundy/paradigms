@@ -57,10 +57,10 @@
         {% endif %}
 
         <div class="card-body">{% if activity.what_students_learn %}What students learn
-          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.what_students_learn }}" id="activity_what_students_learn_card">{{ activity.what_students_learn }}</span>{% endif %}
+          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.what_students_learn }}" id="activity_what_students_learn_card"></span>{% endif %}
         </div>
         {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
-          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.notes }}" id="activity_notes">{{ activity.notes }}</span></li></ul>{% endif %}
+          <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.notes }}" id="activity_notes"></span></li></ul>{% endif %}
         {% if figures %}
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -78,7 +78,7 @@
 
       {% if activity.instructor_guide %}
         
-        <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.instructor_guide }}" id="activity_instructor_guide">{{ activity.instructor_guide }}</span>{% endif %}
+        <span class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.instructor_guide }}" id="activity_instructor_guide"></span>{% endif %}
         
         <!-- {% if figures %}
           <hr>      
@@ -108,16 +108,16 @@
         <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
 
         {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
-        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.prerequisite_knowledge }}" id="activity_prerequisite_knowledge">{{ activity.prerequisite_knowledge }}</dd>{% endif %}
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.prerequisite_knowledge }}" id="activity_prerequisite_knowledge"></dd>{% endif %}
 
         {% if activity.program_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Program Learning Outcomes</dt>
-        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.program_learning_outcomes }}" id="activity_program_learning_outcomes">{{ activity.program_learning_outcomes }}</dd>{% endif %}
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.program_learning_outcomes }}" id="activity_program_learning_outcomes"></dd>{% endif %}
 
         {% if activity.course_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Course Learning Outcomes</dt>
-        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.course_learning_outcomes }}" id="activity_course_learning_outcomes">{{ activity.course_learning_outcomes }}</dd>{% endif %}
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.course_learning_outcomes }}" id="activity_course_learning_outcomes"></dd>{% endif %}
 
         {% if activity.learning_progression_concepts and perms.admin_app.can_add_activity%}<dt class="col-sm-3">Learning Progression Concepts</dt>
-        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.learning_progression_concepts }}" id="activity_learning_progression_concepts">{{ activity.learning_progression_concepts }}</dd>{% endif %}
+        <dd class="col-sm-9 latextorender tex2jax_ignore" data-latex="{{ activity.learning_progression_concepts }}" id="activity_learning_progression_concepts"></dd>{% endif %}
 
         {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
         <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
