@@ -291,10 +291,7 @@
             if (url != title) {
                 return match;
             }
-            console.log('match', match);
-            let newa = ['<a href="', url, '"><iframe src="', url, '/title" onload="console.log(this.contentDocument.body.innerHTML);this.before((this.contentDocument.body||this.contentDocument).children[0]);this.remove()"></iframe></a>'].join('');
-            console.log('newa', newa);
-            return newa;
+            return ['<a href="', url, '"><iframe src="', url, '/title" onload="this.before(this.contentDocument.body.innerHTML);this.remove()"></iframe></a>'].join('');
         });
         renderElement.innerHTML = html;
         MathJax.Hub.Queue(
