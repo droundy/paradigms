@@ -53,6 +53,7 @@ urlpatterns = [
     
     # About, home/index, history, and courses are all contained in the Pages app
     path('', include('pages.urls')),
+    # path('page/', include('pages.urls')),
 ]
 
 if settings.DEBUG:

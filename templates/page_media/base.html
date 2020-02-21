@@ -12,7 +12,7 @@
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
             <button type="submit" class="btn btn-danger pull-right">
-              <span class="glyphicon glyphicon-trash"></span> Delete All Figures
+              <span class="glyphicon glyphicon-trash"></span> Delete Allasdf f Figures
             </button>
           </form>
         </div>
@@ -21,12 +21,12 @@
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
             <button type="submit" class="btn btn-warning pull-right">
-              <span class="glyphicon glyphicon-trash"></span> Delete Media For This Page
+              <span class="glyphicon glyphicon-trash"></span> Delete Figures For This Problem
             </button>
           </form>
         </div>
         <div class="col">
-          <a class="btn btn-success" href="{% url 'problem_edit_preview' pk=thisProblemID %}">Return to Page</a>
+          <a class="btn btn-success" href="{% url 'problem_edit_preview' pk=thisProblemID %}">Return to Problem</a>
         </div>
       </div>
       <div class="col-md-9">

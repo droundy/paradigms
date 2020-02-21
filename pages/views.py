@@ -50,9 +50,13 @@ def renderpage(request, pagename):
 # Url for home page is handled slightly differently because it doesn't use a slug/pagename to identify itself
 def renderhomepage(request):
         this_page = get_object_or_404(Pages, slug='home')
+        thisPrimaryKey = this_page.pk
+        figures_list = Pages.objects.get(id=thisPrimaryKey).media.all()
         context = {
                 'pagename': this_page.title,
-                'this_page': this_page,  
+                'this_page': this_page,
+                'thisPrimaryKey': thisPrimaryKey,
+                'figures_list': figures_list,
         }
         if this_page.keywords:
                 keyword_list = this_page.keywords.strip().rstrip(",").split(",")
@@ -60,7 +64,9 @@ def renderhomepage(request):
                 context = {
                         'pagename': this_page.title,
                         'this_page': this_page,
-                        'keyword_list': keyword_list,    
+                        'thisPrimaryKey': thisPrimaryKey,
+                        'keyword_list': keyword_list, 
+                        'figures_list': figures_list,   
                 }
         
         return render(request, 'pages/render.html', context)
@@ -68,6 +74,8 @@ def renderhomepage(request):
 @permission_required('admin_app.can_edit_pages',login_url='/')
 def editpage(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
+        thisPrimaryKey = this_page.pk
+        figures_list = Pages.objects.get(id=thisPrimaryKey).media.all()
         if request.method == "POST":
                 form = PageForm(request.POST, instance=this_page)
                 if form.is_valid():
@@ -81,6 +89,32 @@ def editpage(request, pagename):
                 context = {
                         'pagename': pagename,
                         'this_page': this_page,
+                        'thisPrimaryKey': thisPrimaryKey,
                         'form': form,
+                        'figures_list': figures_list,
+                }
+        return render(request, 'pages/edit.html', context)
+
+def editpagebyid(request, pk):
+        # this_page = get_object_or_404(Pages, slug=pagename)
+        this_page = get_object_or_404(Pages, pk=pk)
+        thisPrimaryKey = this_page.pk
+        figures_list = Pages.objects.get(id=thisPrimaryKey).media.all()
+        if request.method == "POST":
+                form = PageForm(request.POST, instance=this_page)
+                if form.is_valid():
+                        this_page = form.save(commit=False)
+                        this_page.save()
+                        return redirect('page_edit_by_id', pk=this_page.pk)
+                else:
+                        messages.error(request, form.errors)
+        else:
+                form = PageForm(instance=this_page)
+                context = {
+                        'pk': pk,
+                        'this_page': this_page,
+                        'thisPrimaryKey': thisPrimaryKey,
+                        'form': form,
+                        'figures_list': figures_list,
                 }
         return render(request, 'pages/edit.html', context)
