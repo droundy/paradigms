@@ -39,6 +39,7 @@ urlpatterns = [
     path('activities/', include('activities.urls')),
     path('problem_sets/', include('problem_sets.urls')),
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
+    url(r'^page_media/', include(('page_media.urls', 'page_media'), namespace='page_media')),
     
 
     

@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     'pages',
+    'page_media',
     'users',
     'public_app',
     'admin_app',

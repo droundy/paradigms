@@ -7,12 +7,23 @@ from autoslug import AutoSlugField
 import os
 # from admin_app.choices import *
 
+class PageMedia(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    media_category = models.CharField(max_length=255, blank=True)
+    file = models.FileField(upload_to='page_media/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def extension(self):
+        name, extension = os.path.splitext(self.file.name)
+        return extension
+
 class Pages(models.Model):
     title = models.CharField(max_length=255, blank=True)
     slug = AutoSlugField(populate_from='title')
     page_content = models.TextField(blank=True, null=True)
     keywords = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics or keywords: adiabatic susceptibility,entropy")
     published_date = models.DateTimeField(blank=True, null=True)
+    media = models.ManyToManyField(PageMedia, through='PageMediaAssociation', related_name='pagemedias')
 
     def publish(self):
         self.published_date = timezone.now()
@@ -28,6 +39,13 @@ class Pages(models.Model):
 
     def get_absolute_url(self):
         return reverse('page_display', kwargs={'slug': self.slug})
+
+class PageMediaAssociation(models.Model):
+    media = models.ForeignKey(PageMedia, on_delete=models.CASCADE)
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(default=timezone.now)
+    media_position = models.PositiveIntegerField(blank=True, null=True)
+    media_title = models.CharField(max_length=255, blank=True, null=True)
 
 # Create your models here.
 class Figure(models.Model):
