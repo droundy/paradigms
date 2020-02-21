@@ -293,20 +293,16 @@
         await init();
 
         // find all of the divs with latextorender class
-        var latexDivs = document.querySelectorAll(".latextorender");
+        var latexDivs = document.querySelectorAll("[data-latex]");
 
         // Loop through each of these divs
         latexDivs.forEach(function(renderElement) {
-
-            // Collect the contents of the div that needs rendering
-            var divContent = document.getElementById(renderElement.id);
-            
-            divContent.classList.remove("tex2jax_ignore")
+            renderElement.classList.remove("tex2jax_ignore")
 
             if (window.location.href.includes('/activities/solution/') || window.location.href.includes('/sequences/solution/') || window.location.href.includes('/problem/solution/') || window.location.href.includes('/problem_sets/solution/')) {
-                divContent.innerHTML = html_with_solution(divContent.dataset.latex);
+                renderElement.innerHTML = html_with_solution(renderElement.dataset.latex);
             } else {
-                divContent.innerHTML = html_omit_solution(divContent.dataset.latex);
+                renderElement.innerHTML = html_omit_solution(renderElement.dataset.latex);
             }
             MathJax.Hub.Queue(
                 function () {
@@ -315,7 +311,7 @@
                     }
                 },
                 // ["resetEquationNumbers",MathJax.InputJax.TeX],
-                ["Typeset",MathJax.Hub,divContent]
+                ["Typeset",MathJax.Hub,renderElement]
             );
             // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
             // This limits the width, but may need to be changed to the .figure class
