@@ -322,7 +322,7 @@
         var latexDivs = document.querySelectorAll("[data-latex]");
 
         // Loop through each of these divs
-        latexDivs.forEach(function(renderElement) {
+        for (let renderElement of latexDivs) {
             // use await with async function so display can be updated
             // before we go through ALL of the latex rendering.
             await renderLatex(renderElement);
