@@ -7,6 +7,7 @@ urlpatterns = [
         path('<int:pk>/', views.activity_detail, name='activity_detail'),
         path('solution/<int:pk>', views.activity_detail_solution, name='activity_detail_solution'),
         path('title/<int:pk>', views.activity_title, name='activity_title'),
+        path('<int:pk>/title', views.activity_title, name='activity_title'),
         path('edit/<int:pk>', views.activity_edit, name='activity_edit'),
         path('new/', views.activity_new, name='activity_new'),
 
