@@ -43,7 +43,7 @@
           <div class="col-sm-4">
             <div class="card" style="margin-bottom: 10px">            
               <div class="card-body">
-                <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }}</a></h5>
+                <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }}</a> {% if problem.publication == "0" or not problem.publication %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</h5>
                 {{ problem.topics|problemtopicbuttons }}
               </div>
             </div>
