@@ -27,8 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('search/', include('site_directory.urls')),
-
-    
     
     #path('', views.index, name='index'),
     path('problem/',include('public_app.urls')),    

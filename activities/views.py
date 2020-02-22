@@ -21,20 +21,27 @@ def activity_new(request):
     # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
         # logging.debug('FORM POSTED')
-        messages.error(request, 'ONEONEONE')
+        # messages.error(request, 'ONEONEONE')
         form = ActivityForm(request.POST, request.FILES)
         if form.is_valid():
-            messages.error(request, 'TWOTWOTWO')
+            messages.error(request, 'Activity Added')
             activity = form.save(commit=False)
             # problem.author = request.user
             activity.publication_date = timezone.now()
             activity.save()
             return redirect('activity_detail', pk=activity.pk)
         else:
+            messages.error(request, 'Activity Saved')
             messages.error(request, form.errors)
+            messages.error(request, 'Activity Saved')
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
-        form = ActivityForm()
+        context = {
+            'author': request.user.pk,
+            'time_estimate': '5',
+            'type_of_beast': 'Small Group Activity',
+        }
+        form = ActivityForm(context)
     return render(request, 'activities/activity_edit.html', {'form': form})
 
 @permission_required('admin_app.can_edit_activity',login_url='/')
@@ -42,10 +49,10 @@ def activity_edit(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
     if request.method == "POST":
-        messages.error(request, 'POSTED')
+        # messages.error(request, 'POSTED')
         form = ActivityForm(request.POST, request.FILES, instance=activity)
         if form.is_valid():
-            messages.error(request, 'FORM VALID')
+            messages.error(request, 'Activity Saved')
             activity = form.save(commit=False)
             # problem.author = request.user
             activity.publication_date = timezone.now()
