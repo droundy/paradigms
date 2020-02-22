@@ -40,6 +40,7 @@ def activity_new(request):
             'author': request.user.pk,
             'time_estimate': '5',
             'type_of_beast': 'Small Group Activity',
+            'publication_status': 'Draft',
         }
         form = ActivityForm(context)
     return render(request, 'activities/activity_edit.html', {'form': form})
