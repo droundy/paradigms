@@ -294,6 +294,16 @@
             return ['<a href="', url, '"><iframe src="', url, '/title" onload="this.before(this.contentDocument.body.innerHTML);this.remove()"></iframe></a>'].join('');
         });
         renderElement.innerHTML = html;
+        // Apply the bootstrap classes to semantic elements.
+        renderElement.querySelectorAll('img').forEach(function(i) {
+            i.classList.add('img-fluid');
+        });
+        renderElement.querySelectorAll('figure').forEach(function(e) {
+            e.classList.add('figure');
+        });
+        renderElement.querySelectorAll('figcaption').forEach(function(e) {
+            e.classList.add('figure-caption');
+        });
         MathJax.Hub.Queue(
             function () {
                 if (MathJax.InputJax.TeX.resetEquationNumbers) {
@@ -303,13 +313,6 @@
             // ["resetEquationNumbers",MathJax.InputJax.TeX],
             ["Typeset",MathJax.Hub,renderElement]
         );
-        // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-        // This limits the width, but may need to be changed to the .figure class
-        var images = document.querySelectorAll(".preview img");
-        var i;
-        for(i = 0; i < images.length; i++) {
-            images[i].className += " img-fluid";
-        }
     }
 
     async function run() {
