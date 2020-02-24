@@ -301,6 +301,13 @@
         renderElement.querySelectorAll('figure').forEach(function(e) {
             e.classList.add('figure');
         });
+        renderElement.querySelectorAll('figure.wrapfigure').forEach(function(e) {
+            e.classList.add('float-sm-right');
+            e.classList.add('mw-100');
+        });
+        renderElement.querySelectorAll('figure > img').forEach(function(e) {
+            e.classList.add('figure-img');
+        });
         renderElement.querySelectorAll('figcaption').forEach(function(e) {
             e.classList.add('figure-caption');
         });
