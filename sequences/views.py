@@ -155,6 +155,11 @@ def sequence_list(request):
         sequences = Sequence.objects.filter(publication=1).order_by('title')
     return render(request, 'sequences/sequence_list.html', {'sequences': sequences})
 
+def sequence_title(request, pk):
+    sequence = get_object_or_404(Sequence, pk=pk)
+    sequence_title = sequence.title
+    return HttpResponse(sequence_title)
+
 def sequence_detail(request, pk):
     sequence = get_object_or_404(Sequence, pk=pk)
     thisPrimaryKey = sequence.pk

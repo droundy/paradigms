@@ -17,7 +17,10 @@ urlpatterns = [
 
     path('<int:pk>/', views.sequence_detail, name='sequence_detail'),
     path('solution/<int:pk>', views.sequence_detail_solution, name='sequence_detail_solution'),
-
+    
+    path('title/<int:pk>', views.sequence_title, name='sequence_title'),
+    path('<int:pk>/title', views.sequence_title, name='sequence_title'),
+        
     path('edit/<int:pk>', views.sequence_edit, name='sequence_edit'),
 
     path('new/', views.sequence_new, name='sequence_new'),
