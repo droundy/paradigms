@@ -14,6 +14,7 @@ urlpatterns = [
     # ])),
     path('', views.renderhomepage, name='home'),
     path('<slug:pagename>/', views.renderpage, name='page_display'),
+    path('<slug:pagename>/title', views.page_title, name='page_title'),
     path('<slug:pagename>/edit', views.editpage, name='page_edit'),
     path('page/<int:pk>/edit', views.editpagebyid, name='page_edit_by_id'),
  

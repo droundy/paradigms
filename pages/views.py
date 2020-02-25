@@ -47,6 +47,10 @@ def renderpage(request, pagename):
                 }
         return render(request, 'pages/render.html', context)
 
+def page_title(request, pk):
+        page = get_object_or_404(Pages, pk=pk)
+        return HttpResponse(page.title)
+
 # Url for home page is handled slightly differently because it doesn't use a slug/pagename to identify itself
 def renderhomepage(request):
         this_page = get_object_or_404(Pages, slug='home')
