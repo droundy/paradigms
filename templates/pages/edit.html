@@ -20,13 +20,13 @@
         {% endfor %}
         </ul>
       {% else %}
-        No figures have been uploaded for this problem.
+        No figures have been uploaded for this page.
       {% endif %}
 
       {{ form|crispy }}
       <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to page."></span> Save</button>
       <a class="btn btn-secondary btn-sm" href="{% url 'page_display' pagename=this_page.slug %}">View</a>
     </form>
-    
+
   </div>
 {% endblock %}

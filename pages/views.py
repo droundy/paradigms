@@ -35,7 +35,7 @@ def renderpage(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
         context = {
                 'pagename': pagename,
-                'this_page': this_page, 
+                'this_page': this_page,
         }
         if this_page.keywords:
                 keyword_list = this_page.keywords.strip().rstrip(",").split(",")
@@ -43,12 +43,12 @@ def renderpage(request, pagename):
                 context = {
                         'pagename': this_page.title,
                         'this_page': this_page,
-                        'keyword_list': keyword_list,    
+                        'keyword_list': keyword_list,
                 }
         return render(request, 'pages/render.html', context)
 
-def page_title(request, pk):
-        page = get_object_or_404(Pages, pk=pk)
+def page_title(request, pagename):
+        page = get_object_or_404(Pages, slug=pagename)
         return HttpResponse(page.title)
 
 # Url for home page is handled slightly differently because it doesn't use a slug/pagename to identify itself
@@ -69,10 +69,10 @@ def renderhomepage(request):
                         'pagename': this_page.title,
                         'this_page': this_page,
                         'thisPrimaryKey': thisPrimaryKey,
-                        'keyword_list': keyword_list, 
-                        'figures_list': figures_list,   
+                        'keyword_list': keyword_list,
+                        'figures_list': figures_list,
                 }
-        
+
         return render(request, 'pages/render.html', context)
 
 @permission_required('admin_app.can_edit_pages',login_url='/')
