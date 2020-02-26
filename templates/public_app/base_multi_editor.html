@@ -293,7 +293,6 @@
             }
             return ['<a href="', url, '"><iframe src="', url, '/title" onload="this.before(this.contentDocument.body.innerHTML);this.remove()"></iframe></a>'].join('');
         });
-        console.log('html', html);
         renderElement.innerHTML = html;
         // Apply the bootstrap classes to semantic elements.
         renderElement.querySelectorAll('img').forEach(function(i) {
