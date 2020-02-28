@@ -1,7 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-import latex_snippet
+import admin_app.templatetags.latex_snippet
 
 register = template.Library()
 
