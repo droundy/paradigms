@@ -20,3 +20,4 @@ users/__pycache__/
 *gitignore
 /latex_snippet
 /venv
+/build/latex_snippet
