@@ -5,6 +5,7 @@ matrix:
         - 3.6
         - 3.7
         - 3.8
+      stage: python
       install:
         - pip install -r requirements.txt
       script:
@@ -13,6 +14,13 @@ matrix:
     - language: rust
       rust:
         - stable
+      stage: rust
+
+stages:
+  - rust
+  - python
+  - test
+
 install:
   - pip install -r requirements.txt
   - build/get_latex_snippet
