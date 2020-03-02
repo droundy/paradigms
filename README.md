@@ -9,6 +9,16 @@ website](https://paradigms.oregonstate.edu).
 Here should be instructions on how to set up a virtual environment for
 running the project.
 
+```
+apt install libmariadb-dev-compat
+```
+
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 ## Running tests
 
 This should be as simple as running
