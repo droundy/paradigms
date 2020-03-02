@@ -18,3 +18,5 @@ static/open-iconic/.gitignore
 users/__pycache__/
 .gitignore
 *gitignore
+/latex_snippet
+/venv
