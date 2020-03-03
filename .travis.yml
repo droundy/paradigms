@@ -18,10 +18,13 @@ matrix:
 #  -DJANGO=2.2 DB=mysql
 install:
   - sudo apt-get install -y python3-pip
-  - pip3 install -r requirements.txt
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
   - build/get_latex_snippet
 # before_script:
 #   - mysql -e 'create database test;' -u root
 # command to run tests
 script:
-  - python3 manage.py test
+  - python manage.py test
