@@ -11,7 +11,7 @@ from admin_app.choices import *
 class ProblemSetForm(forms.ModelForm):
     class Meta:
         model = ProblemSet
-        fields = ('title','instructions','author','author_info')
+        fields = ('title','instructions','author','author_info','publication')
         exclude=()
 
     instructions = forms.CharField(
@@ -47,7 +47,7 @@ class ProblemGroupForm(forms.ModelForm):
 
     class Meta:
         model = ProblemSet
-        fields = ('title','date_added','published_date','instructions','author','author_info')
+        fields = ('title','date_added','published_date','instructions','author','author_info','publication')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -70,7 +70,7 @@ class BaseProblemGroupForm(BaseFormSet):
 
     class Meta:
         model = ProblemSet
-        fields = ('title','date_added','published_date','instructions','author','author_info')
+        fields = ('title','date_added','published_date','instructions','author','author_info','publication')
         exclude = ()
 
     def __init__(self, *args, **kwargs):

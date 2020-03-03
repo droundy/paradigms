@@ -1,0 +1,6 @@
+@media print {
+    .noprint { 
+      visibility: hidden; 
+    } 
+}
+* { overflow: visible !important; }
