@@ -11,7 +11,7 @@ class PageForm(forms.ModelForm):
 
     class Meta:
         model = Pages
-        fields = ('title','page_content','keywords')
+        fields = ('title','page_content','keywords','whitepaper')
         exclude = ()
 
     def __init__(self, *args, **kwargs):

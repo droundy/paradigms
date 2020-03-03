@@ -1,0 +1,20 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ page_title }}</h1>
+    </div>
+</div>
+<div class="container">
+    <ul>
+    {% for link in links %}
+
+    <li><a href="{% url 'page_display' pagename=link.slug %}">{{ link }}</a></li>
+
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

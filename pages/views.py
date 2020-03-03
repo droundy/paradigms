@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from admin_app.models import Pages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from pages.forms import PageForm
+from django.db.models import Q
 
 # class Home(TemplateView):
 #         template_name = 'home.html'
@@ -30,6 +31,15 @@ class Loggedout(TemplateView):
 # class renderpage(DetailView):
 #     model = Pages
 #     template_name = 'pages/render.html'
+
+def whitepapers(request):
+        whitepapers = Pages.objects.filter(
+                Q(whitepaper__exact=1)).order_by('title')
+        context = {
+                'links': whitepapers,
+                'page_title': 'Whitepapers',
+        }
+        return render(request, 'pages/list.html', context)
 
 def page_render(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)

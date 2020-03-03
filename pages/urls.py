@@ -13,6 +13,7 @@ urlpatterns = [
 
     # ])),
     path('', views.homepage_render, name='home'),
+    path('whitepapers/', views.whitepapers, name='whitepapers'),
     path('<slug:pagename>/', views.page_render, name='page_display'),
     path('<slug:pagename>/title', views.page_title, name='page_title'),
     path('<slug:pagename>/edit', views.page_edit, name='page_edit'),
