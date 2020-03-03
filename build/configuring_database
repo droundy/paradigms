@@ -1,0 +1,14 @@
+
+apt install default-mysql-server
+
+# The following enables droundy to have admin priviledges on the server locally.
+/usr/bin/mysql -e "GRANT ALL ON *.* TO 'droundy'@'localhost' IDENTIFIED VIA unix_socket WITH GRANT OPTION"
+
+
+run mysql and then type:
+
+CREATE DATABASE IF NOT EXISTS osu_production;
+
+mysql -e "source daily_osu_production_2020-03-03_00h00m_Tuesday.sql" osu_production
+
+s/utf8mb4_0900_ai_ci/utf8mb4_general_ci/g
