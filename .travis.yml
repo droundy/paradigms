@@ -10,8 +10,7 @@ before_install:
 # env:
 #  -DJANGO=2.2 DB=mysql
 install:
-  - python3 -m venv venv
-  - source venv/bin/activate
+  - which pip
   - pip --version
   - python --version
   - pip install -r requirements.txt
