@@ -6,6 +6,7 @@ python:
 
 before_install:
   - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- --profile=minimal -y
+  - export PATH=$HOME/.cargo/bin:$PATH
 # command to install dependencies
 # env:
 #  -DJANGO=2.2 DB=mysql
