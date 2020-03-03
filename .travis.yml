@@ -10,8 +10,10 @@ before_install:
 # env:
 #  -DJANGO=2.2 DB=mysql
 install:
-  - python -m venv venv
+  - python3 -m venv venv
   - source venv/bin/activate
+  - pip --version
+  - python --version
   - pip install -r requirements.txt
   - build/get_latex_snippet
 # before_script:
