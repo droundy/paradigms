@@ -9,29 +9,29 @@ from pages.forms import PageForm
 
 # class Home(TemplateView):
 #         template_name = 'home.html'
-def home(request):
-        return render(request, 'pages/home.html', {})
+# def home(request):
+#         return render(request, 'pages/home.html', {})
 
 class Loggedout(TemplateView):
         template_name = 'logout.html'
 
-def white_papers(request):
-        return render(request, 'pages/white_papers.html', {})
+# def white_papers(request):
+#         return render(request, 'pages/white_papers.html', {})
 
-def about(request):
-        return render(request, 'pages/about.html', {})
+# def about(request):
+#         return render(request, 'pages/about.html', {})
 
-def history(request):
-        return render(request, 'pages/history.html', {})
+# def history(request):
+#         return render(request, 'pages/history.html', {})
 
-def courses(request):
-        return render(request, 'pages/courses.html', {})
+# def courses(request):
+#         return render(request, 'pages/courses.html', {})
 
 # class renderpage(DetailView):
 #     model = Pages
 #     template_name = 'pages/render.html'
 
-def renderpage(request, pagename):
+def page_render(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
         context = {
                 'pagename': pagename,
@@ -52,7 +52,7 @@ def page_title(request, pagename):
         return HttpResponse(page.title)
 
 # Url for home page is handled slightly differently because it doesn't use a slug/pagename to identify itself
-def renderhomepage(request):
+def homepage_render(request):
         this_page = get_object_or_404(Pages, slug='home')
         thisPrimaryKey = this_page.pk
         figures_list = Pages.objects.get(id=thisPrimaryKey).media.all()
@@ -75,8 +75,29 @@ def renderhomepage(request):
 
         return render(request, 'pages/render.html', context)
 
+@permission_required('admin_app.can_edit_problem',login_url='/')
+def page_new(request):
+    # problem = get_object_or_404(Problem, pk=pk)
+    if request.method == "POST":
+        # logging.debug('request.method=POST')
+        # messages.error(request, 'ONEONEONE')
+        form = PageForm(request.POST)
+        if form.is_valid():
+            # messages.error(request, 'TWOTWOTWO')
+            page = form.save(commit=False)
+            # problem.author = request.user
+            # page.published_date = timezone.now()
+            page.save()
+            return redirect('page_edit_by_id', pk=page.pk)
+        else:
+            messages.error(request, form.errors)
+            #return redirect('problem_edit_preview', pk=problem.pk)
+    else:
+        form = PageForm()
+    return render(request, 'pages/add.html', {'form': form, 'page_title': 'Add Page'})
+
 @permission_required('admin_app.can_edit_pages',login_url='/')
-def editpage(request, pagename):
+def page_edit(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
         thisPrimaryKey = this_page.pk
         figures_list = Pages.objects.get(id=thisPrimaryKey).media.all()
@@ -99,7 +120,7 @@ def editpage(request, pagename):
                 }
         return render(request, 'pages/edit.html', context)
 
-def editpagebyid(request, pk):
+def page_edit_by_id(request, pk):
         # this_page = get_object_or_404(Pages, slug=pagename)
         this_page = get_object_or_404(Pages, pk=pk)
         thisPrimaryKey = this_page.pk

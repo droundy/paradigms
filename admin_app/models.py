@@ -24,6 +24,7 @@ class Pages(models.Model):
     keywords = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics or keywords: adiabatic susceptibility,entropy")
     published_date = models.DateTimeField(blank=True, null=True)
     media = models.ManyToManyField(PageMedia, through='PageMediaAssociation', related_name='pagemedias')
+    whitepaper = models.BooleanField(blank=False, default=False, help_text="Is this a whitepaper?", verbose_name="Whitepaper")
 
     def publish(self):
         self.published_date = timezone.now()

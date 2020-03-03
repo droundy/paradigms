@@ -20,7 +20,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from public_app import views
 from pages import views
-from pages.views import renderpage
+from pages.views import page_render
 
 urlpatterns = [
     # Django Admin
