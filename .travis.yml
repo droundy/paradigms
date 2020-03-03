@@ -1,26 +1,17 @@
-language: rust
-rust:
-  - stable
-  - beta
-  - nightly
-matrix:
-  allow_failures:
-    - rust: nightly
+language: python
+python:
+  - "3.6"      # current default Python on Travis CI
+  - "3.7"
+  - "3.8"
 
-# language: python
-# python:
-#   - "3.6"      # current default Python on Travis CI
-#   - "3.7"
-#   - "3.8"
-
+before_install:
+  - curl -sSf https://build.travis-ci.org/files/rustup-init.sh | sh -s -- profile=minimal -y
 # command to install dependencies
 # env:
 #  -DJANGO=2.2 DB=mysql
 install:
-  - sudo apt-get install -y python3-venv
-  - python3 -m venv venv
+  - python -m venv venv
   - source venv/bin/activate
-  - pip install --upgrade pip
   - pip install -r requirements.txt
   - build/get_latex_snippet
 # before_script:
