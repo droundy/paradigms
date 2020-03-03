@@ -48,7 +48,7 @@ def problem_set_details_solution(request, problem_set_id):
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
         'problem_set_problems': problem_set_problems,
-        'page_title': page_title,
+        'page_title': page_title + ' - Solutions',
     }
 
     return render(request, 'problem_sets/problem_set_detail.html', context)
@@ -107,7 +107,7 @@ def edit_problem_set(request, problem_set_id):
         'problem_group': problem_group,
         'problem_group_form': problem_group_form,
         'problem_set_id': problem_set_id,
-        'page_title': problem_group.title,
+        'page_title': problem_group.title + ' - Edit',
     }
     return render(request, 'problem_sets/problem_set_edit.html', context)
 

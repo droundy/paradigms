@@ -70,7 +70,7 @@ def activity_edit(request, pk):
             'figures': figures_list,
             'activity': activity,
             'this_key': this_key,
-            'page_title': activity.title,
+            'page_title': activity.title + ' - Edit',
         }
     return render(request, 'activities/activity_edit.html', context)
 
@@ -79,7 +79,7 @@ def activity_list(request):
         activities = Activity.objects.all().order_by('title')
     else:
         activities = Activity.objects.filter(publication_status='Published').order_by('title')
-    return render(request, 'activities/activity_list.html', {'activities': activities, 'page_title': 'Activity List'})
+    return render(request, 'activities/activity_list.html', {'activities': activities, 'page_title': 'Paradigms Activity List'})
 
 def activity_title(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
@@ -120,6 +120,6 @@ def activity_detail_solution(request, pk):
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
-        'page_title': activity.title,
+        'page_title': activity.title + ' - Solution',
     }
     return render(request, 'activities/activity_detail.html', context)

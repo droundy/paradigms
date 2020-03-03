@@ -66,6 +66,7 @@ class ProblemSet(models.Model):
     instructions = models.TextField(blank=True, null=True)
     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
+    publication = models.BooleanField(blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
 
     def publish(self):
         self.published_date = timezone.now()

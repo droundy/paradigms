@@ -59,7 +59,7 @@ def problem_edit(request, pk):
             return redirect('problem_display_html', pk=problem.pk)
     else:
         form = ProblemForm(instance=problem)
-    return render(request, 'public_app/problem_edit.html', {'form': form, 'testVar': 'TEST VAR THING', 'page_title': problem.problem_title})
+    return render(request, 'public_app/problem_edit.html', {'form': form, 'testVar': 'TEST VAR THING', 'page_title': problem.problem_title + ' - Edit'})
 
 ####
 #@login_required
@@ -86,7 +86,7 @@ def problem_edit_preview(request, pk):
             'form' : form,
             'figures': figures_list,
             'latex_problem': problem,
-            'page_title': problem.problem_title,
+            'page_title': problem.problem_title + ' - Edit',
         }
     return render(request, 'public_app/problem_multi_edit_preview.html', context)
 
@@ -157,7 +157,7 @@ def problem_display_html_solution(request, pk):
         'latex_problem': latex_problem,
         'this_key' : this_key,
         'figures': figures_list,
-        'page_title': latex_problem.problem_title,
+        'page_title': latex_problem.problem_title + ' - Solution',
     }
     return render(request, 'public_app/problem_display.html', context)
 

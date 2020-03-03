@@ -143,7 +143,7 @@ def sequence_edit(request, pk):
             # 'item_form': item_form,
             'item_formset': item_formset,
             'item_title_dict': item_title_dict,
-            'page_title': sequence.title,
+            'page_title': sequence.title + ' - Edit',
         }
         return render(request, 'sequences/sequence_edit.html', context)
 
@@ -203,7 +203,7 @@ def sequence_detail_solution(request, pk):
         'item_list': item_list,
         'form': form,
         'view_name': view_name,
-        'page_title': sequence.title,
+        'page_title': sequence.title + ' - Solutions',
     }
     return render(request, 'sequences/sequence_detail.html', context)
 
