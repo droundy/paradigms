@@ -1,5 +1,7 @@
 *~
 *.pyc
+*.sql
+*.sql.gz
 activities/__pycache__/
 activity_media/__pycache__/
 admin_app/__pycache__/
