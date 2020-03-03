@@ -3,7 +3,7 @@
 
 {% load static %}
 
-{% block title %}Progress Bar Upload{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block javascript %}
   {# JQUERY FILE UPLOAD SCRIPTS #}
@@ -32,7 +32,7 @@
         <button type="button" class="btn btn-sm btn-primary js-upload-photos text-center">
           <span class="oi oi-cloud-upload" title="File selection button." alt="Click here to select files."></span>
 Or, Click Here To Select Files
-        </button>        
+        </button>
     </div>
     <div class="container">
       <h4>Instructions and Notes</h4>
@@ -87,12 +87,12 @@ Or, Click Here To Select Files
           {% for figure in figures %}
             <tr>
               <td>{% if figure.extension != '.pdf' %}<img src="{{ figure.file.url }}" alt="{{ figure.file.url }}" width="100px">{% else %}<span class="oi oi-file" title="PDF" alt="PDF"> PDF</span>{% endif %}</td>
-              
+
               <td><a href="{{ figure.file.url }}">{{ figure.file.name }}</a><p>
                 <!-- loop through category options  -->
                 {% for this_category in media_categories %}
                   <!-- activate the currently selected category option -->
-                  {% if figure.media_category == this_category.0 %}                  
+                  {% if figure.media_category == this_category.0 %}
                     <a class='btn btn-success btn-sm' role='button' href="{% url 'figures:categorize_media' figure_id=figure.pk media_category=this_category.0 %}"><span class="oi oi-star" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span> {{ this_category.0 }}</a>
                   {% else %}
                     <a class='btn btn-outline-secondary btn-sm' role='button' href="{% url 'figures:categorize_media' figure_id=figure.pk media_category=this_category.0 %}"><span class="oi oi-ban" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span> {{ this_category.0 }}</a>
@@ -100,10 +100,10 @@ Or, Click Here To Select Files
                 {% endfor %}</p>
                 <a class='btn btn-warning btn-sm' role='button' href="{% url 'figures:delete_figure' figure_id=figure.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a>
               </td>
-              
-              
-              
-              
+
+
+
+
               <!-- <td><a href="{{ figure.file.url }}">{{ figure.file.name }}</a><p><a class='btn btn-warning btn-sm' role='button' href="{% url 'figures:delete_figure' figure_id=figure.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a></td> -->
             </tr>
           {% endfor %}

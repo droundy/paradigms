@@ -31,7 +31,7 @@ def problem_set_add(request):
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
         form = ProblemSetForm()
-    return render(request, 'problem_sets/problem_set_add.html', {'form': form})
+    return render(request, 'problem_sets/problem_set_add.html', {'form': form, 'page_title': 'Add Problem Set'})
 
 
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
@@ -39,14 +39,16 @@ def problem_set_details_solution(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
     problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk)
+    page_title = problem_set.title
 
-    # print(problem_set_items)
+    # print(page_title)
     # print(problem_set_problems)
 
     context = {
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
         'problem_set_problems': problem_set_problems,
+        'page_title': page_title,
     }
 
     return render(request, 'problem_sets/problem_set_detail.html', context)
@@ -105,6 +107,7 @@ def edit_problem_set(request, problem_set_id):
         'problem_group': problem_group,
         'problem_group_form': problem_group_form,
         'problem_set_id': problem_set_id,
+        'page_title': problem_group.title,
     }
     return render(request, 'problem_sets/problem_set_edit.html', context)
 
@@ -127,5 +130,6 @@ def problem_set_details(request, problem_set_id):
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
         'problem_set_problems': problem_set_problems,
+        'page_title': problem_set.title,
     }
     return render(request, 'problem_sets/problem_set_detail.html', context)

@@ -1,5 +1,6 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load crispy_forms_tags %}
+{% block title %}{{ page_title }}{% endblock %}
 {% block content %}
     {% for message in messages %}
       <div class="alert alert-success">

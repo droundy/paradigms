@@ -40,7 +40,7 @@ def sequence_new(request):
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
         form = SequenceForm()
-    return render(request, 'sequences/sequence_add.html', {'form': form})
+    return render(request, 'sequences/sequence_add.html', {'form': form, 'page_title': 'Add Sequence'})
 
 @permission_required('admin_app.can_edit_sequence',login_url='/')
 def sequence_edit(request, pk):
@@ -143,6 +143,7 @@ def sequence_edit(request, pk):
             # 'item_form': item_form,
             'item_formset': item_formset,
             'item_title_dict': item_title_dict,
+            'page_title': sequence.title,
         }
         return render(request, 'sequences/sequence_edit.html', context)
 
@@ -153,7 +154,7 @@ def sequence_list(request):
         sequences = Sequence.objects.all().order_by('title')
     else:
         sequences = Sequence.objects.filter(publication=1).order_by('title')
-    return render(request, 'sequences/sequence_list.html', {'sequences': sequences})
+    return render(request, 'sequences/sequence_list.html', {'sequences': sequences, 'page_title': 'Sequences'})
 
 def sequence_title(request, pk):
     sequence = get_object_or_404(Sequence, pk=pk)
@@ -170,6 +171,7 @@ def sequence_detail(request, pk):
     activity_list = Sequence.objects.get(id=thisPrimaryKey).activities.all()
     form = SequenceForm(instance=sequence)
     view_name = 'sequence_detail'
+    print(sequence.title + "FOO")
     context = {
         'sequence': sequence,
         'problem_list': problem_list,
@@ -177,6 +179,7 @@ def sequence_detail(request, pk):
         'form': form,
         'view_name': view_name,
         'sequence_items': sequence_items,
+        'page_title': sequence.title,
     }
     return render(request, 'sequences/sequence_detail.html', context)
 
@@ -200,6 +203,7 @@ def sequence_detail_solution(request, pk):
         'item_list': item_list,
         'form': form,
         'view_name': view_name,
+        'page_title': sequence.title,
     }
     return render(request, 'sequences/sequence_detail.html', context)
 

@@ -22,7 +22,7 @@ def problem_list(request):
         problems = Problem.objects.all().order_by('problem_title')
     else:
         problems = Problem.objects.filter(publication=1).order_by('problem_title')
-    return render(request, 'public_app/problem_list.html', {'problems': problems})
+    return render(request, 'public_app/problem_list.html', {'problems': problems, 'page_title': 'Homework Problems'})
 
 @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_new(request):
@@ -43,7 +43,7 @@ def problem_new(request):
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
         form = ProblemForm()
-    return render(request, 'public_app/problem_multi_edit_preview.html', {'form': form})
+    return render(request, 'public_app/problem_multi_edit_preview.html', {'form': form, 'page_title': 'Add Homework Problem'})
 
 #@login_required
 @permission_required('admin_app.can_edit_problem',login_url='/')
@@ -59,7 +59,7 @@ def problem_edit(request, pk):
             return redirect('problem_display_html', pk=problem.pk)
     else:
         form = ProblemForm(instance=problem)
-    return render(request, 'public_app/problem_edit.html', {'form': form, 'testVar': 'TEST VAR THING'})
+    return render(request, 'public_app/problem_edit.html', {'form': form, 'testVar': 'TEST VAR THING', 'page_title': problem.problem_title})
 
 ####
 #@login_required
@@ -86,6 +86,7 @@ def problem_edit_preview(request, pk):
             'form' : form,
             'figures': figures_list,
             'latex_problem': problem,
+            'page_title': problem.problem_title,
         }
     return render(request, 'public_app/problem_multi_edit_preview.html', context)
 
@@ -156,6 +157,7 @@ def problem_display_html_solution(request, pk):
         'latex_problem': latex_problem,
         'this_key' : this_key,
         'figures': figures_list,
+        'page_title': latex_problem.problem_title,
     }
     return render(request, 'public_app/problem_display.html', context)
 
@@ -174,6 +176,7 @@ def problem_display_html(request, pk):
             'latex_problem': latex_problem,
             'this_key' : this_key,
             'figures': figures_list,
+            'page_title': latex_problem.problem_title,
         }
         return render(request, 'public_app/problem_display.html', context)
     else:

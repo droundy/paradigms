@@ -18,10 +18,7 @@ import logging
 
 @permission_required('admin_app.can_edit_activity',login_url='/')
 def activity_new(request):
-    # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
-        # logging.debug('FORM POSTED')
-        # messages.error(request, 'ONEONEONE')
         form = ActivityForm(request.POST, request.FILES)
         if form.is_valid():
             messages.error(request, 'Activity Added')
@@ -34,21 +31,22 @@ def activity_new(request):
             messages.error(request, 'Activity Saved')
             messages.error(request, form.errors)
             messages.error(request, 'Activity Saved')
-            #return redirect('problem_edit_preview', pk=problem.pk)
     else:
         context = {
             'author': request.user.pk,
             'time_estimate': '5',
             'type_of_beast': 'Small Group Activity',
             'publication_status': 'Draft',
+            'page_title': 'Add Activity', 
         }
         form = ActivityForm(context)
-    return render(request, 'activities/activity_edit.html', {'form': form})
+    return render(request, 'activities/activity_edit.html', {'form': form, 'page_title': 'Add Activity'})
 
 @permission_required('admin_app.can_edit_activity',login_url='/')
 def activity_edit(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
+    print(activity.title)
     if request.method == "POST":
         # messages.error(request, 'POSTED')
         form = ActivityForm(request.POST, request.FILES, instance=activity)
@@ -72,6 +70,7 @@ def activity_edit(request, pk):
             'figures': figures_list,
             'activity': activity,
             'this_key': this_key,
+            'page_title': activity.title,
         }
     return render(request, 'activities/activity_edit.html', context)
 
@@ -80,7 +79,7 @@ def activity_list(request):
         activities = Activity.objects.all().order_by('title')
     else:
         activities = Activity.objects.filter(publication_status='Published').order_by('title')
-    return render(request, 'activities/activity_list.html', {'activities': activities})
+    return render(request, 'activities/activity_list.html', {'activities': activities, 'page_title': 'Activity List'})
 
 def activity_title(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
@@ -106,7 +105,8 @@ def activity_detail(request, pk):
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
-        'figures': figures_list
+        'figures': figures_list,
+        'page_title': activity.title,
     }
     return render(request, 'activities/activity_detail.html', context)
 
@@ -120,5 +120,6 @@ def activity_detail_solution(request, pk):
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
+        'page_title': activity.title,
     }
     return render(request, 'activities/activity_detail.html', context)

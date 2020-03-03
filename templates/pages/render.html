@@ -1,6 +1,7 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load socialaccount %}
 {% load activity_extras %}
+{% block title %}{{ this_page.title }}{% endblock %}
 {% block content %}
   <div class="container">
     <div class="page-header">
@@ -10,7 +11,7 @@
   <div class="latextorender tex2jax_ignore" id="page_content" data-latex="{{this_page.page_content}}"></div>
 
   {% for keyword in keyword_list %}
-    <a class="badge badge-secondary" href="{% url 'homework_keyword' searchterm=keyword %}">{{ keyword }}</a>  
+    <a class="badge badge-secondary" href="{% url 'homework_keyword' searchterm=keyword %}">{{ keyword }}</a>
   {% endfor %}
 
 </div>

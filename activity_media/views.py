@@ -40,6 +40,7 @@ class ProgressBarUploadViewMedia(View):
             'media': media_list,
             'activity': activity,
             'media_categories': media_categories,
+            'page_title': activity.title + ' Upload Media',
         }
         return render(self.request, 'activity_media/progress_bar_upload/index.html', context)
 

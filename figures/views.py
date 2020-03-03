@@ -71,6 +71,7 @@ class ProgressBarUploadView(View):
             'figures': figures_list,
             'latex_problem': latex_problem,
             'media_categories': media_categories,
+            'page_title': latex_problem.problem_title + ' - Figures',
         }
         return render(self.request, 'figures/progress_bar_upload/index.html', context)
 
