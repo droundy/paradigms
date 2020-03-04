@@ -9,19 +9,28 @@ register = template.Library()
 
 # The following tag will display a list of hrefs for inclusion in a 
 # standard bootstrap nav dropdown list
-# The list is populated from the Pages database using the whitepapers field
-# This can be filtered using additional fields or alternate queries as needed
-# Possibly use like this in a template {{ 'whitepaper'|pagedropdownlist }}
-# Where "whitepaper" is the boolean field you want to query? Not sure yet.
-# 
+# The list is populated by querying the boolean field whitepaper for "1", and the choice field
+# whitepaper_category using the value passed from the tag
 
 @register.filter(needs_autoescape=True)
-def pagedropdownlist(value, autoescape=True):
+def whitepaperdropdownlist(value, autoescape=True):
     if value:
-        links = Pages.objects.filter(Q(whitepaper__exact=1)).order_by('title')
+        links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
         link_list = ''
         for link in links:
             link_list += '<a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a>'
+        return mark_safe(link_list)
+    else:
+        return value
+
+@register.filter(needs_autoescape=True)
+def whitepaperlist(value, autoescape=True):
+    if value:
+        links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
+        link_list = '<ul>'
+        for link in links:
+            link_list += '<li><a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a></li>'
+        link_list = link_list + '</ul>'
         return mark_safe(link_list)
     else:
         return value

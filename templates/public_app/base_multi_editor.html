@@ -49,7 +49,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWhitepapers" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Whitepapers</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownWhitepapers">
               <a class="dropdown-item" href="{% url 'activitytypes' %}">Activity Types</a>
-              <!-- {{ 'whitepaper'|pagedropdownlist }} -->
+              <!-- {{ 'activities'|whitepaperdropdownlist }} -->
               {% if perms.admin_app.can_edit_problem %}
               <a class="dropdown-item" href="{% url 'page_new' %}">Add Whitepaper</a>
               {% endif %}

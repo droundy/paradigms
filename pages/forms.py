@@ -10,11 +10,11 @@ class PageForm(forms.ModelForm):
 
     keywords = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':2}), help_text='Comma-separated list of topics/keywords: adiabatic susceptibility,entropy')
 
-    # whitepaper_category = forms.ChoiceField(choices=WHITEPAPERCATS, initial='none')
+    whitepaper_category = forms.ChoiceField(required=False, choices=WHITEPAPERCATS, initial='none', help_text="If this page is meant to be a whitepaper, please select a category. The category list is maintained by system administrators and can not be dynamic.")
 
     class Meta:
         model = Pages
-        fields = ('title','page_content','keywords','whitepaper')
+        fields = ('title','page_content','keywords','whitepaper','whitepaper_category')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
