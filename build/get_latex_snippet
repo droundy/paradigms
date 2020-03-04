@@ -20,6 +20,7 @@ cd latex_snippet
 # If the tests do not pass, then don't muck with things.
 cargo test
 
+cargo install wasm-pack
 # wasm-pack build --target web --dev
 wasm-pack build --target web
 
