@@ -32,12 +32,12 @@ class Loggedout(TemplateView):
 #     model = Pages
 #     template_name = 'pages/render.html'
 
-def whitepapers(request):
+def activitytypes(request):
         whitepapers = Pages.objects.filter(
                 Q(whitepaper__exact=1)).order_by('title')
         context = {
                 'links': whitepapers,
-                'page_title': 'Whitepapers',
+                'page_title': 'Activity Types',
         }
         return render(request, 'pages/list.html', context)
 

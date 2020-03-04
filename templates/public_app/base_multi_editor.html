@@ -1,6 +1,7 @@
 <!doctype html>
 {% load static %}
 {% load socialaccount %}
+{% load page_extras %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -33,8 +34,8 @@
             <a class="nav-link" href="/activities">Activities</a>
           </li> -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Activities</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownActivities" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Activities</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownActivities">
               <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
               <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
               {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
@@ -42,13 +43,19 @@
               <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
               <a class="dropdown-item" href="{% url 'page_display' pagename='props-and-equipment' %}">Props &amp; Equipment</a>
             </div>
-          </li>          
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'page_display' pagename='whitepapers' %}">Whitepapers</a>
           </li>
+
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWhitepapers" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Whitepapers</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownWhitepapers">
+              <a class="dropdown-item" href="{% url 'activitytypes' %}">Activity Types</a>
+              <!-- {{ 'whitepaper'|pagedropdownlist }} -->
+            </div>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAbout" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
               <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
               <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
               <a class="dropdown-item" target="_blank" href="https://physics.oregonstate.edu/mathbook/P20/">Study of the Paradigms</a>
@@ -57,15 +64,15 @@
 
         {% if user.is_authenticated %}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownAccount">
               <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
             </div>
           </li>
         {%  else %}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownAccount">
               <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
               <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
               <div class="dropdown-divider"></div>
