@@ -41,10 +41,16 @@ def wp_list_activitytypes(request):
         return render(request, 'pages/list.html', context)
 
 def wp_list_all(request):
-        context = {
-                'whitepaper_category': 'all',
-                'page_title': 'All Whitepapers and Pages',
-        }
+        if request.user.has_perm("admin_app.change_problem"):
+                context = {
+                        'whitepaper_category': 'all',
+                        'page_title': 'All Whitepapers and Pages',
+                }
+        else:
+                context = {
+                        'whitepaper_category': 'all',
+                        'page_title': 'All Whitepapers',
+                }
         return render(request, 'pages/list.html', context)
 
 def page_render(request, pagename):
