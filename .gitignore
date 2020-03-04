@@ -23,3 +23,5 @@ users/__pycache__/
 /latex_snippet
 /venv
 /build/latex_snippet
+latex_snippet.js
+latex_snippet_bg.wasm
