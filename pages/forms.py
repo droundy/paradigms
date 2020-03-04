@@ -1,8 +1,11 @@
 from django import forms
+from django.db import models
+from django.forms.formsets import BaseFormSet
+from django.forms import BaseModelFormSet, inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from admin_app.models import Pages
-# from django_ace import AceWidget
+from crispy_forms.layout import Layout, Submit, Row, Column, Field
 from admin_app.choices import *
 
 class PageForm(forms.ModelForm):
@@ -14,15 +17,40 @@ class PageForm(forms.ModelForm):
 
     class Meta:
         model = Pages
-        fields = ('title','page_content','keywords','whitepaper','whitepaper_category')
+        fields = ('title','page_content','keywords','whitepaper','whitepaper_category','publication')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Save Page'))
-
+        # self.helper.add_input(Submit('submit', 'Save Page'))
+        self.helper.layout = Layout(
+            Row(
+                    Column('title', css_class='form-group col-md-12 mb0'),
+                    css_class='form-row'
+                ),
+            Row(
+                    Column('keywords', css_class='form-group col-md-12 mb0'),
+                    css_class='form-row'
+                ),            
+            Row(
+                     Column('page_content', css_class='form-group col-md-12 mb0'),
+                     css_class='form-row'
+                ),
+            Row(
+                    Column('whitepaper', css_class='form-group col-md-12 mb0'),
+                    css_class='form-row',
+                ),
+            Row(
+                    Column('whitepaper_category', css_class='form-group col-md-12 mb0'),
+                    css_class='form-row'
+                ),
+            Row(
+                Column('publication', css_class='form-group col-md-12 mb0'),
+            ),            
+            Submit('submit', 'Save'),
+        )
 
 # class PageForm(forms.ModelForm):
 #     title = forms.CharField(required=False, max_length=1024, widget=forms.TextInput(attrs={'style':'max-height: 5em'}), help_text='Page title. Appears at the top of the page.')
