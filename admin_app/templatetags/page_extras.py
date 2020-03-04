@@ -66,9 +66,9 @@ def pagelist(value, authorization, autoescape=True):
             whitepaper_link_list = '<div class="list-group" style="margin-top: 1.5em;"><h5 class="list-group-item list-group-item-action">Whitepapers</h5>'
             for link in whitepaper_links:
                 if link.publication == True:
-                    whitepaper_link_list += '<a href="/whitepaper/' + str(link.slug) + '" class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h6  class="mb-1"><span class="oi oi-link-intact"></span></span> ' + str(link.title) + '</h6></div> <small>' + str(link.whitepaper_category) + '</small></a>'
+                    whitepaper_link_list += '<a href="/whitepaper/' + str(link.slug) + '" class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h6  class="mb-1"><span class="oi oi-document"></span></span> ' + str(link.title) + '</h6></div> <small>' + str(link.whitepaper_category) + '</small></a>'
                 else:
-                    whitepaper_link_list += '<a href="/whitepaper/' + str(link.slug) + '" class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h6  class="mb-1"><span class="oi oi-link-intact"></span></span> ' + str(link.title) + '</h6> <span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span></div><small>' + str(link.whitepaper_category) + '</small></a>'
+                    whitepaper_link_list += '<a href="/whitepaper/' + str(link.slug) + '" class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h6  class="mb-1"><span class="oi oi-document"></span></span> ' + str(link.title) + '</h6> <span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span></div><small>' + str(link.whitepaper_category) + '</small></a>'
             whitepaper_link_list = whitepaper_link_list + '</div>'
         
         if whitepaper_links and page_links:
