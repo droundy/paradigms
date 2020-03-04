@@ -9,12 +9,21 @@ test -f build/get_latex_snippet
 cd build
 
 rm -rf latex_snippet
-git clone https://github.com/droundy/latex_snippet
+if test -e ~/latex_snippet.git; then
+    git clone ~/latex_snippet.git
+else
+    git clone https://github.com/droundy/latex_snippet
+fi
 
 cd latex_snippet
 
 # If the tests do not pass, then don't muck with things.
 cargo test
+
+# wasm-pack build --target web --dev
+wasm-pack build --target web
+
+cp -v pkg/latex_snippet{_bg.wasm,.js} ../../static/public_app/js/
 
 rm -rf target/wheels
 
