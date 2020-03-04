@@ -111,7 +111,12 @@
       left: -1.4em;
   }
 
-  /* The following may only be necessary for public_app and not needed site-wide. Test. */
+  /* The following style may only be necessary for public_app and not needed site-wide. Test. */
 h1, h2, h3 {
   font-family: 'Literata', serif;
+}
+
+/* For the Pages App */
+.page_list {
+  list-style-type: none;
 }

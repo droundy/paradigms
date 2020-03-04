@@ -26,6 +26,7 @@ class Pages(models.Model):
     media = models.ManyToManyField(PageMedia, through='PageMediaAssociation', related_name='pagemedias')
     whitepaper = models.BooleanField(blank=False, default=False, help_text="Is this a whitepaper?", verbose_name="Whitepaper")
     whitepaper_category = models.CharField(max_length=255,blank=True, null=True, help_text="If this page is meant to be a whitepaper, please select a category. The category list is maintained by system administrators and can not be dynamic.")
+    publication = models.BooleanField(blank=False, default=False, help_text="Page or Whitepaper is ready for public viewing.", verbose_name="Publish Page or Whitepaper")
 
     def publish(self):
         self.published_date = timezone.now()

@@ -13,7 +13,8 @@ urlpatterns = [
 
     # ])),
     path('', views.homepage_render, name='home'),
-    path('whitepapers/activities/', views.activitytypes, name='activitytypes'),
+    path('whitepapers/', views.wp_list_all, name='wp_list_all'),
+    path('whitepapers/activities/', views.wp_list_activitytypes, name='wp_list_activitytypes'),
     path('<slug:pagename>/', views.page_render, name='page_display'),
     path('whitepaper/new/', views.page_new, name='page_new'),
     path('whitepaper/<slug:pagename>/', views.page_render, name='whitepaper_display'),

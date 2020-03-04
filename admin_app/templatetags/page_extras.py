@@ -26,10 +26,19 @@ def whitepaperdropdownlist(value, autoescape=True):
 @register.filter(needs_autoescape=True)
 def whitepaperlist(value, autoescape=True):
     if value:
-        links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
-        link_list = '<ul>'
+        if value == 'all':
+            links = Pages.objects.all().order_by('title')
+        else:
+            links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
+
+        link_list = '<ul class="page_list">'
         for link in links:
-            link_list += '<li><a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a></li>'
+            if link.whitepaper == True:
+                link_list += '<li><a class="dropdown-item" href="/whitepaper/' + link.slug + '"><span class="oi oi-document"></span> ' + link.title + '</a></li>'
+            else:
+                link_list += '<li><a class="dropdown-item" href="/whitepaper/' + link.slug + '"><span class="oi oi-link-intact"></span></span> ' + link.title + '</a></li>'
+
+
         link_list = link_list + '</ul>'
         return mark_safe(link_list)
     else:

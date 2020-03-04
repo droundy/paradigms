@@ -32,11 +32,18 @@ class Loggedout(TemplateView):
 #     model = Pages
 #     template_name = 'pages/render.html'
 
-def activitytypes(request):
+def wp_list_activitytypes(request):
         # whitepapers = Pages.objects.filter(Q(whitepaper__exact=1)).order_by('title')
         context = {
                 'whitepaper_category': 'activities',
                 'page_title': 'Activity Types',
+        }
+        return render(request, 'pages/list.html', context)
+
+def wp_list_all(request):
+        context = {
+                'whitepaper_category': 'all',
+                'page_title': 'All Whitepapers and Pages',
         }
         return render(request, 'pages/list.html', context)
 
