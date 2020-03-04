@@ -21,7 +21,7 @@ def pagedropdownlist(value, autoescape=True):
         links = Pages.objects.filter(Q(whitepaper__exact=1)).order_by('title')
         link_list = ''
         for link in links:
-            link_list += '<a class="dropdown-item" href="/' + link.slug + '">' + link.title + '</a>'
+            link_list += '<a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a>'
         return mark_safe(link_list)
     else:
         return value

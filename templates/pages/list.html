@@ -12,7 +12,7 @@
     <ul>
     {% for link in links %}
 
-    <li><a href="{% url 'page_display' pagename=link.slug %}">{{ link }}</a></li>
+    <li><a href="{% url 'whitepaper_display' pagename=link.slug %}">{{ link }}</a></li>
 
     {% endfor %}
     </ul>
