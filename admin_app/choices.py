@@ -89,3 +89,11 @@ MEDIATYPECHOICES = (
     (FIGURE, "Figure"),
     (OTHER, "Other"),
 )
+
+WPACTIVITY = "activities"
+WPNONE = "none"
+
+WHITEPAPERCATS = (
+    (WPNONE, "No Category"),
+    (WPACTIVITY, "Activity Type"),
+)

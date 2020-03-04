@@ -104,7 +104,7 @@ def page_new(request):
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
         form = PageForm()
-    return render(request, 'pages/add.html', {'form': form, 'page_title': 'Add Page'})
+    return render(request, 'pages/add.html', {'form': form, 'page_title': 'Add Page or Whitepaper'})
 
 @permission_required('admin_app.can_edit_pages',login_url='/')
 def page_edit(request, pagename):

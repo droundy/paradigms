@@ -2,12 +2,15 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from admin_app.models import Pages
-from django_ace import AceWidget
+# from django_ace import AceWidget
+from admin_app.choices import *
 
 class PageForm(forms.ModelForm):
     page_content = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':16}), help_text='Use Latex Formatting')
 
     keywords = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':2}), help_text='Comma-separated list of topics/keywords: adiabatic susceptibility,entropy')
+
+    # whitepaper_category = forms.ChoiceField(choices=WHITEPAPERCATS, initial='none')
 
     class Meta:
         model = Pages
