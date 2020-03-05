@@ -21,11 +21,11 @@
       </h2>
       <ul class="list-group list-group-flush">
         {% if latex_problem.topics %}<li class="list-group-item">{{ latex_problem.topics|problemtopicbuttons }}</li>{% endif %}
-<<<<<<< HEAD
+
+
         <li class="list-group-item" id="problem_latexs">{% if perms.admin_app.can_edit_problem and '/problem/solution/' in request.path %}{{ latex_problem.problem_latex|latex_with_solution }}{% else %}{{ latex_problem.problem_latex|latex_omit_solution }}{% endif %}</li>
-=======
-        <li class="list-group-item">{{ latex_problem.problem_latex | latex_omit_solution }}</li>
->>>>>>> e0ae8bae2aac0af18dda50dce466042fc8e2333c
+
+        
         {% if figures %}
           <li class="list-inline-item">
             <h6 style="margin-left: 1em;">Media &amp; Figures</h6>
