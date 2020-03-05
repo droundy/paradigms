@@ -10,9 +10,9 @@
 </div>
 <div class="container">
     {% if perms.admin_app.can_edit_page %}
-        {{ whitepaper_category|pagelist:1 }}
+        {{ page_criteria|pagelist:1 }}
     {% else %}
-        {{ whitepaper_category|pagelist:0 }}
+        {{ page_criteria|pagelist:0 }}
     {% endif %}
 </div>
 {% endblock %}

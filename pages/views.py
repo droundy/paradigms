@@ -35,7 +35,7 @@ class Loggedout(TemplateView):
 def wp_list_activitytypes(request):
         # whitepapers = Pages.objects.filter(Q(whitepaper__exact=1)).order_by('title')
         context = {
-                'whitepaper_category': 'activities',
+                'page_criteria': 'activities',
                 'page_title': 'Activity Types',
         }
         return render(request, 'pages/list.html', context)
@@ -43,12 +43,12 @@ def wp_list_activitytypes(request):
 def wp_list_all(request):
         if request.user.has_perm("admin_app.change_problem"):
                 context = {
-                        'whitepaper_category': 'all',
+                        'page_criteria': 'all',
                         'page_title': 'All Whitepapers and Pages',
                 }
         else:
                 context = {
-                        'whitepaper_category': 'all',
+                        'page_criteria': 'all',
                         'page_title': 'All Whitepapers',
                 }
         return render(request, 'pages/list.html', context)

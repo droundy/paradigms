@@ -14,14 +14,37 @@ register = template.Library()
 
 @register.filter(needs_autoescape=True)
 def whitepaperdropdownlist(value, autoescape=True):
+    # Check to see if any records exist for this category of whitepaper
     if value:
-        links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
-        link_list = ''
-        for link in links:
-            link_list += '<a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a>'
-        return mark_safe(link_list)
+        links = links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value) and Q(publication__exact=1)).order_by('title')
+        
+        print(len(links))
+        if len(links) > 0:
+
+            # Find the pretty name for this whitepaper_category
+            for foo in WHITEPAPERCATS:
+                if foo[0] == value:
+                    thisName = foo[1]
+
+            if thisName:
+                link = '<a class="dropdown-item" href="/whitepapers/' + value + '/">' + thisName + '</a>'
+            return mark_safe(link)            
+            
+        else:
+            return mark_safe('')
     else:
-        return value
+        return mark_safe(';FOOOOO')
+
+    # <a class="dropdown-item" href="{% url 'wp_list_activitytypes' %}">Activity Types</a>
+
+    # if value:
+    #     links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
+    #     link_list = ''
+    #     for link in links:
+    #         link_list += '<a class="dropdown-item" href="/whitepaper/' + link.slug + '">' + link.title + '</a>'
+    #     return mark_safe(link_list)
+    # else:
+    #     return value
 
 @register.filter(needs_autoescape=True)
 def pagelist(value, authorization, autoescape=True):
