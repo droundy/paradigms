@@ -38,7 +38,7 @@
           Activity: {{ activity.title }}
         </h2>
         <div class="card-body">
-          <blockquote class="blockquote mb-0">{{ activity.overview_paragraph }}</blockquote>
+          <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.overview_paragraph|latex_with_solution }}{% else %}{{ activity.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }}  {% endif %}
@@ -59,10 +59,10 @@
         {% endif %}
 
         <div class="card-body">{% if activity.what_students_learn %}What students learn
-          <span class="col-sm-9">{{ activity.what_students_learn|latex_with_solution}}</span>{% endif %}
+          <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.what_students_learn|latex_with_solution }}{% else %}{{ activity.what_students_learn|latex_omit_solution }}{% endif %}</span>{% endif %}
         </div>
         {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
-          <span class="col-sm-9">{{ activity.notes|latex_with_solution }}</span></li></ul>{% endif %}
+          <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.activity_notes|latex_with_solution }}{% else %}{{ activity.activity_notes|latex_omit_solution }}{% endif %}</span></li></ul>{% endif %}
         {% if figures %}
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -80,7 +80,7 @@
 
       {% if activity.instructor_guide %}
         
-        <span class="col-sm-9">{{ activity.instructor_guide|latex_with_solution}}</span>{% endif %}
+        <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.instructor_guide|latex_with_solution }}{% else %}{{ activity.instructor_guide|latex_omit_solution }}{% endif %}</span>{% endif %}
         
         <!-- {% if figures %}
           <hr>      
@@ -110,16 +110,16 @@
         <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
 
         {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
-        <dd class="col-sm-9">{{ activity.prerequisite_knowledge| latex_with_solution }}</dd>{% endif %}
+        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.prerequisite_knowledge|latex_with_solution }}{% else %}{{ activity.prerequisite_knowledge|latex_omit_solution }}{% endif %}</dd>{% endif %}
 
         {% if activity.program_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Program Learning Outcomes</dt>
-        <dd class="col-sm-9">{{ activity.program_learning_outcomes | latex_with_solution }}</dd>{% endif %}
+        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.program_learning_outcomes|latex_with_solution }}{% else %}{{ activity.program_learning_outcomes|latex_omit_solution }}{% endif %}</dd>{% endif %}
 
         {% if activity.course_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Course Learning Outcomes</dt>
-        <dd class="col-sm-9">{{ activity.course_learning_outcomes| latex_with_solution }}</dd>{% endif %}
+        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.course_learning_outcomes|latex_with_solution }}{% else %}{{ activity.course_learning_outcomes|latex_omit_solution }}{% endif %}</dd>{% endif %}
 
         {% if activity.learning_progression_concepts and perms.admin_app.can_add_activity%}<dt class="col-sm-3">Learning Progression Concepts</dt>
-        <dd class="col-sm-9">{{ activity.learning_progression_concepts | latex_with_solution }}</dd>{% endif %}
+        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.learning_progression_concepts|latex_with_solution }}{% else %}{{ activity.learning_progression_concepts|latex_omit_solution }}{% endif %}</dd>{% endif %}
 
         {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
         <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}

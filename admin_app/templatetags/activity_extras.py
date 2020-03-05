@@ -59,7 +59,7 @@ def activitysequencepager(sequenceid, activityid, autoescape=True):
         for sequence in Sequence.objects.raw(sequence_name_sql): 
             sequence_html = ' <strong><a href="/sequences/' + str(sequenceid) + '"/>' + str(sequence.sequence_title) + '</a></strong>'
 
-            print(sequence_html)
+            # print(sequence_html)
         
         item_position_sql = 'SELECT id, item_position FROM admin_app_sequenceitems WHERE sequence_id = "' + str(sequenceid) + '" AND activity_id = "' + str(activityid) + '"'
         

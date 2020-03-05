@@ -22,9 +22,9 @@
             
             {% if activity.overview_paragraph %}
               {% if forloop.counter == 1 %}
-                <p>{{ activity.overview_paragraph| latex_with_solution }}</p>
+                <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
               {% else %}
-                <p class="overflow-auto">{{ activity.overview_paragraph| latex_with_solution }}</p>
+                <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
               {% endif %}
             {% endif %}
             <!-- {% if perms.admin_app.can_view_solution %}
