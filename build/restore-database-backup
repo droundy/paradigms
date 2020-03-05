@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ev
+
+if ! (echo $1 | grep sql); then
+    echo You need to give an sql backup file as an argument.
+    exit 1
+fi
+
+echo Dropping existing database
+mysql <<EOF
+DROP DATABASE IF EXISTS osu_production;
+CREATE DATABASE osu_production;
+EOF
+
+sed -i s/utf8mb4_0900_ai_ci/utf8mb4_general_ci/g $1
+
+mysql -e "source $1" osu_production

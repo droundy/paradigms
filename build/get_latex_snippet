@@ -44,3 +44,4 @@ python3 -m wheel unpack --dest python-module target/wheels/latex_snippet-*.whl
 rm -rf ../../latex_snippet
 cp -av python-module/*/latex_snippet ../../
 
+echo Successfully build and installed latex_snippet

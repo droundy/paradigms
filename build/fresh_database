@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -ev
+
+echo this script does not yet work
+exit 1
+
+source venv/bin/activate
+
+find . -path "*/migrations/*.py" -not -path './venv/*' -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc" -not -path './venv/*' -delete
+
+mysql <<EOF
+DROP DATABASE IF EXISTS osu_production;
+CREATE DATABASE osu_production;
+EOF
+
+python manage.py makemigrations
+python manage.py showmigrations
+python manage.py migrate
