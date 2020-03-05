@@ -2,6 +2,7 @@
 {% block content %}
 {% load problem_extras %}
 {% load activity_extras %}
+{% load latex %}
 
 <div class="container">
   <div class="card" style="margin-top: 10px;">
@@ -27,9 +28,9 @@
               
               {% if activity.overview_paragraph %}
                 {% if forloop.counter == 1 %}
-                  <p class="latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}"></p>
+                  <p>{{ activity.overview_paragraph| latex_with_solution }}</p>
                 {% else %}
-                  <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ activity.overview_paragraph|truncatewords:25 }}" id="activity_overview_paragraph{{ forloop.counter }}"></p>
+                  <p class="overflow-auto">{{ activity.overview_paragraph| latex_with_solution }}</p>
                 {% endif %}
               {% endif %}
             </div>
@@ -45,9 +46,9 @@
                 <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
                 {% if sequence.overview_paragraph %}
                   {% if forloop.counter == 1 %}
-                    <p class="latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
+                    <p>{{ sequence.overview_paragraph| latex_with_solution }}</p>
                   {% else %}
-                    <p class="overflow-auto latextorender tex2jax_ignore" data-latex="{{ sequence.overview_paragraph }}" id="sequence_overview_paragraph{{ forloop.counter }}"></p>
+                    <p class="overflow-auto">{{ sequence.overview_paragraph| latex_with_solution }}</p>
                   {% endif %}
                 {% endif %}
               </div>

@@ -49,8 +49,8 @@
               {% else %}
                 {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
               {% endif %}</h5>
-            <h6 class="card-subtitle mb-2 text-muted " id="activity_role{{ forloop.counter }}">{{ item.role_in_sequence | latex_with_solution }}</h6>
-            <div class="card-body" id="activity{{ forloop.counter }}">
+            <h6 class="card-subtitle mb-2 text-muted ">{{ item.role_in_sequence | latex_with_solution }}</h6>
+            <div class="card-body">
               {% if item.overview_paragraph %}{{ item.overview_paragraph | latex_with_solution }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex | latex_with_solution }}{% endif %}
             </div>
           </div>
