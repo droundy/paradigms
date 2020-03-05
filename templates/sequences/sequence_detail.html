@@ -27,14 +27,14 @@
   </nav>
 <!-- END NAVIGATION -->
 
-  {% if sequence.publication == '1' or perms.admin_app.can_add_sequence %}
+  {% if sequence.publication == True or perms.admin_app.can_add_sequence %}
     <div class="container">
       <div class="card">
         <h2 class="card-header">
           {{ sequence.title }} {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}
         </h2>
         <div class="card-body">
-          <blockquote class="blockquote mb-0">{{ sequence.overview_paragraph }}</blockquote>
+          <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ sequence.overview_paragraph|latex_with_solution }}{% else %}{{ sequence.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
         </div>
       </div>
     
@@ -49,9 +49,14 @@
               {% else %}
                 {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
               {% endif %}</h5>
-            <h6 class="card-subtitle mb-2 text-muted ">{{ item.role_in_sequence | latex_with_solution }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted ">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.role_in_sequence | latex_with_solution }}{% else %}{{ item.role_in_sequence | latex_omit_solution }}{% endif %}</h6>
             <div class="card-body">
-              {% if item.overview_paragraph %}{{ item.overview_paragraph | latex_with_solution }}{% endif %}{% if item.problem_latex %}{{ item.problem_latex | latex_with_solution }}{% endif %}
+              {% if item.overview_paragraph %}
+                {% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.overview_paragraph | latex_with_solution }}{% else %}{{ item.overview_paragraph | latex_omit_solution }}{% endif %}
+              {% endif %}              
+              {% if item.problem_latex %}
+                {% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.problem_latex | latex_with_solution }}{% else %}{{ item.problem_latex | latex_omit_solution }}{% endif %}
+              {% endif %}
             </div>
           </div>
         </div>

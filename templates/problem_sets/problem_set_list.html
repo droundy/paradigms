@@ -19,9 +19,9 @@
             <h5><a href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">{{ problem_set.title }}</a></h5>            
             {% if problem_set.instructions %}
               {% if forloop.counter == 1 %}
-                <p>{{ problem_set.instructions| latex_omit_solution }}</p>
+                <p>{% if perms.admin_app.can_add_sequence %}{{ problem_set.instructions| latex_with_solution }}{% else %}{{ problem_set.instructions| latex_omit_solution }}{% endif %}</p>
               {% else %}
-                <p class="overflow-auto">{{ problem_set.instructions| latex_omit_solution }}</p>
+                <p class="overflow-auto">{% if perms.admin_app.can_add_sequence %}{{ problem_set.instructions| latex_with_solution }}{% else %}{{ problem_set.instructions| latex_omit_solution }}{% endif %}</p>
               {% endif %}
             {% endif %}
           </div>

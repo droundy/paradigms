@@ -171,7 +171,7 @@ def sequence_detail(request, pk):
     activity_list = Sequence.objects.get(id=thisPrimaryKey).activities.all()
     form = SequenceForm(instance=sequence)
     view_name = 'sequence_detail'
-    print(sequence.title + "FOO")
+    # print(sequence.title + "FOO")
     context = {
         'sequence': sequence,
         'problem_list': problem_list,

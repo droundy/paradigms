@@ -28,7 +28,7 @@
           {{ problem_set.title }} {% if perms.admin_app.can_add_sequence %} <a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>{% endif %}
         </h2>
         <div class="card-body">
-          <blockquote class="blockquote mb-0">{{ problem_set.instructions }}</blockquote>
+          <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ problem_set.instructions|latex_with_solution }}{% else %}{{ problem_set.instructions|latex_omit_solution }}{% endif %}</blockquote>
         </div>
 
       </div><!-- End Card-->
@@ -38,8 +38,8 @@
       <div class="card" style="margin-bottom: 10px">
         <div class="card-body">
           <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a> <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a></h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ item.item_instructions | latex_omit_solution }}</h6>
-          <div class="card-body">{{ item.problem.problem_latex | latex_omit_solution }}</div>
+          <h6 class="card-subtitle mb-2 text-muted">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ item.item_instructions | latex_with_solution }}{% else %}{{ item.item_instructions | latex_omit_solution }}{% endif %}</h6>
+          <div class="card-body">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ item.problem.problem_latex | latex_with_solution }}{% else %}{{ item.problem.problem_latex | latex_omit_solution }}{% endif %}</div>
         </div>
       </div>
       {% endfor %}
