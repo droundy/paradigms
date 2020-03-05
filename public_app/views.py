@@ -151,7 +151,7 @@ def problem_display_html_solution(request, pk):
     # this_key = request.path.split("/")[-1]
     this_key = pk
     figures_list = Problem.objects.get(id=this_key).figures.all()
-    print(this_key)
+    # print(this_key)
     context = {
         'page_problem': data,
         'latex_problem': latex_problem,

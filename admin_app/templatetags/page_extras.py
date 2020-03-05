@@ -18,7 +18,7 @@ def whitepaperdropdownlist(value, autoescape=True):
     if value:
         links = links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value) and Q(publication__exact=1)).order_by('title')
         
-        print(len(links))
+        # print(len(links))
         if len(links) > 0:
 
             # Find the pretty name for this whitepaper_category
