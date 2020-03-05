@@ -1,5 +1,6 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load crispy_forms_tags %}
+{% load latex %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block content %}
     {% for message in messages %}
@@ -37,8 +38,8 @@
       <div class="card" style="margin-bottom: 10px">
         <div class="card-body">
           <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a> <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a></h5>
-          <h6 class="card-subtitle mb-2 text-muted latextorender tex2jax_ignore" data-latex="{{ item.item_instructions }}" id="problem_instructions{{ forloop.counter }}"></h6>
-          <div class="card-body latextorender tex2jax_ignore" data-latex="{{ item.problem.problem_latex }}" id="problem_latex{{forloop.counter}}"></div>
+          <h6 class="card-subtitle mb-2 text-muted">{{ item.item_instructions | latex_omit_solution }}</h6>
+          <div class="card-body">{{ item.problem.problem_latex | latex_omit_solution }}</div>
         </div>
       </div>
       {% endfor %}
