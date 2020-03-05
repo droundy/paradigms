@@ -1,5 +1,6 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load activity_extras %}
+{% load latex %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block content %}
   <div class="container">
@@ -21,9 +22,9 @@
             
             {% if activity.overview_paragraph %}
               {% if forloop.counter == 1 %}
-                <p class="latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}" data-latex="{{ activity.overview_paragraph }}"></p>
+                <p>{{ activity.overview_paragraph| latex_with_solution }}</p>
               {% else %}
-                <p class="overflow-auto latextorender tex2jax_ignore" id="activity_overview_paragraph{{ forloop.counter }}" data-latex="{{ activity.overview_paragraph }}"></p>
+                <p class="overflow-auto">{{ activity.overview_paragraph| latex_with_solution }}</p>
               {% endif %}
             {% endif %}
             <!-- {% if perms.admin_app.can_view_solution %}

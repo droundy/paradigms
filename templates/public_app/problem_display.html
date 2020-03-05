@@ -1,5 +1,6 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load problem_extras %}
+{% load latex %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block content %}
   <input type="hidden" name="problem_latex" id="id_problem_latex" value="{% autoescape off %}{{ page_problem }}{% endautoescape %}">
@@ -20,7 +21,7 @@
       </h2>
       <ul class="list-group list-group-flush">
         {% if latex_problem.topics %}<li class="list-group-item">{{ latex_problem.topics|problemtopicbuttons }}</li>{% endif %}
-        <li class="list-group-item latextorender tex2jax_ignore" data-latex="{{ latex_problem.problem_latex }}" id="problem_latexs">{{ latex_problem.problem_latex }}</li>
+        <li class="list-group-item">{{ latex_problem.problem_latex | latex_omit_solution }}</li>
         {% if figures %}
           <li class="list-inline-item">
             <h6 style="margin-left: 1em;">Media &amp; Figures</h6>
