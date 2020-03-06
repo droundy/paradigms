@@ -10,6 +10,10 @@
         border: none;
         background-color: rgba(0,0,0,0);
     }
+    a:not(.btn), a {
+        text-decoration: none;
+        color: #000000;
+    }
     .btn {
         display: none;
     }
