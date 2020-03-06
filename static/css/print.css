@@ -8,5 +8,8 @@
     blockquote, pre {
         border: none;
     }
+    body {
+        font-family: "Times New Roman", Times, serif;
+    }
 }
 * { overflow: visible !important; }
