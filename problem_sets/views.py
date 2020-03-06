@@ -38,7 +38,7 @@ def problem_set_add(request):
 def problem_set_details_solution(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
-    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk)
+    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
     page_title = problem_set.title
 
     # print(page_title)
@@ -124,7 +124,7 @@ def list_problem_sets(request):
 def problem_set_details(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
-    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk)
+    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
     # print(problem_set_problems)
     context = {
         'problem_set': problem_set,
