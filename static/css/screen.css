@@ -39,9 +39,6 @@
     padding: 1em;
     border-left: 5px solid #999;
   }
-  .solution:before {
-    display: none;
-  }
   .solution:not(:first-of-type) {
     margin-top: .5em;
   }

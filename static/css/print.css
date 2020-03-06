@@ -17,6 +17,9 @@
     .btn {
         display: none;
     }
+    blockquote.solution {
+        border-left: 5px solid #999;
+    }
     .card-body {
         padding-bottom: 0.25rem;
         padding-top: 0.25rem;
@@ -24,5 +27,11 @@
     body {
         font-family: "Times New Roman", Times, serif;
     }
+    .solution {
+        margin: 0 auto;
+        padding: 0.5em;
+        border-left: 5px solid #999;
+    }
+
 }
 * { overflow: visible !important; }

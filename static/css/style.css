@@ -1,0 +1,26 @@
+.solution {
+  margin: 0 auto;
+  padding: 1em;
+  border-left: 5px solid #999;
+}
+.solution:not(:first-of-type) {
+  margin-top: .5em;
+}
+.homework .solution:before {
+    content: "Solution";
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+.homework ol {
+    counter-reset: list;
+}
+.homework ol > li {
+    list-style: none;
+    position: relative;
+}
+.homework ol > li:before {
+    counter-increment: list;
+    content: counter(list, lower-alpha) ") ";
+    position: absolute;
+    left: -1.4em;
+}
