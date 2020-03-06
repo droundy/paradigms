@@ -1,6 +1,12 @@
 @media print {
-    .noprint { 
-      visibility: hidden; 
-    } 
+    .noprint {
+      visibility: hidden;
+    }
+    nav {
+      visibility: hidden;
+    }
+    blockquote, pre {
+        border: none;
+    }
 }
 * { overflow: visible !important; }
