@@ -1,12 +1,17 @@
 @media print {
     .noprint {
-      visibility: hidden;
+        visibility: hidden;
+        display: none;
     }
     nav {
-      visibility: hidden;
+      display: none;
     }
-    blockquote, pre {
+    blockquote, pre, div, .card-body, .card-header, .card {
         border: none;
+    }
+    .card-body {
+        padding-bottom: 0.25rem;
+        padding-top: 0.25rem;
     }
     body {
         font-family: "Times New Roman", Times, serif;
