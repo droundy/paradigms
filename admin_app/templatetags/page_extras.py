@@ -36,7 +36,6 @@ def whitepaperdropdownlist(value, autoescape=True):
         return mark_safe(';FOOOOO')
 
     # <a class="dropdown-item" href="{% url 'wp_list_activitytypes' %}">Activity Types</a>
-
     # if value:
     #     links = Pages.objects.filter(Q(whitepaper__exact=1) and Q(whitepaper_category__exact=value)).order_by('title')
     #     link_list = ''
