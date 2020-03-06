@@ -8,6 +8,7 @@
     }
     blockquote, pre, div, .card-body, .card-header, .card {
         border: none;
+        background-color: rgba(0,0,0,0);
     }
     .card-body {
         padding-bottom: 0.25rem;
