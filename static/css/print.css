@@ -10,6 +10,9 @@
         border: none;
         background-color: rgba(0,0,0,0);
     }
+    a.btn {
+        display: none;
+    }
     .card-body {
         padding-bottom: 0.25rem;
         padding-top: 0.25rem;
