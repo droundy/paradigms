@@ -38,6 +38,10 @@ def modify_html(html):
     # Apply the bootstrap classes to semantic elements.
     for t in soup.find_all('img'):
         append_class(t, 'img-fluid')
+        # get any figures with no path from the /media/figures/
+        # directory.
+        if 'src' in t and '/' not in t['src']:
+            t['src'] = '/media/figures/' + t['src']
     for t in soup.find_all('figure'):
         append_class(t, 'figure')
         if 'wrapfigure' in t['class']:
