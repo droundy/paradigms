@@ -246,11 +246,6 @@
 
         latexEditors.forEach(function(editElement) {
 
-            // Define the name of the buffer and preview for targeting
-            // by looking up the id of the div defined as latexeditor
-            // and replace the ace_ in the div id with preview or buffer.
-            var previewName = editElement.id.replace(/ace/g, "preview")
-            var bufferName = editElement.id.replace(/ace/g, "buffer")
             var updateName = editElement.id.replace(/ace/g, "id")
 
             // alert("UPDATE NAME: " + updateName)
