@@ -1,4 +1,9 @@
 @media print {
+    @page  {
+        size: auto;   /* auto is the initial value */
+        margin: 0mm;  /* avoid header/footer in chrome/firefox */
+        padding: 1in;
+    }
     .noprint {
         visibility: hidden;
         display: none;
@@ -26,6 +31,7 @@
     }
     body {
         font-family: "Times New Roman", Times, serif;
+        margin: 1.6cm; /* to make up for the zero margin on @page */
     }
     .solution {
         margin: 0 auto;
