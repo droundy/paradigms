@@ -214,7 +214,9 @@
             ["Typeset",MathJax.Hub,renderElement]
         );
     }
-
+    function hasClass(element, className) {
+      return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+    }
     async function run() {
         // First up we need to actually load the wasm file, so we use the
         // default export to inform it where the wasm file is located on the
@@ -231,24 +233,30 @@
         // modes
         await init();
 
-        // find all of the divs with latextorender class
-        var latexDivs = document.querySelectorAll("[data-latex]");
+        document.querySelectorAll(".latexarea").forEach(function(editElement) {
+            // create ace editor
+            var aceDiv = document.createElement( 'div' );
+            editElement.parentNode.insertBefore( aceDiv, editElement );
 
-        // Loop through each of these divs
-        for (let renderElement of latexDivs) {
-            // use await with async function so display can be updated
-            // before we go through ALL of the latex rendering.
-            await renderLatex(renderElement);
-        }
-
-        var latexEditors = document.querySelectorAll(".latexeditor");
-        // var latexEditors = document.querySelectorAll(".django-ace-editor");
-
-        latexEditors.forEach(function(editElement) {
-
-            var updateName = editElement.id.replace(/ace/g, "id")
-
-            // alert("UPDATE NAME: " + updateName)
+            var editor = ace.edit(aceDiv, {
+                mode: "ace/mode/latex",
+                // autoScrollEditorIntoView: true,
+                maxLines: 4000,
+                minLines: 15,
+                wrap: true,
+            });
+            editor.renderer.setShowGutter(false);
+            editor.session.setValue(editElement.value)
+            editElement.style.display = "none"
+            // find the parent form and add submit event listener.
+            // The idea here is to update the editElement value right
+            // before submitting.
+            var form = editElement
+            while (form && form.localName != "form") form = form.parentNode
+            form.addEventListener("submit", function() {
+                // update value of textarea to match value in ace
+                editElement.value = editor.getValue()
+            }, true)
 
             // And afterwards we can use all the functionality defined in wasm.
             var Preview = {
@@ -258,7 +266,7 @@
                 timeout: null,     // store setTimout id
                 mjRunning: false,  // true when MathJax is processing
                 mjPending: false,  // true when a typeset has been queued
-                oldText: null,     // used to check if an update is needed
+                oldtext: null,     // used to check if an update is needed
                 math_html: null,   // used to store the new html we want
 
                 //
@@ -324,13 +332,29 @@
                           ["PreviewDone",this]
                         );
                     }
-                    // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-                    // This limits the width, but may need to be changed to the .figure class
-                    var images = document.querySelectorAll(".preview img");
-                    var i;
-                    for(i = 0; i < images.length; i++) {
-                        images[i].className += " img-fluid";
-                    }
+                    // Apply the bootstrap classs to elements in the
+                    // buffer.  See latex.py for code that really
+                    // ought to match.
+                    this.buffer.querySelectorAll("img")
+                        .forEach(function (elem) {
+                            elem.className += " img-fluid";
+                        });
+                    this.buffer.querySelectorAll("figure")
+                        .forEach(function (elem) {
+                            elem.className += " figure";
+                            if (hasClass(elem, "wrapfigure")) {
+                                elem.className += ' float-sm-right';
+                                elem.className += ' mw-100';
+                            }
+                            e.querySelectorAll("img")
+                                .forEach(function(i) {
+                                    i.className += " figure-img";
+                                });
+                        });
+                    this.buffer.querySelectorAll("figcaption")
+                        .forEach(function (elem) {
+                            elem.className += " figure-caption";
+                        });
                 },
 
                 //
@@ -353,21 +377,9 @@
             var my_timeout = null;
             function update_preview() {
                 Preview.math_html = html_with_solution(editor.getValue());
-                // Update the hidden element used to submit the values to the database
-                document.getElementById(updateName).value = editor.getValue();
-                // document.getElementById("id_problem_latex").value = editor.getValue();
                 Preview.CreatePreview();
 
             }
-            var editor = ace.edit(editElement, {
-                mode: "ace/mode/latex",
-                // autoScrollEditorIntoView: true,
-                maxLines: 4000,
-                minLines: 15,
-                wrap: true,
-            });
-            // editor.session.setMode("ace/mode/latex");
-            editor.renderer.setShowGutter(false);
             update_preview(editor.getValue());
 
 
@@ -377,180 +389,16 @@
                 }
                 my_timeout = setTimeout(update_preview, 150);
             });
-            if(document.getElementById("guide_readonly").value == "1") {
-              editor.setReadOnly(true)
-            }
 
         });
+
+
     }
 
     run();
 
     </script>
 
-    <!-- TEMP TESTING -->
-    <script>
-      $(function() {
-
-          var Preview = {
-            delay: 150,        // delay after keystroke before updating
-            preview: null,     // filled in by Init below
-            buffer: null,      // filled in by Init below
-            timeout: null,     // store setTimout id
-            mjRunning: false,  // true when MathJax is processing
-            mjPending: false,  // true when a typeset has been queued
-            oldText: null,     // used to check if an update is needed
-            math_html: null,   // used to store the new html we want
-            //
-            //  Get the preview and buffer DIV's
-            //
-            Init: function () {
-              this.preview = document.getElementById("preview");
-              this.buffer = document.getElementById("buffer");
-            },
-
-            //
-            //  Switch the buffer and preview, and display the right one.
-            //  (We use visibility:hidden rather than display:none since
-            //  the results of running MathJax are more accurate that way.)
-            //
-            SwapBuffers: function () {
-              var buffer = this.preview, preview = this.buffer;
-              this.buffer = buffer; this.preview = preview;
-              buffer.style.visibility = "hidden"; // buffer.style.position = "absolute";
-                  // preview.style.position = "";
-              preview.style.visibility = "";
-            },
-
-            //
-            //  Creates the preview and runs MathJax on it.
-            //  If MathJax is already trying to render the code, return
-            //  If the text hasn't changed, return
-            //  Otherwise, indicate that MathJax is running, and start the
-            //    typesetting.  After it is done, call PreviewDone.
-            //
-            CreatePreview: function () {
-              Preview.timeout = null;
-              if (this.mjPending) return;
-              var text = this.math_html;
-              if (text === this.oldtext) return;
-              if (this.mjRunning) {
-                this.mjPending = true;
-                MathJax.Hub.Queue(["CreatePreview",this]);
-              } else {
-                this.buffer.innerHTML = this.oldtext = text;
-                this.mjRunning = true;
-                // console.log('foo');
-                MathJax.Hub.Queue(
-                    // There is a confusing bug where apparently
-                    // resetEquationNumbers is sometimes undefined.  The if
-                    // statement here apparently works around that bug.
-                    function () {
-                        if (MathJax.InputJax.TeX.resetEquationNumbers) {
-                            MathJax.InputJax.TeX.resetEquationNumbers();
-                        }
-                    },
-                    // ["resetEquationNumbers",MathJax.InputJax.TeX],
-                    ["Typeset",MathJax.Hub,this.buffer],
-              ["PreviewDone",this]
-                );
-              }
-              // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-              // This limits the width, but may need to be changed to the .figure class
-              var images = document.querySelectorAll(".preview img");
-              var i;
-              for(i = 0; i < images.length; i++) {
-                  images[i].className += " img-fluid";
-              }
-            },
-
-            //
-            //  Indicate that MathJax is no longer running,
-            //  and swap the buffers to show the results.
-            //
-            PreviewDone: function () {
-              this.mjRunning = this.mjPending = false;
-              this.SwapBuffers();
-              // Apply the bootstrap img-fluid class to all images in the divs with .preview css class
-              // This limits the width, but may need to be changed to the .figure class
-              var images = document.querySelectorAll(".preview img");
-              var i;
-              for(i = 0; i < images.length; i++) {
-                  images[i].className += " img-fluid";
-              }
-            }
-
-          };
-
-          //
-          //  Cache a callback to the CreatePreview action
-          //
-          Preview.Init();
-          Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
-          // make sure it can run more than once
-          Preview.callback.autoReset = true;
-          var my_timeout = null;
-
-              function update_preview () {
-
-                // alert("SENDING: " + $("#id_problem_latex").html());
-
-                $.ajax({
-                  type : 'POST',
-                  url : '/problem/render/html',
-                  data : {
-                    problem_latex : $("#id_problem_latex").val()
-                    // problem_latex : $("#id_problem_latex").html()
-                  }, // end data
-                  success : function(data) {
-                    // alert("RECEIVED: " + data);
-                    Preview.math_html = data;
-                    // Success!
-                    Preview.CreatePreview();
-                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-                  }, // end success
-                  error : function(data) {
-                    Preview.math_html = data;
-                    // We reached our target server, but it returned an error
-                    Preview.CreatePreview();
-                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-                  } // end error
-
-                }) // end ajax
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-              } // end function update_preview
-
-              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#preview"]);
-              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#buffer"]);
-
-              var preview = $("#preview")
-
-              // ACE EDITOR SETTINGS ARE DEFINED IN forms.py IN AceWidget
-
-              update_preview($("#id_problem_latex").val());
-
-              $("body").on('DOMSubtreeModified', "#latex_editor", function() {
-                // alert("modified subtree")
-                if (my_timeout) {
-                    clearTimeout(my_timeout);
-                }
-                my_timeout = setTimeout(update_preview, 150);
-
-              });
-
-        });
-
-        // editor.setOption('showLineNumbers', false);
-        // editor.setOption('showGutter', false);
-    </script>
-    <script>
-      $(function() {
-        $(".preview > img").addClass("img-fluid")
-      })
-    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-latex.js" type="text/javascript" charset="utf-8"></script>
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
