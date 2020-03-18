@@ -338,6 +338,9 @@
                     this.buffer.querySelectorAll("img")
                         .forEach(function (elem) {
                             elem.className += " img-fluid";
+                            if (!elem.getAttribute('src').includes("/")) {
+                                elem.src = "/media/figures/" + elem.getAttribute('src');
+                            }
                         });
                     this.buffer.querySelectorAll("figure")
                         .forEach(function (elem) {
