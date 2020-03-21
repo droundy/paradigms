@@ -8,7 +8,7 @@ from admin_app.models import ProblemSet, ProblemSetItems, Problem
 
 from admin_app.choices import *
 
-class ProblemSetForm(forms.ModelForm):
+class ProblemSetAddForm(forms.ModelForm):
     class Meta:
         model = ProblemSet
         fields = ('title','instructions','author','author_info','publication')
@@ -32,8 +32,7 @@ class ProblemSetForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
 
-# class ProblemGroupForm(forms.ModelForm):
-class ProblemGroupForm(forms.ModelForm):
+class ProblemSetEditForm(forms.ModelForm):
 
     instructions = forms.CharField(
                     widget=forms.Textarea(
@@ -56,7 +55,7 @@ class ProblemGroupForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
 
-class BaseProblemGroupForm(BaseFormSet):
+class BaseProblemSetForm(BaseFormSet):
 
     instructions = forms.CharField(
                     widget=forms.Textarea(
@@ -79,10 +78,10 @@ class BaseProblemGroupForm(BaseFormSet):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
 
-ProblemGroupItemsFormset = inlineformset_factory(
+ProblemSetItemsFormset = inlineformset_factory(
     ProblemSet,
     ProblemSetItems,
-    form=BaseProblemGroupForm,
+    form=BaseProblemSetForm,
     fields=(
         'item_position',
         'problem',

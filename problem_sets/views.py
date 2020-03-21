@@ -9,7 +9,20 @@ import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from admin_app.models import ProblemSet, Problem, ProblemSetItems
-from problem_sets.forms import ProblemGroupForm, ProblemGroupItemsFormset, ProblemSetForm
+from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm
+
+HTML_WHITESPACE = ' \t\n\f\r'
+
+def strip_whitespace(string): 
+    """Use the HTML definition of "space character",
+    not all Unicode Whitespace.
+
+    http://www.whatwg.org/html#strip-leading-and-trailing-whitespace
+    http://www.whatwg.org/html#space-character
+
+    """
+    return string.strip(HTML_WHITESPACE)
+
 # import tkinter as tk
 # from tkinter import Tk, BOTH, Menu
 
@@ -19,7 +32,7 @@ logger = logging.getLogger(__name__)
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
 def problem_set_add(request):
     if request.method == "POST":
-        form = ProblemSetForm(request.POST)
+        form = ProblemSetAddForm(request.POST)
         if form.is_valid():
             # messages.error(request, 'TWOTWOTWO')
             problem_set = form.save(commit=False)
@@ -30,7 +43,7 @@ def problem_set_add(request):
             messages.error(request, form.errors)
             #return redirect('problem_edit_preview', pk=problem.pk)
     else:
-        form = ProblemSetForm()
+        form = ProblemSetAddForm()
     return render(request, 'problem_sets/problem_set_add.html', {'form': form, 'page_title': 'Add Problem Set'})
 
 
@@ -60,7 +73,7 @@ def edit_problem_set(request, problem_set_id):
 
     problem_group = ProblemSet.objects.get(pk=problem_set_id)
 
-    problem_group_form = ProblemGroupForm(instance=problem_group)
+    problem_group_form = ProblemSetEditForm(instance=problem_group)
 
     ProblemFormset = inlineformset_factory(
         ProblemSet, ProblemSetItems,
@@ -70,8 +83,8 @@ def edit_problem_set(request, problem_set_id):
             'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
             # 'problem': forms.
             },
-        formset=ProblemGroupItemsFormset,
-        extra=1)
+        formset=ProblemSetItemsFormset,
+        extra=5)
 
     ProblemFormset2 = inlineformset_factory(
         ProblemSet, ProblemSetItems,
@@ -81,20 +94,89 @@ def edit_problem_set(request, problem_set_id):
             'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
             # 'problem': forms.
             },
-        formset=ProblemGroupItemsFormset,
-        extra=1)
+        formset=ProblemSetItemsFormset,
+        extra=5)
 
     if request.method == 'POST':
 
-        problem_group_form = ProblemGroupForm(request.POST, instance=problem_group)
+        data = request.POST.copy()
 
-        problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+        # Handle a comma-delimited list of problem ids to be added to this list
+        if data.get('bulk_item_list'):
 
-        if problem_group_item_form.is_valid() and problem_group_form.is_valid():
-            problem_group_item_form.save()
+            print('BULK ITEM LIST FOUND ' + data.get('bulk_item_list'))
+            
+            #  Find the highest number in this sequence so far. May be zero, null, or empty
+            highest_position_record = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set_id).order_by("-item_position").first()
 
-            problem_group_form.save()
+            #  We found an existing record, set the highest position variable
+            if highest_position_record:
+                print("HIGEST POSITION RECORD: " + str(highest_position_record) + '---' + str(highest_position_record.item_position))
+                highestPosition = highest_position_record.item_position
+            else:
+                # This problem set has no items so far. Set a default high position. 
+                highestPosition = 0
+
+            print("HIGHEST POSITION: " + str(highestPosition))
+
+            # Set up a counter to increment the positions for new problems in this set
+            if highestPosition:
+                counter = highestPosition + 1
+            else:
+                counter = 0
+
+            # Take the input and clean it up, filtering for whitespace and non-numeric entries
+            for problemID in map(strip_whitespace, data.get('bulk_item_list').split(',')):
+                
+                #  Is this a digit?
+                if problemID.isdigit():
+                    
+                    # Display the problem id
+                    print("PROBLEM ID: " + problemID)
+                    
+                    # Determine if this problem exists or not
+                    try:
+                        thisProblem = Problem.objects.get(id=problemID)
+                        print("THIS PROBLEM RESULT: " + str(thisProblem))
+                        # Problem found, add it to the problem set items
+
+                        # But first, check to see if this problem exists in this set.
+                        itemTest = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set_id).filter(problem_id=problemID).first()
+
+                        print(itemTest)
+
+                        if itemTest:
+                            print("Item Already Exists in this Problem Set")
+                        else:
+                            newItem = ProblemSetItems(item_position=counter, problem_set_id=problem_set_id, problem_id=problemID)
+
+                            newItem.save()
+
+                            # Increase the counter
+                            counter = counter + 1
+
+                    except Problem.DoesNotExist:
+                        print("PROBLEM NOT FOUND")
+                        # If the problem does not exist do not add it, pause process, warn user
+                        # Or fail silently. 
+
+                else:
+                    print("NOT AN INTEGER")
+
             return redirect('edit_problem_set', problem_set_id=problem_group.id)
+
+        # Handle problems using the inline formset
+        else:
+            problem_group_form = ProblemSetEditForm(request.POST, instance=problem_group)
+
+            problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+
+            if problem_group_item_form.is_valid() and problem_group_form.is_valid():
+                problem_group_item_form.save()
+
+                problem_group_form.save()
+            
+                return redirect('edit_problem_set', problem_set_id=problem_group.id)
 
     # problem_set_item_form = ProblemFormset(instance=problem_set)
     problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
@@ -110,6 +192,36 @@ def edit_problem_set(request, problem_set_id):
         'page_title': problem_group.title + ' - Edit',
     }
     return render(request, 'problem_sets/problem_set_edit.html', context)
+
+@permission_required('admin_app.can_edit_problem_set',login_url='/')
+def edit_problem_set_2(request, problem_set_id):
+    # Find the problem set details
+    problem_set = ProblemSet.objects.get(pk=problem_set_id)
+
+    problem_set_form = ProblemSetEditForm(instance=problem_set)    
+
+    ProblemsFormset = inlineformset_factory(
+        ProblemSet, ProblemSetItems,
+        fields=('item_position','problem','item_instructions',),
+        can_delete=True,
+        widgets={
+            'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
+            # 'problem': forms.
+            },
+        extra=5,
+        formset=ProblemSetItemsFormset,
+    )
+
+    problem_set_item_form = ProblemsFormset(instance=problem_set, queryset=problem_set.problemsetitems_set.order_by("item_position"))
+
+    context = {
+        'formset': problem_set_item_form,
+        'problem_set': problem_set,
+        'problem_set_form': problem_set_form,
+        'problem_set_id': problem_set_id,
+        'page_title': problem_set.title + ' - Edit',
+    }
+    return render(request, 'problem_sets/problem_set_edit_2.html', context)
 
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
 def list_problem_sets(request):

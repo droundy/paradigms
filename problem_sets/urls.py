@@ -11,6 +11,7 @@ urlpatterns = [
     path('<problem_set_id>/', views.problem_set_details, name='problem_set_details'),
     path('solution/<problem_set_id>/', views.problem_set_details_solution, name='problem_set_details_solution'),
     path('edit/<problem_set_id>/', views.edit_problem_set, name='edit_problem_set'),
+    path('edit2/<problem_set_id>/', views.edit_problem_set_2, name='edit_problem_set_2'),
 
 ]
 

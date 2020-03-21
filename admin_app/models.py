@@ -62,27 +62,7 @@ class Figure(models.Model):
         name, extension = os.path.splitext(self.file.name)
         return extension
 
-class ProblemSet(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    date_added = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
-    instructions = models.TextField(blank=True, null=True)
-    author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    author_info = models.CharField(max_length=4096, blank=True, null=True)
-    publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing", verbose_name="Publish Problem Set")
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
-    def __str__(self):
-        return '%s %s' % (self.title, self.instructions)
-
-    class Meta:
-        permissions = (
-            ("can_edit_problem_set", "Edit Problem Set"),
-            ("can_add_problem_set","Add Problem Set"),
-            ("can_view_solution","View Solution"))
 
 class Problem(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -108,6 +88,29 @@ class Problem(models.Model):
         permissions = (
             ("can_edit_problem", "Edit Problem"),
             ("can_add_problem","Add Problem"),
+            ("can_view_solution","View Solution"))
+
+class ProblemSet(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    date_added = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+    instructions = models.TextField(blank=True, null=True)
+    author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author_info = models.CharField(max_length=4096, blank=True, null=True)
+    publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing", verbose_name="Publish Problem Set")
+    items = models.ManyToManyField(Problem, through="ProblemSetItems")
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return '%s %s' % (self.title, self.instructions)
+
+    class Meta:
+        permissions = (
+            ("can_edit_problem_set", "Edit Problem Set"),
+            ("can_add_problem_set","Add Problem Set"),
             ("can_view_solution","View Solution"))
 
 class ProblemSetItems(models.Model):

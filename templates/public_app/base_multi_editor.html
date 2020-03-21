@@ -129,11 +129,12 @@
             addText: '',
             deleteText: 'remove',
         });
-        $('.formset_row').formset({
-            addText: 'add problem',
-            deleteText: 'remove',
-            // prefix: 'familymember_set'
-        });
+        // This is not working as expected with inline formset factory using a through many-to-many table
+        // $('.formset_row').formset({
+        //     // addText: 'add problem',
+        //     deleteText: 'remove',
+        //     // prefix: 'familymember_set'
+        // });
 
         // Sort every select drop-down alphabetically
         // // id_problemsetitems_set-0-problem
