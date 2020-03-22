@@ -20,19 +20,20 @@ import logging
 def HomeworkSearchView(request):
     query = request.POST.get("q")
     search_type = request.POST.get("search_type")
-    # print(search_type)
-    # print(query)
+    print(search_type)
+    print(query)
     if search_type == "Homework" or search_type == "Both":
-        # print("retrieving problems")
+        print("retrieving problems")
         if request.user.has_perm("admin_app.change_problem"):
             problem_list = Problem.objects.filter(
-                Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query)
+                Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) 
             )
+            print("NEW THING")
         else:
             problem_list = Problem.objects.filter(
-                (Q(problem_title__icontains=query) & Q(publication__icontains='1')) | (Q(topics__icontains=query) & Q(publication__icontains='1')) | (Q(course__icontains=query) & Q(publication__icontains='1'))
+                (Q(problem_title__icontains=query) & Q(publication__icontains='1')) | (Q(topics__icontains=query) & Q(publication__icontains='1')) | (Q(old_name__icontains=query) & Q(publication__icontains='1')) |(Q(course__icontains=query) & Q(publication__icontains='1'))
             )
-        # print(problem_list)
+        print(problem_list)
     if search_type == "Activities" or search_type == "Both":
         if request.user.has_perm("admin_app.change_problem"):
             activity_list = Activity.objects.filter(
@@ -80,11 +81,11 @@ def HomeworkKeywordView(request, searchterm):
     print(query)
     if request.user.has_perm("admin_app.change_problem"):
         problem_list = Problem.objects.filter(
-            Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query)
+            Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) 
         )
     else: 
         problem_list = Problem.objects.filter(
-            (Q(problem_title__icontains=query) & Q(publication__icontains=1)) | (Q(topics__icontains=query) & Q(publication__icontains=1)) | (Q(course__icontains=query) & Q(publication__icontains=1))
+            (Q(problem_title__icontains=query) & Q(publication__icontains=1)) | (Q(topics__icontains=query) & Q(publication__icontains=1)) | (Q(old_name__icontains=query) & Q(publication__icontains=1)) | (Q(course__icontains=query) & Q(publication__icontains=1))
         )
 # publication_status
     if request.user.has_perm("admin_app.change_problem"):
