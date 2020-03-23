@@ -26,12 +26,12 @@ def HomeworkSearchView(request):
         print("retrieving problems")
         if request.user.has_perm("admin_app.change_problem"):
             problem_list = Problem.objects.filter(
-                Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) 
+                Q(problem_title__icontains=query) | Q(problem_latex__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) 
             )
             print("NEW THING")
         else:
             problem_list = Problem.objects.filter(
-                (Q(problem_title__icontains=query) & Q(publication__icontains='1')) | (Q(topics__icontains=query) & Q(publication__icontains='1')) | (Q(old_name__icontains=query) & Q(publication__icontains='1')) |(Q(course__icontains=query) & Q(publication__icontains='1'))
+                (Q(problem_title__icontains=query) & Q(publication__icontains='1')) | (Q(topics__icontains=query) & Q(publication__icontains='1')) | (Q(old_name__icontains=query) & Q(publication__icontains='1')) |(Q(course__icontains=query) & Q(publication__icontains='1')) | (Q(problem_latex__icontains=query) & Q(publication__icontains='1'))
             )
         print(problem_list)
     if search_type == "Activities" or search_type == "Both":
@@ -81,11 +81,11 @@ def HomeworkKeywordView(request, searchterm):
     print(query)
     if request.user.has_perm("admin_app.change_problem"):
         problem_list = Problem.objects.filter(
-            Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) 
+            Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(problem_latex__icontains=query)
         )
     else: 
         problem_list = Problem.objects.filter(
-            (Q(problem_title__icontains=query) & Q(publication__icontains=1)) | (Q(topics__icontains=query) & Q(publication__icontains=1)) | (Q(old_name__icontains=query) & Q(publication__icontains=1)) | (Q(course__icontains=query) & Q(publication__icontains=1))
+            (Q(problem_title__icontains=query) & Q(publication__icontains=1)) | (Q(topics__icontains=query) & Q(publication__icontains=1)) | (Q(old_name__icontains=query) & Q(publication__icontains=1)) | (Q(course__icontains=query) & Q(publication__icontains=1)) | (Q(problem_latex__icontains=query) & Q(publication__icontains='1'))
         )
 # publication_status
     if request.user.has_perm("admin_app.change_problem"):

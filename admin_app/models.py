@@ -62,8 +62,6 @@ class Figure(models.Model):
         name, extension = os.path.splitext(self.file.name)
         return extension
 
-
-
 class Problem(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     problem_title = models.CharField(max_length=255)
