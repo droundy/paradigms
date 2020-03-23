@@ -166,7 +166,7 @@ def sequence_title(request, pk):
 def sequence_detail(request, pk):
     sequence = get_object_or_404(Sequence, pk=pk)
     thisPrimaryKey = sequence.pk
-    item_list_sql = 'select i.id, p.problem_title, a.title, p.problem_latex, a.overview_paragraph, i.role_in_sequence, i.problem_id, i.activity_id from admin_app_sequenceitems i LEFT JOIN admin_app_activity a ON i.activity_id = a.id LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.sequence_id = "' + str(pk) + '" ORDER BY i.item_position'
+    item_list_sql = 'select i.id, p.problem_title, a.title, p.problem_latex, a.overview_paragraph, i.role_in_sequence, i.problem_id, i.activity_id, p.publication, a.publication_status from admin_app_sequenceitems i LEFT JOIN admin_app_activity a ON i.activity_id = a.id LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.sequence_id = "' + str(pk) + '" ORDER BY i.item_position'
     sequence_items = SequenceItems.objects.raw(item_list_sql)
     # logger.error('THISPRIMARYKEY: ' + str(thisPrimaryKey))
     problem_list = Sequence.objects.get(id=thisPrimaryKey).problems.all()
@@ -188,7 +188,7 @@ def sequence_detail(request, pk):
 def sequence_detail_solution(request, pk):
     sequence = get_object_or_404(Sequence, pk=pk)
     thisPrimaryKey = sequence.pk
-    item_list_sql = 'select i.id, p.problem_title, a.title, p.problem_latex, a.overview_paragraph, i.role_in_sequence from admin_app_sequenceitems i LEFT JOIN admin_app_activity a ON i.activity_id = a.id LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.sequence_id = "' + str(pk) + '" ORDER BY i.item_position'
+    item_list_sql = 'select i.id, p.problem_title, a.title, p.problem_latex, a.overview_paragraph, i.role_in_sequence, p.publication, a.publication_status from admin_app_sequenceitems i LEFT JOIN admin_app_activity a ON i.activity_id = a.id LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.sequence_id = "' + str(pk) + '" ORDER BY i.item_position'
     sequence_items = SequenceItems.objects.raw(item_list_sql)
     # sequence_items = SequenceItems.objects.filter(sequence=sequence).order_by('item_position')
     # logger.error('THISPRIMARYKEY: ' + str(thisPrimaryKey))

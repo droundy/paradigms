@@ -34,7 +34,7 @@
           {{ sequence.title }} {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}          
         </h2>
         {% if sequence.publication != 1 %}
-          <span class="badge badge-danger">Unpublished</span>
+          <span class="badge badge-danger">{{ sequence.publication }} Unpublished</span>
         {% endif%}
         <div class="card-body">
           <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ sequence.overview_paragraph|latex_with_solution }}{% else %}{{ sequence.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
@@ -58,9 +58,12 @@
               {% if item.required == 'Extra Credit' %}
                 <span class="badge badge-success">{{ item.required }}</span>
               {% endif%}
-              {% if item.published != True %}
-                <span class="badge badge-danger">Unpublished</span>
-              {% endif%}
+              {% if "Draft" in item.publication_status and not item.publication %}
+                <span class="badge badge-danger">Unpublished </span>
+              {% endif %}
+              {% if item.publication != 1 and not item.publication_status %}
+                <span class="badge badge-danger">Unpublished </span>
+              {% endif %}
             </h5>
             <h6 class="card-subtitle mb-2 text-muted ">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.role_in_sequence | latex_with_solution }}{% else %}{{ item.role_in_sequence | latex_omit_solution }}{% endif %}</h6>
             <div class="card-body">
