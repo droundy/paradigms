@@ -167,6 +167,7 @@ def edit_problem_set(request, problem_set_id):
 
         # Handle problems using the inline formset
         else:
+            
             problem_group_form = ProblemSetEditForm(request.POST, instance=problem_group)
 
             problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))

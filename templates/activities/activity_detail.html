@@ -43,7 +43,8 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }}  {% endif %}
           {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span> {{ activity.time_estimate }} min. {% endif %}
-          {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span> {{ activity.equipment_required }}{% endif %}</li>
+          {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span> {{ activity.equipment_required }}{% endif %}
+          {% if "Draft" in activity.publication_status %} <span class="badge badge-danger" style="margin-left: 1em;"><span class="oi oi-warning"></span> Draft</span>{% endif %}</li>
           {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}</li>{% endif %}
         </ul>
 

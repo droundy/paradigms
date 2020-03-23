@@ -31,8 +31,11 @@
     <div class="container">
       <div class="card">
         <h2 class="card-header">
-          {{ sequence.title }} {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}
+          {{ sequence.title }} {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}          
         </h2>
+        {% if sequence.publication != 1 %}
+          <span class="badge badge-danger">Unpublished</span>
+        {% endif%}
         <div class="card-body">
           <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ sequence.overview_paragraph|latex_with_solution }}{% else %}{{ sequence.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
         </div>
@@ -48,7 +51,17 @@
                 {{ forloop.counter }}. <a href="{% url 'activity_detail' pk=item.activity_id %}">Activity: {{ item.title }}</a>
               {% else %}
                 {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
-              {% endif %}</h5>
+              {% endif %}
+              {% if item.required == 'Optional' or item.required == 'Practice' %}
+                <span class="badge badge-secondary">{{ item.required }}</span>
+              {% endif%}
+              {% if item.required == 'Extra Credit' %}
+                <span class="badge badge-success">{{ item.required }}</span>
+              {% endif%}
+              {% if item.published != True %}
+                <span class="badge badge-danger">Unpublished</span>
+              {% endif%}
+            </h5>
             <h6 class="card-subtitle mb-2 text-muted ">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.role_in_sequence | latex_with_solution }}{% else %}{{ item.role_in_sequence | latex_omit_solution }}{% endif %}</h6>
             <div class="card-body">
               {% if item.overview_paragraph %}

@@ -43,6 +43,11 @@ class ItemUpdateForm(forms.ModelForm):
             'activity': forms.HiddenInput(),
             }
 # DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    required = forms.ChoiceField(
+        choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
+        )
+
     item_position = forms.DecimalField(
                     max_digits=5,
                     decimal_places=2,
@@ -69,6 +74,7 @@ class ItemUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['item_position'].label = ""
         self.fields['role_in_sequence'].label = ""
+        self.fields['required'].label = "Optional?"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(

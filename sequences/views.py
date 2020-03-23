@@ -83,11 +83,11 @@ def sequence_edit(request, pk):
     # item_data = [{'item_position': i.item_position, 'role_in_sequence': i.role_in_sequence, 'item_problem_title': i.problem_title, 'item_title': i.title, 'sequence_id': i.sequence_id, 'problem_id': i.problem_id, 'activity_id': i.activity_id}
         # for i in item_list]
 
-    item_data = [{'item_position': i.item_position, 'role_in_sequence': i.role_in_sequence, 'problem': i.problem, 'activity': i.activity, 'sequence': i.sequence}
+    item_data = [{'item_position': i.item_position, 'role_in_sequence': i.role_in_sequence, 'problem': i.problem, 'activity': i.activity, 'sequence': i.sequence, 'required': i.required}
         for i in item_list]
 
     # print("ITEM_DATA:")
-    # print(item_data)
+    print(item_data)
 
     if request.method == "POST":
         form = SequenceForm(request.POST, request.FILES, instance=sequence)
@@ -102,18 +102,20 @@ def sequence_edit(request, pk):
             new_items = []
 
             for f in item_formset:
-                # print("STARTING NEW FORMSET ITEM")
+                print("STARTING NEW FORMSET ITEM")
                 cd = f.cleaned_data
                 # print("CD: " + str(cd))
                 role_in_sequence = cd.get('role_in_sequence')
                 item_position = cd.get('item_position')
+                required = cd.get('required')
+                # print("REQUIRED: " + required)
                 sequence = cd.get('sequence')
                 problem = cd.get('problem')
                 activity = cd.get('activity')
 
                 # if item_position and role_in_sequence:
                 # print("LOADING NEW ITEM INTO ARRAY")
-                new_items.append(SequenceItems(item_position=item_position, role_in_sequence=role_in_sequence, sequence=sequence, activity=activity, problem=problem))
+                new_items.append(SequenceItems(item_position=item_position, role_in_sequence=role_in_sequence, sequence=sequence, activity=activity, problem=problem, required=required))
                 # print("NEW ITEMS ARRAY: " + str(new_items))
 
             try:

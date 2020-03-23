@@ -11,9 +11,16 @@ from admin_app.choices import *
 class ProblemSetAddForm(forms.ModelForm):
     class Meta:
         model = ProblemSet
-        fields = ('title','instructions','author','author_info','publication')
+        fields = ('title','course','instructions','due_date','author','author_info','publication','course')
         exclude=()
 
+    due_date = forms.SplitDateTimeField(
+        label="Due Date and Time", widget=forms.SplitDateTimeWidget(
+            date_attrs=({'class':'form-control', 'type':'date'}), # or override the ID, "id":id
+            time_attrs=({'class':'form-control', 'type':'time'})
+        ),
+        required=False
+    )
     instructions = forms.CharField(
                     widget=forms.Textarea(
                         attrs={'style':'max-height: 15em',
@@ -31,9 +38,43 @@ class ProblemSetAddForm(forms.ModelForm):
         self.fields['author_info'].label = "Author Information"
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
+        self.helper.layout = Layout(
+            Row(
+                Column('title', css_class='form-group col-md-12 mb0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('course', css_class='form-group col-md-4 mb0'),
+                Column('due_date', css_class='form-group col-md-4 mb0'),
+                Column('publication', css_class='form-group col-md-4 mb0'),
+                css_class='form-row'
+            ),
+            'instructions',
+            Row(
+                Column('author', css_class='form-group col-md-6 mb0'),
+                Column('author_info', css_class='form-group col-md-6 mb0'),
+                css_class='form-row'
+            )
+
+        ) # End layout
 
 class ProblemSetEditForm(forms.ModelForm):
+    
+    # due_date = forms.DateField(
+    #     widget=forms.TextInput(
+    #         attrs={'type': 'date'}
+    #     ),
+    #     required=False
+    # )
 
+    due_date = forms.SplitDateTimeField(
+        label="Due Date and Time", widget=forms.SplitDateTimeWidget(
+            date_attrs=({'class':'form-control', 'type':'date'}), # or override the ID, "id":id
+            time_attrs=({'class':'form-control', 'type':'time'})
+        ),
+        required=False
+    )
+    
     instructions = forms.CharField(
                     widget=forms.Textarea(
                         attrs={'style':'max-height: 60em',
@@ -46,7 +87,7 @@ class ProblemSetEditForm(forms.ModelForm):
 
     class Meta:
         model = ProblemSet
-        fields = ('title','date_added','published_date','instructions','author','author_info','publication')
+        fields = ('title','course','instructions','due_date','author','author_info','publication')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -54,8 +95,40 @@ class ProblemSetEditForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
+        self.helper.layout = Layout(
+            Row(
+                Column('title', css_class='form-group col-md-12 mb0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('course', css_class='form-group col-md-4 mb0'),
+                Column('due_date', css_class='form-group col-md-4 mb0'),
+                Column('publication', css_class='form-group col-md-4 mb0'),
+                css_class='form-row'
+            ),
+            'instructions',
+            Row(
+                Column('author', css_class='form-group col-md-6 mb0'),
+                Column('author_info', css_class='form-group col-md-6 mb0'),
+                css_class='form-row'
+            ))
 
 class BaseProblemSetForm(BaseFormSet):
+
+    # due_date = forms.DateField(
+    #     widget=forms.TextInput(
+    #         attrs={'type': 'date'}
+    #     ),
+    #     required=False
+    # )
+
+    due_date = forms.SplitDateTimeField(
+        label="Due Date and Time", widget=forms.SplitDateTimeWidget(
+            date_attrs=({'class':'form-control', 'type':'date'}), # or override the ID, "id":id
+            time_attrs=({'class':'form-control', 'type':'time'})
+        ),
+        required=False
+    )
 
     instructions = forms.CharField(
                     widget=forms.Textarea(
@@ -69,7 +142,7 @@ class BaseProblemSetForm(BaseFormSet):
 
     class Meta:
         model = ProblemSet
-        fields = ('title','date_added','published_date','instructions','author','author_info','publication')
+        fields = ('title','course','instructions','due_date','author','author_info','publication','course')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -77,6 +150,23 @@ class BaseProblemSetForm(BaseFormSet):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Problem Set'))
+        self.helper.layout = Layout(
+            Row(
+                Column('title', css_class='form-group col-md-12 mb0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('course', css_class='form-group col-md-4 mb0'),
+                Column('due_date', css_class='form-group col-md-4 mb0'),
+                Column('publication', css_class='form-group col-md-4 mb0'),
+                css_class='form-row'
+            ),
+            'instructions',
+            Row(
+                Column('author', css_class='form-group col-md-6 mb0'),
+                Column('author_info', css_class='form-group col-md-6 mb0'),
+                css_class='form-row'
+            ))
 
 ProblemSetItemsFormset = inlineformset_factory(
     ProblemSet,

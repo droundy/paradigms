@@ -97,6 +97,8 @@ class ProblemSet(models.Model):
     author_info = models.CharField(max_length=4096, blank=True, null=True)
     publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing", verbose_name="Publish Problem Set")
     items = models.ManyToManyField(Problem, through="ProblemSetItems")
+    course = models.CharField(max_length=255, blank=True, null=True)
+    due_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -209,6 +211,7 @@ class SequenceItems(models.Model):
     activity = models.ForeignKey(Activity, blank=True, null=True, on_delete=models.CASCADE, related_name='itemActivities')
     item_position = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     role_in_sequence = models.TextField(blank=True, null=True)
+    required = models.CharField(max_length=255, blank=True)
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)

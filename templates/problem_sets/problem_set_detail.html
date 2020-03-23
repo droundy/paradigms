@@ -25,8 +25,11 @@
     <div class="container">
       <div class="card">
         <h2 class="card-header">
-          {{ problem_set.title }} {% if perms.admin_app.can_add_sequence %} <a class="btn btn-secondary btn-sm" href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">Edit</a>{% endif %}
+          {% if perms.admin_app.can_add_sequence %}<a href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">{{ problem_set.title }} </a>{% else %}{{ problem_set.title }} {% endif %}
         </h2>
+        {% if problem_set.publication != 1 %}
+          <span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>
+        {% endif%}
         <div class="card-body">
           <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ problem_set.instructions|latex_with_solution }}{% else %}{{ problem_set.instructions|latex_omit_solution }}{% endif %}</blockquote>
         </div>
@@ -37,7 +40,7 @@
       {% for item in problem_set_problems %}
       <div class="card" style="margin-bottom: 10px">
         <div class="card-body homework">
-          <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a> <a class="btn btn-secondary btn-sm" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a></h5>
+          <h5 class="card-title">{{ forloop.counter }}. <a href="{% url 'problem_display_html_solution' pk=item.problem.pk %}">{{ item.problem.problem_title }}</a> {% if problem.publication != 1 %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Unpublished</span>{% endif%}<!--<a class="btn btn-sm btn-secondary" href="{% url 'problem_edit_preview' pk=item.problem.pk %}">Edit</a>--></h5>
           <h6 class="card-subtitle mb-2 text-muted">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ item.item_instructions | latex_with_solution }}{% else %}{{ item.item_instructions | latex_omit_solution }}{% endif %}</h6>
           <div class="card-body">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ item.problem.problem_latex | latex_with_solution }}{% else %}{{ item.problem.problem_latex | latex_omit_solution }}{% endif %}</div>
         </div>

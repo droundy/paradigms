@@ -97,3 +97,15 @@ WHITEPAPERCATS = (
     (WPNONE, "No Category"),
     (WPACTIVITY, "Activity Type"),
 )
+
+SIREQUIRED = "Required"
+SIOPTIONAL = "Optional"
+SIPRACTICE = "Practice"
+SIEXTRA = "Extra Credit"
+
+SEQUENCEITEMOPTIONS = (
+    (SIREQUIRED, "Required"),
+    (SIPRACTICE, "Practice"),
+    (SIOPTIONAL, "Optional"),
+    (SIEXTRA, "Extra Credit"),
+)

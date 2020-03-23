@@ -16,7 +16,9 @@
     {% for sequence in sequences %}
         <div class="card overflow-auto" style="margin-bottom: 10px;">
           <div class="card-body">
-            <h5><a href="{% if perms.admin_app.can_add_sequence %}{% url 'sequence_detail_solution' pk=sequence.pk %}{% else %}{% url 'sequence_detail' pk=sequence.pk %}{% endif %}">{{ sequence.title }}</a></h5>
+            <h5><a href="{% if perms.admin_app.can_add_sequence %}{% url 'sequence_detail_solution' pk=sequence.pk %}{% else %}{% url 'sequence_detail' pk=sequence.pk %}{% endif %}">{{ sequence.title }}</a>{% if sequence.publication != 1 %}
+              <span class="badge badge-danger">Unpublished</span>
+            {% endif%}</h5>
             <!-- {% if perms.admin_app.can_view_solution %}
             <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
               <a class="btn btn-primary btn-sm" href="{% url 'sequence_detail_solution' pk=sequence.pk %}">View</a>
