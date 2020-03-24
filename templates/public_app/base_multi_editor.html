@@ -139,7 +139,21 @@
         //     deleteText: 'remove',
         //     // prefix: 'familymember_set'
         // });
-
+		
+		$("#activityFilter").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+		    $("#availableActivityList li").filter(function() {
+		    	$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		    });
+		});
+		
+		$("#problemFilter").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+		    $("#availableProblemList li").filter(function() {
+		    	$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		    });
+		});
+  
         // Sort every select drop-down alphabetically
         // // id_problemsetitems_set-0-problem
         var formsetSelects = document.querySelectorAll("[id^=id_problemsetitems_set-]");

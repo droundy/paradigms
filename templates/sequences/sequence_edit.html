@@ -54,8 +54,9 @@
           <div class="card">
             <div class="card-header" id="headingActivity">
               <button class="btn btn-link" data-toggle="collapse" data-target="#collapseActivities" aria-expanded="true" aria-controls="collapseActivities">
-                <h5 class="mb-0">Activities</h5>
+                <h5 class="mb-0">Activities</h5>                
               </button>
+              <input id="activityFilter" type="text" placeholder="Search..">
             </div>
             <div id="collapseActivities" class="collapse show" aria-labelledby="headingActivity" data-parent="#accordion">
               <div class="card-body">
@@ -64,7 +65,7 @@
                     <!-- Available Activities -->
                     <div class="col">
                       {% if activities.count %}
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush" id="availableActivityList">
                         {% for activity in activities.all|dictsort:"title" %}
                           <li class="list-group-item">
                             <form action="{% url 'associate_activity' sequence.id activity.id %}" method="post">
@@ -87,8 +88,9 @@
             <div class="card">
               <div class="card-header" id="headingProblem">
                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseProblem" aria-expanded="true" aria-controls="collapseProblem">
-                  <h5 class="mb-0">Homework Problems</h5>
+                  <h5 class="mb-0">Homework Problems</h5>                  
                 </button>
+                <input id="problemFilter" type="text" placeholder="Search..">
               </div>
               <div id="collapseProblem" class="collapse show" aria-labelledby="headingProblem" data-parent="#accordion">
                 <div class="card-body">
@@ -97,7 +99,7 @@
                     <!-- Available Problems -->
                     <div class="col">
                       {% if problems.count %}
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush" id="availableProblemList">
                         {% for problem in problems.all|dictsort:"problem_title" %}
                           <li class="list-group-item">
                             <form action="{% url 'associate_problem' sequence.id problem.id %}" method="post">
