@@ -40,16 +40,12 @@ def output_home(request):
 def output_problem_set_display(request, problem_set_id):
     # Retrieve the ProblemSet record
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
-    problem_set_items = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
-
     page_title = problem_set.title
-    print(page_title)
-    print(problem_set_items)
 
+    # Pass the content to the template for use/rendering
     context = {
         'problem_set': problem_set,
         'page_title': page_title,
-        'problem_set_items': problem_set_items,
         'page_title': problem_set.title,
     }
 
@@ -60,13 +56,16 @@ def output_problem_set_pdf(request, problem_set_id):
 
     # Retrieve the ProblemSet record
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
+    page_title = problem_set.title
 
+    # Pass the content to the template for use/rendering
     context = {
         'problem_set': problem_set,
+        'page_title': page_title,
         'page_title': problem_set.title,
     }
 
-    # Pass the invoice info to template (from weasyprint samples) and render it back to us as a string
+    # Pass the problem set info to template (from weasyprint samples) and render it back to us as a string
     html_string = render_to_string('output/problem_set_render.html', context)
 
     # Use weasyprint to deal with the html string

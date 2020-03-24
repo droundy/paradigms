@@ -5,12 +5,13 @@
     <h1>{{ problem_set.title }}</h1>
     {% if problem_set.due_date %}Due Date: {{ problem_set.due_date }}{% endif %}
 
+    {{ problem_set.instructions|latex_omit_solution }}
+
     {% for item in problem_set.set_problems.all %}
 
       <h2>{{ forloop.counter }}. {{ item.problem.problem_title }}</h2>
 
-      {{ item.problem.problem_latex }}
-      {{ problem_set.instructions|latex_omit_solution }}
+      {{ item.problem.problem_latex|latex_omit_solution }}
 
     {% endfor %}
 
