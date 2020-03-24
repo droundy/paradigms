@@ -115,12 +115,19 @@ class ProblemSet(models.Model):
 
 class ProblemSetItems(models.Model):
     problem = models.ForeignKey(Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblem')
-    problem_set = models.ForeignKey(ProblemSet, blank=True, null=True, on_delete=models.CASCADE)
+    problem_set = models.ForeignKey(ProblemSet, blank=True, null=True, on_delete=models.CASCADE, related_name='set_problems')
     item_position = models.DecimalField(max_digits=5, decimal_places=2, default=1, blank=True, null=True)
     item_instructions = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['item_position']
     # def __str__(self):
     #     return self.problem
+
+class ProblemSetPDFs(models.Model):
+    pdf = models.FileField(upload_to='problem_set_pdfs/')
+    problem_set = models.ForeignKey(ProblemSet, on_delete=models.CASCADE, related_name="problem_set_pdfs")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
 class FigureAssociations(models.Model):
     figure = models.ForeignKey(Figure, on_delete=models.CASCADE)

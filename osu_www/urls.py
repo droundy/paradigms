@@ -27,9 +27,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('search/', include('site_directory.urls')),
-    
+
     #path('', views.index, name='index'),
-    path('problem/',include('public_app.urls')),    
+    path('problem/',include('public_app.urls')),
 
     # Load urls for various apps
     path('sequences/', include('sequences.urls')),
@@ -39,7 +39,8 @@ urlpatterns = [
     path('problem_sets/', include('problem_sets.urls')),
     url(r'^activity_media/', include(('activity_media.urls', 'activity_media'), namespace='activity_media')),
     url(r'^page_media/', include(('page_media.urls', 'page_media'), namespace='page_media')),
-    
+    path('output/', include('output.urls')),
+
     # User management
     # Need to set up templates for these user login/logout/signup links
     # Add the following to lib/python3.6/site-packages/allauth/templates/account/*.html files
@@ -47,7 +48,7 @@ urlpatterns = [
     # <!-- "account/base.html" -->
     path('users/', include('users.urls')),
     path('accounts/', include('allauth.urls')),\
-    
+
     # About, home/index, history, and courses are all contained in the Pages app
     path('', include('pages.urls')),
     # path('page/', include('pages.urls')),

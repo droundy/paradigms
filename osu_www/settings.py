@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'activity_media',
     'sequences',
     'problem_sets',
+    'output',
 
     'django_ace',
 ]

@@ -1,14 +1,113 @@
 <!doctype html>
 {% load static %}
-{% load socialaccount %}
-{% load page_extras %}
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Literata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'open-iconic/font/css/open-iconic-bootstrap.min.css' %}">
+    <link href="invoice.css" media="print" rel="stylesheet">
+    <title>{% block title %}Problem Set Title{% endblock %}</title>
+    <meta name="description" content="Problem Set PDF">
+    <meta name="author" content="Oregon State University Physics">
+    <style media="print">
+      @charset "UTF-8";
+
+    @import url('https://fonts.googleapis.com/css?family=Special+Elite&display=swap');
+    @page {
+    margin: 3cm;
+    @bottom-left {
+      color: #ff6d03;
+      /* font-family: Pacifico; */
+      /* font-family: 'Calistoga', cursive; */
+      font-family: 'Special Elite', cursive;
+      content: '♥ Thank you!'; }
+    @bottom-right {
+      color: #666;
+      content: 'ari@colorcode.studio | +1 541 513 1889 | https://colorcode.studio';
+      /* font-family: Pacifico; */
+      /* font-family: 'Calistoga', cursive; */
+      font-family: 'Special Elite', cursive;
+      font-size: 9pt; } }
+
+    html {
+      color: #14213d;
+      font-family: Source Sans Pro;
+      font-size: 11pt;
+      line-height: 1.6; }
+    html body {
+      margin: 0; }
+    html h1 {
+      /* color: #1ee494; */
+      /* color: #666; */
+      /* color: #ff6d03; */
+      color: #666;
+      /* font-family: Pacifico; */
+      /* font-family: 'Calistoga', cursive; */
+      font-family: 'Special Elite', cursive;
+      font-size: 40pt;
+      margin: 0; }
+    html aside {
+      display: flex;
+      margin: 2em 0 4em; }
+    html aside address {
+      font-style: normal;
+      white-space: pre-line; }
+    html aside address#from {
+      color: #a9a;
+      flex: 1; }
+    html aside address#to {
+      text-align: right; }
+    html dl {
+      text-align: right;
+      position: absolute;
+      right: 0;
+      top: 0; }
+    html dl dt, html dl dd {
+      display: inline;
+      margin: 0; }
+    html dl dt {
+      color: #a9a; }
+    html dl dt::before {
+      content: '';
+      display: block; }
+    html dl dt::after {
+      content: ':'; }
+    html table {
+      border-collapse: collapse;
+      width: 100%; }
+    html table td {
+      vertical-align:top;
+    }
+    html table th {
+      border-bottom: .2mm solid #a9a;
+      color: #a9a;
+      font-size: 10pt;
+      font-weight: 400;
+      padding-bottom: .25cm;
+      text-transform: uppercase; }
+    html table td {
+      padding-top: 5mm; }
+      html table td:last-of-type {
+        /* color: #666; */
+        color: #ff6d03;
+        font-weight: bold;
+        text-align: right; }
+    html table th, html table td {
+      text-align: center; }
+      html table th:first-of-type, html table td:first-of-type {
+        text-align: left; }
+      html table th:last-of-type, html table td:last-of-type {
+        text-align: right; }
+    html table#total {
+      background: #f6f6f6;
+      border-color: #f6f6f6;
+      border-style: solid;
+      border-width: 2cm 3cm;
+      bottom: 0;
+      font-size: 20pt;
+      margin: 0 -3cm;
+      position: absolute;
+      width: 18cm; }
+    </style>
+
     <style type="text/css">
       @import "/static/css/style.css";
     </style>
@@ -18,167 +117,7 @@
     <style type="text/css" media="screen">
       @import "/static/css/screen.css";
     </style>
-    <title>{% block title %}Paradigms at Oregon State University{% endblock %}</title>
-    {{ form.media }}
-  </head>
-  <body>
-  <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3366cc;">
-
-      <a class="navbar-brand" href="/"><img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;"> Paradigms @ OSU</a>
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNavTop" aria-controls="publicNavTop" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="publicNavTop">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="/activities">Activities</a>
-          </li> -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownActivities" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Activities</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownActivities">
-              <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
-              <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
-              {% if perms.admin_app.can_edit_problem %}<a class="dropdown-item" href="{% url 'page_display' pagename='courses' %}">Courses</a>{% endif %}
-              <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>{% if perms.admin_app.can_edit_problem %}
-              <a class="dropdown-item" href="{% url 'list_problem_sets' %}">Problem Sets</a>{% endif %}
-              <a class="dropdown-item" href="{% url 'page_display' pagename='props-and-equipment' %}">Props &amp; Equipment</a>
-            </div>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownWhitepapers" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Whitepapers</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownWhitepapers">
-              <!-- <a class="dropdown-item" href="{% url 'wp_list_activitytypes' %}">Activity Types</a>               -->
-              {{ 'activities'|whitepaperdropdownlist }}
-              {% if perms.admin_app.can_edit_problem %}
-              <a class="dropdown-item" href="{% url 'wp_list_all' %}">All Pages &amp; Whitepapers</a>
-              <a class="dropdown-item" href="{% url 'page_new' %}">Add Page or Whitepaper</a>
-              {% endif %}
-            </div>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAbout" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
-              <a class="dropdown-item" href="{% url 'page_display' pagename='about' %}">About</a>
-              <a class="dropdown-item" href="{% url 'page_display' pagename='history' %}">History</a>
-              <a class="dropdown-item" target="_blank" href="https://physics.oregonstate.edu/mathbook/P20/">Study of the Paradigms</a>
-            </div>
-          </li>
-
-        {% if user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownAccount">
-              <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
-            </div>
-          </li>
-        {%  else %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownAccount">
-              <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
-              <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% provider_login_url 'google' %}">Log In (Google)</a>
-            </div>
-          </li>
-        {% endif %}
-        </ul>
-
-        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
-          {% csrf_token %}
-          <input class="form-control-sm mr-sm-1" type="search" name="q" id="q" placeholder="Search">
-          <input type="hidden" name="search_type" value="Both">
-          <button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search Homework or Activities by title or topic"></span></button>
-        </form>
-
-      </div>
-    </nav>
-
-  <!-- END NAVIGATION   -->
-    <div class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-              {% block content %}
-                <!-- <div class="row">
-                  <div class="col">
-                    <h3>Figure Manager</h3>
-                  </div>
-                </div> -->
-
-                {% block figure_content %}
-                {% endblock %}
-              {% endblock %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script src="{% static 'js/django-dynamic-formset/src/jquery.formset.js' %}"></script>
-    <script>
-
-        // Ari's Javascript
-        
-        $('.item-formset').formset({
-            addText: '',
-            deleteText: 'remove',
-        });
-
-        $(".delete-row").addClass("btn btn-sm btn-warning");
-        $(".delete-row").append(' <span class="oi oi-arrow-right" title="Remove Activity" alt="Remove Activity from Sequence"></span>')
-
-        // This is not working as expected with inline formset factory using a through many-to-many table
-        // $('.formset_row').formset({
-        //     // addText: 'add problem',
-        //     deleteText: 'remove',
-        //     // prefix: 'familymember_set'
-        // });
-
-    		$("#activityFilter").on("keyup", function() {
-    			var value = $(this).val().toLowerCase();
-    		    $("#availableActivityList li").filter(function() {
-    		    	$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    		    });
-    		});
-
-    		$("#problemFilter").on("keyup", function() {
-    			var value = $(this).val().toLowerCase();
-    		    $("#availableProblemList li").filter(function() {
-    		    	$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    		    });
-    		});
-
-        // Sort every select drop-down alphabetically
-        // // id_problemsetitems_set-0-problem
-        var formsetSelects = document.querySelectorAll("[id^=id_problemsetitems_set-]");
-        formsetSelects.forEach(function(editElement) {
-          // Limit search to the ids that end in -problem
-          var thisID = editElement.id
-          if( thisID.endsWith("problem") ) {
-            // alert(thisID)
-            var sel = $('#' + thisID);
-            var selected = sel.val(); // cache selected value, before reordering
-            var opts_list = sel.find('option');
-            opts_list.sort(function(a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
-            sel.html('').append(opts_list);
-            sel.val(selected); // set cached selected value
-          }
-        })
-
-
-  // select default item after sorting (first item)
-  // $('select').get(0).selectedIndex = 0;
-    </script>
-
+    
     <script src="/static/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     {% block javascript %}
     {% endblock %}
@@ -454,5 +393,11 @@
       });
     </script>
 
-  </body>
+
+
+    </head>
+    <body>
+      {% block content %}
+      {% endblock %}
+    </body>
 </html>
