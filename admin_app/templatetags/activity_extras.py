@@ -67,7 +67,9 @@ def activitysequencepager(sequenceid, activityid, autoescape=True):
         for position in SequenceItems.objects.raw(item_position_sql):
             # print(position.item_position)
 
-            smaller_item_sql = 'SELECT s.title AS sequence_title, i.id, i.item_position, i.problem_id, i.activity_id, a.title AS activity_title, p.problem_title FROM admin_app_sequence s, admin_app_sequenceitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id LEFT JOIN admin_app_activity a ON i.activity_id = a.id WHERE s.id = "' + str(sequenceid) + '" AND sequence_id = "' + str(sequenceid) + '" AND item_position < "' + str(position.item_position) + '" ORDER BY item_position ASC LIMIT 1;'
+            smaller_item_sql = 'SELECT s.title AS sequence_title, i.id, i.item_position, i.problem_id, i.activity_id, a.title AS activity_title, p.problem_title FROM admin_app_sequence s, admin_app_sequenceitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id LEFT JOIN admin_app_activity a ON i.activity_id = a.id WHERE s.id = "' + str(sequenceid) + '" AND sequence_id = "' + str(sequenceid) + '" AND item_position < "' + str(position.item_position) + '" ORDER BY item_position DESC  LIMIT 1;'
+            
+            print("SMALLER: " + smaller_item_sql)
         
             smaller_item_records = SequenceItems.objects.raw(smaller_item_sql)
 
@@ -87,6 +89,8 @@ def activitysequencepager(sequenceid, activityid, autoescape=True):
                 return_html = str(smaller_html) + ' <a href="/sequence/' + str(sequenceid) + '"/>' + str(item.sequence_title) + '</a>'
 
             bigger_item_sql = 'SELECT s.title AS sequence_title, i.id, i.item_position, i.problem_id, i.activity_id, a.title AS activity_title, p.problem_title FROM admin_app_sequence s, admin_app_sequenceitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id LEFT JOIN admin_app_activity a ON i.activity_id = a.id WHERE s.id = "' + str(sequenceid) + '" AND sequence_id = "' + str(sequenceid) + '" AND item_position > "' + str(position.item_position) + '" ORDER BY item_position ASC LIMIT 1;'
+            
+            print('BIGGER: ' + bigger_item_sql)
         
             bigger_item_records = SequenceItems.objects.raw(bigger_item_sql)
 
