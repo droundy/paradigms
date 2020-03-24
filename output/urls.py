@@ -3,6 +3,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from output import views
+from django.conf.urls.defaults import url, patterns
+from wkhtmltopdf.views import PDFTemplateView
 
 urlpatterns = [
     path('', views.output_home, name='output_home'),
@@ -17,7 +19,10 @@ urlpatterns = [
     # A page to verify layout of problem set and initiate a pdf
     path('problem_set/display/<problem_set_id>/', views.output_problem_set_display, name='output_problem_set_display'),
 
-    path('problem_set/pdf/<problem_set_id>/', views.output_problem_set_pdf, name='output_problem_set_pdf'),
+    # path('problem_set/pdf/<problem_set_id>/', views.output_problem_set_pdf, name='output_problem_set_pdf'),
+
+	path('problem_set/pdf/<problem_set_id>/', views.output_pdf, name='output_pdf'),
+
 
     # path('invoices/<client_id>/', views.list_client_invoices, name='list_client_invoices'),
 ]

@@ -20,6 +20,10 @@ import subprocess, os, uuid
 import unicodedata
 import logging
 import datetime
+
+from django.contrib.sites.models import Site
+import pdfkit
+
 # import django_filters
 from decimal import Decimal
 
@@ -31,6 +35,17 @@ from django.http import FileResponse
 from django.template.loader import render_to_string
 
 from weasyprint import HTML
+
+def output_pdf(request, problem_set_id):
+	current_url = Site.objects.get_current()
+	print(current_url)
+	pdf = pdfkit.from_url("https://www.google.com", False)
+	
+	response = HttpResponse(pdf,content_type='application/pdf')
+	
+	response = HttpResponse['Content-Disposition'] = 'attachment; filename="foo.pdf"'
+	
+	return response
 
 def output_home(request):
     problem_sets = ProblemSet.objects.all().order_by('title')

@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     #'latexify',
 
     'crispy_forms',
+	'wkhtmltopdf',
 
     'pages',
     'page_media',
