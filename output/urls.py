@@ -3,8 +3,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from output import views
-from django.conf.urls.defaults import url, patterns
-from wkhtmltopdf.views import PDFTemplateView
+#from django.conf.urls.defaults import url, patterns
+#from wkhtmltopdf.views import PDFTemplateView
 
 urlpatterns = [
     path('', views.output_home, name='output_home'),
