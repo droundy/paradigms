@@ -64,6 +64,7 @@ def output_problem_set_pdf(request, problem_set_id):
 		'margin-bottom': '1in',
 		'margin-left': '1in',
 		'encoding': "UTF-8",
+		'load-media-error-handling': 'ignore',
 	}
 
 	# Pdfkit requires a url, so we'll build one using what we know about this request
