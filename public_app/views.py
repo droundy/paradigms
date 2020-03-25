@@ -18,13 +18,13 @@ import logging
 
 # @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_list(request):
-    if request.user.has_perm("admin_app.change_problem"):
+    if request.user.has_perm("admin_app.edit_problem"):
         problems = Problem.objects.all().order_by('problem_title')
     else:
         problems = Problem.objects.filter(publication=1).order_by('problem_title')
     return render(request, 'public_app/problem_list.html', {'problems': problems, 'page_title': 'Homework Problems'})
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_add_problem',login_url='/')
 def problem_new(request):
     # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -46,7 +46,7 @@ def problem_new(request):
     return render(request, 'public_app/problem_multi_edit_preview.html', {'form': form, 'page_title': 'Add Homework Problem'})
 
 #@login_required
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.edit_problem',login_url='/')
 def problem_edit(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -63,7 +63,7 @@ def problem_edit(request, pk):
 
 ####
 #@login_required
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.edit_problem',login_url='/')
 def problem_edit_preview(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -144,7 +144,7 @@ def get_problem_pdf():
 
 # For display within site layout.
 #@csrf_exempt
-@permission_required('admin_app.can_edit_problem')
+@permission_required('admin_app.edit_problem')
 def problem_display_html_solution(request, pk):
     latex_problem = get_object_or_404(Problem, pk=pk)
     data = get_problem_html_solution(str(pk))
@@ -181,7 +181,7 @@ def problem_display_html(request, pk):
         return render(request, 'public_app/problem_display.html', context)
     else:
         return redirect('/accounts/login/?next=%s' % request.path)
-    
+
 
 # For display within site layout.
 #@csrf_exempt
