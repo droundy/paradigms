@@ -5,7 +5,7 @@ from django.utils.crypto import get_random_string
 from django.conf.urls.static import static
 from django.forms import modelformset_factory, inlineformset_factory
 from django.forms.formsets import BaseFormSet
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import View
@@ -37,15 +37,31 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 
 def output_pdf(request, problem_set_id):
-	current_url = Site.objects.get_current()
-	print(current_url)
-	pdf = pdfkit.from_url("https://www.google.com", False)
-	
-	response = HttpResponse(pdf,content_type='application/pdf')
-	
-	response = HttpResponse['Content-Disposition'] = 'attachment; filename="foo.pdf"'
-	
-	return response
+	current_domain = str(Site.objects.get_current())
+
+	wkoptions = {
+		'javascript-delay': 5000, # 5000 = 5 sec
+		'margin-top': '1in',
+		'margin-right': '1in',
+		'margin-bottom': '1in',
+		'margin-left': '1in',
+		'encoding': "UTF-8",
+	}
+	if request.is_secure():
+		template_url = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		print("TEMPLATE S URL: " + str(template_url))
+	else:
+		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		print("TEMPLATE URL: " + str(template_url))
+
+	pdf = pdfkit.from_url(template_url, "media/problem_set_pdfs/FOOOOO.pdf", options=wkoptions)
+
+	# response = HttpResponse(pdf,content_type='application/pdf')
+	#
+	# response = HttpResponse['Content-Disposition'] = 'attachment; filename="foo.pdf"'
+
+	# return response
+	return HttpResponse("FOO")
 
 def output_home(request):
     problem_sets = ProblemSet.objects.all().order_by('title')

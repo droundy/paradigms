@@ -13,7 +13,7 @@ from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, Probl
 
 HTML_WHITESPACE = ' \t\n\f\r'
 
-def strip_whitespace(string): 
+def strip_whitespace(string):
     """Use the HTML definition of "space character",
     not all Unicode Whitespace.
 
@@ -105,7 +105,7 @@ def edit_problem_set(request, problem_set_id):
         if data.get('bulk_item_list'):
 
             print('BULK ITEM LIST FOUND ' + data.get('bulk_item_list'))
-            
+
             #  Find the highest number in this sequence so far. May be zero, null, or empty
             highest_position_record = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set_id).order_by("-item_position").first()
 
@@ -114,7 +114,7 @@ def edit_problem_set(request, problem_set_id):
                 print("HIGEST POSITION RECORD: " + str(highest_position_record) + '---' + str(highest_position_record.item_position))
                 highestPosition = highest_position_record.item_position
             else:
-                # This problem set has no items so far. Set a default high position. 
+                # This problem set has no items so far. Set a default high position.
                 highestPosition = 0
 
             print("HIGHEST POSITION: " + str(highestPosition))
@@ -127,13 +127,13 @@ def edit_problem_set(request, problem_set_id):
 
             # Take the input and clean it up, filtering for whitespace and non-numeric entries
             for problemID in map(strip_whitespace, data.get('bulk_item_list').split(',')):
-                
+
                 #  Is this a digit?
                 if problemID.isdigit():
-                    
+
                     # Display the problem id
                     print("PROBLEM ID: " + problemID)
-                    
+
                     # Determine if this problem exists or not
                     try:
                         thisProblem = Problem.objects.get(id=problemID)
@@ -158,7 +158,7 @@ def edit_problem_set(request, problem_set_id):
                     except Problem.DoesNotExist:
                         print("PROBLEM NOT FOUND")
                         # If the problem does not exist do not add it, pause process, warn user
-                        # Or fail silently. 
+                        # Or fail silently.
 
                 else:
                     print("NOT AN INTEGER")
@@ -167,7 +167,7 @@ def edit_problem_set(request, problem_set_id):
 
         # Handle problems using the inline formset
         else:
-            
+
             problem_group_form = ProblemSetEditForm(request.POST, instance=problem_group)
 
             problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
@@ -176,11 +176,13 @@ def edit_problem_set(request, problem_set_id):
                 problem_group_item_form.save()
 
                 problem_group_form.save()
-            
+
                 return redirect('edit_problem_set', problem_set_id=problem_group.id)
 
     # problem_set_item_form = ProblemFormset(instance=problem_set)
-    problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+    # problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+
+    problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
 
     # for n in problem_group_item_form:
     #     n.fields['problem'].queryset = Menu.objects.filter(problem=problem).order_by('problem')
@@ -199,7 +201,7 @@ def edit_problem_set_2(request, problem_set_id):
     # Find the problem set details
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
 
-    problem_set_form = ProblemSetEditForm(instance=problem_set)    
+    problem_set_form = ProblemSetEditForm(instance=problem_set)
 
     ProblemsFormset = inlineformset_factory(
         ProblemSet, ProblemSetItems,

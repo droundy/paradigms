@@ -11,7 +11,7 @@
 
       <h2>{{ forloop.counter }}. {{ item.problem.problem_title }}</h2>
 
-      {{ item.problem.problem_latex|latex_omit_solution }}
+      <div style="margin-bottom: 4em">{{ item.problem.problem_latex|latex_omit_solution }}</div>
 
     {% endfor %}
 
