@@ -11,7 +11,7 @@
 
       <h2>{{ forloop.counter }}. {{ item.problem.problem_title }}</h2>
 
-      <div style="margin-bottom: 4em">{{ item.problem.problem_latex|latex_omit_solution }}</div>
+      <div style="margin-bottom: 4em">{% if solution == 'yes' %}{{ item.problem.problem_latex|latex_with_solution }}{% else %}{{ item.problem.problem_latex|latex_omit_solution }}{% endif %}</div>
 
     {% endfor %}
 

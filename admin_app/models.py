@@ -128,6 +128,7 @@ class ProblemSetPDFs(models.Model):
     pdf = models.FileField(upload_to='problem_set_pdfs/')
     problem_set = models.ForeignKey(ProblemSet, on_delete=models.CASCADE, related_name="problem_set_pdfs")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    solution = models.BooleanField(blank=False, default=False, help_text="Does this include the solution?", verbose_name="Solution Included")
 
 class FigureAssociations(models.Model):
     figure = models.ForeignKey(Figure, on_delete=models.CASCADE)

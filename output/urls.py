@@ -12,7 +12,9 @@ urlpatterns = [
     # A page to verify layout of problem set and initiate a pdf
     path('problem_set/display/<problem_set_id>/', views.output_problem_set_display, name='output_problem_set_display'),
 
-	path('problem_set/pdf/<problem_set_id>/', views.output_pdf, name='output_pdf'),
+    path('problem_set/display_solution/<problem_set_id>/', views.output_problem_set_display_solution, name='output_problem_set_display_solution'),
+
+	path('problem_set/pdf/<problem_set_id>/', views.output_problem_set_pdf, name='output_problem_set_pdf'),
 
 ]
 

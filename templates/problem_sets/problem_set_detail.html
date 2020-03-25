@@ -30,12 +30,22 @@
         {% if problem_set.publication != 1 %}
           <span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>
         {% endif%}
+        {% if problem_set_pdf or problem_set_pdf_solution %}
+          <div class="card-body">
+          {% for item in problem_set_pdf %}
+              <a href="{{ item.pdf.url }}" class="btn btn-sm btn-secondary" style="vertical-align: top;"><span class="oi oi-document" title="Download PDF." alt="Download PDF."></span> Download PDF</a>
+          {% endfor %}
+          {% if perms.admin_app.can_add_sequence %}{% for item in problem_set_pdf_solution %}
+              <a href="{{ item.pdf.url }}" class="btn btn-sm btn-secondary" style="vertical-align: top;"><span class="oi oi-document" title="Download Solution PDF." alt="Download Solution PDF."></span> Download Solution PDF</a>
+          {% endfor %}{% endif %}
+          </div>
+        {% endif %}
         <div class="card-body">
           <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/problem_sets/solution/' in request.path %}{{ problem_set.instructions|latex_with_solution }}{% else %}{{ problem_set.instructions|latex_omit_solution }}{% endif %}</blockquote>
         </div>
 
       </div><!-- End Card-->
-      
+
       <div class="container">
       {% for item in problem_set_problems %}
       <div class="card" style="margin-bottom: 10px">

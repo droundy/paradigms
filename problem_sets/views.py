@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from admin_app.models import ProblemSet, Problem, ProblemSetItems
+from admin_app.models import ProblemSet, Problem, ProblemSetItems, ProblemSetPDFs
 from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm
 
 HTML_WHITESPACE = ' \t\n\f\r'
@@ -240,11 +240,15 @@ def problem_set_details(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
     problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
+    problem_set_pdf_solution = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=True).order_by('-id')[:1]
+    problem_set_pdf = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=False).order_by('-id')[:1]
     # print(problem_set_problems)
     context = {
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
         'problem_set_problems': problem_set_problems,
+        'problem_set_pdf': problem_set_pdf,
+        'problem_set_pdf_solution': problem_set_pdf_solution,
         'page_title': problem_set.title,
     }
     return render(request, 'problem_sets/problem_set_detail.html', context)

@@ -36,9 +36,13 @@ from django.template.loader import render_to_string
 
 from weasyprint import HTML
 
-def output_pdf(request, problem_set_id):
-	current_domain = str(Site.objects.get_current())
+def output_problem_set_pdf(request, problem_set_id):
 
+	# Find the problem set. We need the title.
+	problem_set = ProblemSet.objects.get(pk=problem_set_id)
+
+	# wkhtml needs some options. The most critical is the javascript delay.
+	# This is needed to give mathjax a chance to render before the pdf is created
 	wkoptions = {
 		'javascript-delay': 5000, # 5000 = 5 sec
 		'margin-top': '1in',
@@ -47,21 +51,49 @@ def output_pdf(request, problem_set_id):
 		'margin-left': '1in',
 		'encoding': "UTF-8",
 	}
+
+	# Pdfkit requires a url, so we'll build one using what we know about this request
+	current_domain = str(Site.objects.get_current())
 	if request.is_secure():
 		template_url = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		template_url2 = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
 		print("TEMPLATE S URL: " + str(template_url))
 	else:
 		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		template_url2 = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
 		print("TEMPLATE URL: " + str(template_url))
 
-	pdf = pdfkit.from_url(template_url, "media/problem_set_pdfs/FOOOOO.pdf", options=wkoptions)
+	# Create a new filename using random string and problem_set title
+	random_string = "%s.%s" % (get_random_string(length=7), "pdf")
+	random_string2 = "%s.%s" % (get_random_string(length=7), "pdf")
 
-	# response = HttpResponse(pdf,content_type='application/pdf')
-	#
-	# response = HttpResponse['Content-Disposition'] = 'attachment; filename="foo.pdf"'
+	# Build the filename
+	this_file_name = problem_set.title + "_" + random_string
+	this_file_name2 = problem_set.title + "_" + random_string2
+
+	# Pdfkit requires different pathing than django in general so...
+	this_file_path = "media/problem_set_pdfs/" + this_file_name
+	this_file_path2 = "media/problem_set_pdfs/" + this_file_name2
+
+	# Create the pdf using the url specified
+	pdf = pdfkit.from_url(template_url, this_file_path, options=wkoptions)
+	pdf2 = pdfkit.from_url(template_url2, this_file_path2, options=wkoptions)
+
+	# Create a record for this PDF in the InvoicePDF table.
+	ProblemSetPDFs.objects.create(problem_set=problem_set, solution=False, pdf="problem_set_pdfs/" + this_file_name)
+	ProblemSetPDFs.objects.create(problem_set=problem_set, solution=True, pdf="problem_set_pdfs/" + this_file_name2)
+
+	# Define a variable to contain the PDF for serving to user. Serve to user.
+	# fs = FileSystemStorage(settings.MEDIA_ROOT + "/problem_set_pdfs/")
+	# with fs.open(this_file_name) as pdf:
+	# 	response = HttpResponse(pdf, content_type='application/pdf')
+	# 	response['Content-Disposition'] = 'attachment; filename="' + this_file_name + '"'
+	# 	return response
 
 	# return response
-	return HttpResponse("FOO")
+
+	# Assuming that this request is coming from the edit problem set page... return there.
+	return redirect('edit_problem_set', problem_set_id=problem_set.id)
 
 def output_home(request):
     problem_sets = ProblemSet.objects.all().order_by('title')
@@ -78,13 +110,12 @@ def output_problem_set_display(request, problem_set_id):
         'problem_set': problem_set,
         'page_title': page_title,
         'page_title': problem_set.title,
+		'solution': 'no',
     }
 
     return render(request, 'output/problem_set_render.html', context)
 
-# The pdf generation script
-def output_problem_set_pdf(request, problem_set_id):
-
+def output_problem_set_display_solution(request, problem_set_id):
     # Retrieve the ProblemSet record
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     page_title = problem_set.title
@@ -94,31 +125,7 @@ def output_problem_set_pdf(request, problem_set_id):
         'problem_set': problem_set,
         'page_title': page_title,
         'page_title': problem_set.title,
+		'solution': 'yes',
     }
 
-    # Pass the problem set info to template (from weasyprint samples) and render it back to us as a string
-    html_string = render_to_string('output/problem_set_render.html', context)
-
-    # Use weasyprint to deal with the html string
-    html = HTML(string=html_string)
-
-    # Create a random string to ensure filename is unique
-    random_string = "%s.%s" % (get_random_string(length=7), "pdf")
-
-    # Build the filename
-    this_file_name = problem_set.title + "_" + random_string
-
-    # Write out the pdf to the actual file
-    html.write_pdf(presentational_hints=True, target=settings.MEDIA_ROOT + "/problem_set_pdfs/" + this_file_name)
-
-    # Create a record for this PDF in the InvoicePDF table.
-    ProblemSetPDFs.objects.create(problem_set=problem_set, pdf="problem_set_pdfs/" + this_file_name)
-
-    # Define a variable to contain the PDF for serving to user. Serve to user.
-    fs = FileSystemStorage(settings.MEDIA_ROOT + "/problem_set_pdfs/")
-    with fs.open(this_file_name) as pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="' + this_file_name + '"'
-        return response
-
-    return response
+    return render(request, 'output/problem_set_render.html', context)
