@@ -53,6 +53,8 @@ def problem_set_details_solution(request, problem_set_id):
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
     problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
     page_title = problem_set.title
+    problem_set_pdf_solution = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=True).order_by('-id')[:1]
+    problem_set_pdf = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=False).order_by('-id')[:1]
 
     # print(page_title)
     # print(problem_set_problems)
@@ -60,7 +62,9 @@ def problem_set_details_solution(request, problem_set_id):
     context = {
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
-        'problem_set_problems': problem_set_problems,
+        'problem_set_problems': problem_set_problems,        
+        'problem_set_pdf': problem_set_pdf,
+        'problem_set_pdf_solution': problem_set_pdf_solution,
         'page_title': page_title + ' - Solutions',
     }
 

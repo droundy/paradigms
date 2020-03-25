@@ -89,19 +89,25 @@ def output_problem_set_pdf(request, problem_set_id):
 		print("TEMPLATE URL: " + str(template_url))
 
 	# Create a new filename using random string and problem_set title
-	random_string = "%s.%s" % (get_random_string(length=7), "")
-	random_string2 = "%s.%s" % (get_random_string(length=7), "")
+	random_string = "%s.%s" % (get_random_string(length=7), "pdf")
+	random_string2 = "%s.%s" % (get_random_string(length=7), "pdf")
+	print("RANDOM STRINGS: " + random_string + " " + random_string2)
 
 	stripped_title = re.sub(r'\W+', '', problem_set.title)
+
 	# Build the filename
-	this_file_name = stripped_title + "_" + random_string + "pdf"
-	this_file_name2 = stripped_title + "_" + random_string2 + "pdf"
+	this_file_name = stripped_title + "_" + random_string
+	this_file_name2 = stripped_title + "_" + random_string2
 
 	print("STRIPPED FILE NAME: " + this_file_name)
 
 	# Pdfkit requires different pathing than django in general so...
-	this_file_path = "media/problem_set_pdfs/" + this_file_name
-	this_file_path2 = "media/problem_set_pdfs/" + this_file_name2
+	if request.is_secure():
+		this_file_path = "/var/www/osu_production_env/osu_www/media/problem_set_pdfs/" + this_file_name
+		this_file_path2 = "/var/www/osu_production_env/osu_www/media/problem_set_pdfs/" + this_file_name2
+	else:
+		this_file_path = "media/problem_set_pdfs/" + this_file_name
+		this_file_path2 = "media/problem_set_pdfs/" + this_file_name2
 
 	print("THIS FILE PATH: " + this_file_path)
 	# Create the pdf using the url specified
