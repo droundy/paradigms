@@ -68,7 +68,7 @@ def output_problem_set_pdf(request, problem_set_id):
 
 	# Pdfkit requires a url, so we'll build one using what we know about this request
 	current_domain = str(Site.objects.get_current())
-	print("CURRENT DOMAIN: " + str(current_domain))
+	# print("CURRENT DOMAIN: " + str(current_domain))
 
 	if request.is_secure():
 		# template_url = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
@@ -77,7 +77,7 @@ def output_problem_set_pdf(request, problem_set_id):
 		template_url = 'https://paradigms.oregonstate.edu/output/problem_set/display/' + problem_set_id + '/'
 		template_url2 = 'https://paradigms.oregonstate.edu/output/problem_set/display_solution/' + problem_set_id + '/'
 
-		print("TEMPLATE S URL: " + str(template_url))
+		# print("TEMPLATE S URL: " + str(template_url))
 
 	else:
 		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
@@ -86,12 +86,12 @@ def output_problem_set_pdf(request, problem_set_id):
 		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
 		template_url2 = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
 
-		print("TEMPLATE URL: " + str(template_url))
+		# print("TEMPLATE URL: " + str(template_url))
 
 	# Create a new filename using random string and problem_set title
 	random_string = "%s.%s" % (get_random_string(length=7), "pdf")
 	random_string2 = "%s.%s" % (get_random_string(length=7), "pdf")
-	print("RANDOM STRINGS: " + random_string + " " + random_string2)
+	# print("RANDOM STRINGS: " + random_string + " " + random_string2)
 
 	stripped_title = re.sub(r'\W+', '', problem_set.title)
 
@@ -99,9 +99,9 @@ def output_problem_set_pdf(request, problem_set_id):
 	this_file_name = stripped_title + "_" + random_string
 	this_file_name2 = stripped_title + "_" + random_string2
 
-	print("STRIPPED FILE NAME: " + this_file_name)
+	# print("STRIPPED FILE NAME: " + this_file_name)
 
-	# Pdfkit requires different pathing than django in general so...
+	# DIfferent pathing is required based on whether we're working in development or production environments.
 	if request.is_secure():
 		this_file_path = "/var/www/osu_production_env/osu_www/media/problem_set_pdfs/" + this_file_name
 		this_file_path2 = "/var/www/osu_production_env/osu_www/media/problem_set_pdfs/" + this_file_name2
@@ -109,7 +109,7 @@ def output_problem_set_pdf(request, problem_set_id):
 		this_file_path = "media/problem_set_pdfs/" + this_file_name
 		this_file_path2 = "media/problem_set_pdfs/" + this_file_name2
 
-	print("THIS FILE PATH: " + this_file_path)
+	# print("THIS FILE PATH: " + this_file_path)
 	# Create the pdf using the url specified
 	pdf = pdfkit.from_url(template_url, this_file_path, options=wkoptions)
 	pdf2 = pdfkit.from_url(template_url2, this_file_path2, options=wkoptions)
