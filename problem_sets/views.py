@@ -170,7 +170,7 @@ def edit_problem_set(request, problem_set_id):
 
             problem_group_form = ProblemSetEditForm(request.POST, instance=problem_group)
 
-            problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+            problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
 
             if problem_group_item_form.is_valid() and problem_group_form.is_valid():
                 problem_group_item_form.save()
@@ -180,7 +180,7 @@ def edit_problem_set(request, problem_set_id):
                 return redirect('edit_problem_set', problem_set_id=problem_group.id)
 
     # problem_set_item_form = ProblemFormset(instance=problem_set)
-    # problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.problemsetitems_set.order_by("item_position"))
+    # problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
 
     problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
 
@@ -215,7 +215,7 @@ def edit_problem_set_2(request, problem_set_id):
         formset=ProblemSetItemsFormset,
     )
 
-    problem_set_item_form = ProblemsFormset(instance=problem_set, queryset=problem_set.problemsetitems_set.order_by("item_position"))
+    problem_set_item_form = ProblemsFormset(instance=problem_set, queryset=problem_set.set_problems.order_by("item_position"))
 
     context = {
         'formset': problem_set_item_form,

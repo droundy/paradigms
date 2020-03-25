@@ -95,7 +95,7 @@ class ProblemSet(models.Model):
     instructions = models.TextField(blank=True, null=True)
     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
-    publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing", verbose_name="Publish Problem Set")
+    publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing. Takes 5-10 seconds to generate new problem set PDFs", verbose_name="Publish Problem Set")
     items = models.ManyToManyField(Problem, through="ProblemSetItems")
     course = models.CharField(max_length=255, blank=True, null=True)
     due_date = models.DateTimeField(blank=True, null=True)
