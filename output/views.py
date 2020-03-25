@@ -54,9 +54,15 @@ def output_problem_set_pdf(request, problem_set_id):
 
 	# Pdfkit requires a url, so we'll build one using what we know about this request
 	current_domain = str(Site.objects.get_current())
+	print("CURRENT DOMAIN: " + str(current_domain))
+
 	if request.is_secure():
-		template_url = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
-		template_url2 = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
+		# template_url = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		# template_url2 = 'https://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
+
+		template_url = 'https://paradigms.oregonstate.edu/output/problem_set/display/' + problem_set_id + '/'
+		template_url2 = 'https://paradigms.oregonstate.edu/output/problem_set/display_solution/' + problem_set_id + '/'
+
 		print("TEMPLATE S URL: " + str(template_url))
 	else:
 		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
