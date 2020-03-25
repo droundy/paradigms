@@ -20,7 +20,8 @@
   <form method="POST">
     {% csrf_token %}
     {{ problem_group_form|crispy}}
-    <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework set."></span> Save Problem Set Changes</button> <a href="{% url 'output_problem_set_pdf' problem_set_id=problem_set_id %}" class="btn btn-sm btn-secondary" style="vertical-align: top;"><span class="oi oi-document" title="Create Problem Set PDFs." alt="Create Problem Set PDFs."></span> Create Problem Set PDFs (Takes 10+ Seconds. Save First.)</a>
+    <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework set."></span> Save Problem Set Changes</button>
+    <a href="{% url 'output_problem_set_pdf' problem_set_id=problem_set_id %}" class="btn btn-sm btn-secondary" style="vertical-align: top;"><span class="oi oi-document" title="Create Problem Set PDFs." alt="Create Problem Set PDFs."></span> Create Problem Set PDFs (Takes 10+ Seconds. Save First.)</a>
     <hr>
     <h4>Problems</h4>
     Add by problem id: <input type="text" id="bulk_item_list" maxlength="1024" name="bulk_item_list"> (List of Problem IDs: 7,9,41,2,3,etc..)

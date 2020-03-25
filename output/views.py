@@ -20,6 +20,7 @@ import subprocess, os, uuid
 import unicodedata
 import logging
 import datetime
+import re
 
 from django.contrib.sites.models import Site
 import pdfkit
@@ -35,6 +36,19 @@ from django.http import FileResponse
 from django.template.loader import render_to_string
 
 from weasyprint import HTML
+
+HTML_WHITESPACE = ' \t\n\f\r'
+
+def strip_whitespace(string):
+    """Use the HTML definition of "space character",
+    not all Unicode Whitespace.
+
+    http://www.whatwg.org/html#strip-leading-and-trailing-whitespace
+    http://www.whatwg.org/html#space-character
+
+    """
+    return string.strip(HTML_WHITESPACE)
+
 
 def output_problem_set_pdf(request, problem_set_id):
 
@@ -64,23 +78,32 @@ def output_problem_set_pdf(request, problem_set_id):
 		template_url2 = 'https://paradigms.oregonstate.edu/output/problem_set/display_solution/' + problem_set_id + '/'
 
 		print("TEMPLATE S URL: " + str(template_url))
+
 	else:
 		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
 		template_url2 = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
+
+		template_url = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display/' + problem_set_id + '/'
+		template_url2 = 'http://' + current_domain + ':' + request.META['SERVER_PORT'] + '/output/problem_set/display_solution/' + problem_set_id + '/'
+
 		print("TEMPLATE URL: " + str(template_url))
 
 	# Create a new filename using random string and problem_set title
-	random_string = "%s.%s" % (get_random_string(length=7), "pdf")
-	random_string2 = "%s.%s" % (get_random_string(length=7), "pdf")
+	random_string = "%s.%s" % (get_random_string(length=7), "")
+	random_string2 = "%s.%s" % (get_random_string(length=7), "")
 
+	stripped_title = re.sub(r'\W+', '', problem_set.title)
 	# Build the filename
-	this_file_name = problem_set.title + "_" + random_string
-	this_file_name2 = problem_set.title + "_" + random_string2
+	this_file_name = stripped_title + "_" + random_string + "pdf"
+	this_file_name2 = stripped_title + "_" + random_string2 + "pdf"
+
+	print("STRIPPED FILE NAME: " + this_file_name)
 
 	# Pdfkit requires different pathing than django in general so...
 	this_file_path = "media/problem_set_pdfs/" + this_file_name
 	this_file_path2 = "media/problem_set_pdfs/" + this_file_name2
 
+	print("THIS FILE PATH: " + this_file_path)
 	# Create the pdf using the url specified
 	pdf = pdfkit.from_url(template_url, this_file_path, options=wkoptions)
 	pdf2 = pdfkit.from_url(template_url2, this_file_path2, options=wkoptions)
