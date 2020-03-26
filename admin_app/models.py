@@ -118,6 +118,7 @@ class ProblemSetItems(models.Model):
     problem_set = models.ForeignKey(ProblemSet, blank=True, null=True, on_delete=models.CASCADE, related_name='set_problems')
     item_position = models.DecimalField(max_digits=5, decimal_places=2, default=1, blank=True, null=True)
     item_instructions = models.TextField(blank=True, null=True)
+    required = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['item_position']

@@ -59,7 +59,7 @@ class ProblemSetAddForm(forms.ModelForm):
         ) # End layout
 
 class ProblemSetEditForm(forms.ModelForm):
-    
+
     # due_date = forms.DateField(
     #     widget=forms.TextInput(
     #         attrs={'type': 'date'}
@@ -74,7 +74,7 @@ class ProblemSetEditForm(forms.ModelForm):
         ),
         required=False
     )
-    
+
     instructions = forms.CharField(
                     widget=forms.Textarea(
                         attrs={'style':'max-height: 60em',
@@ -177,3 +177,57 @@ ProblemSetItemsFormset = inlineformset_factory(
         'problem',
         'item_instructions',),
     )
+
+### BORROWED FROM SEQUENCES AND MODIFIED
+class SetItemUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = ProblemSetItems
+        fields = '__all__'
+        exclude=()
+        widgets = {
+            'problem_set': forms.HiddenInput(),
+            'problem': forms.HiddenInput(),
+            }
+# DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    # required = forms.ChoiceField(
+    #     choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
+    #     )
+    #
+    # item_position = forms.DecimalField(
+    #                 max_digits=5,
+    #                 decimal_places=2,
+    #                 widget=forms.NumberInput(
+    #                     attrs={
+    #                     'class': 'form-control',
+    #                     'placeholder': 'Position',
+    #                     }
+    #                 ),
+    #                 help_text='Position. Decimal. Sorted in ascending order after saving.',
+    #                 required=False)
+    # item_instructions = forms.CharField(
+    #                 max_length=1024,
+    #                 widget=forms.Textarea(
+    #                     attrs={'style':'max-height: 6em',
+    #                     'rows':4,
+    #                     'placeholder': 'Instructions.',
+    #                     'class': 'form-control',
+    #                 }),
+    #                 help_text='Appears above problem on problem set page.',
+    #                 required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.fields['item_position'].label = ""
+        # self.fields['item_instructions'].label = ""
+        # self.fields['required'].label = "Optional?"
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column('item_position', css_class='form-group col-sm-1 mb-0'),
+                Column('item_instructions', css_class='form-group col-sm-11 mb0'),
+                css_class='form-row'
+            ),
+
+        )

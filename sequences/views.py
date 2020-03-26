@@ -46,7 +46,9 @@ def sequence_new(request):
 def sequence_edit(request, pk):
     view_name = 'sequence_edit'
     sequence = get_object_or_404(Sequence, pk=pk)
+
     available_problems = Problem.objects.exclude(id__in = sequence.problems.all().values_list('id').order_by('problem_title'))
+
     available_activities = Activity.objects.exclude(id__in = sequence.activities.all().values_list('id'))
     thisSequenceID = sequence.pk
 
@@ -86,7 +88,7 @@ def sequence_edit(request, pk):
     item_data = [{'item_position': i.item_position, 'role_in_sequence': i.role_in_sequence, 'problem': i.problem, 'activity': i.activity, 'sequence': i.sequence, 'required': i.required}
         for i in item_list]
 
-    # print("ITEM_DATA:")
+    print("ITEM_DATA:")
     print(item_data)
 
     if request.method == "POST":
@@ -151,7 +153,7 @@ def sequence_edit(request, pk):
 
 def sequence_list(request):
     #problems = Problem.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    
+
     if request.user.has_perm("admin_app.change_problem"):
         sequences = Sequence.objects.all().order_by('title')
     else:
