@@ -1,4 +1,6 @@
 from django import forms
+from django.db import IntegrityError, transaction
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.forms import modelformset_factory, inlineformset_factory
 from django.forms.formsets import formset_factory
@@ -10,7 +12,7 @@ import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from admin_app.models import ProblemSet, Problem, ProblemSetItems, ProblemSetPDFs
-from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm, SetItemUpdateForm
+from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm, SetItemUpdateForm, BaseProblemSetForm, ItemUpdateForm
 
 HTML_WHITESPACE = ' \t\n\f\r'
 
@@ -74,7 +76,7 @@ def problem_set_details_solution(request, problem_set_id):
 ########################### EDIT PROBLEM SET ##################################
 
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
-def edit_problem_set(request, problem_set_id):
+def edit_problem_set_old(request, problem_set_id):
 
     problem_group = ProblemSet.objects.get(pk=problem_set_id)
 
@@ -203,46 +205,53 @@ def edit_problem_set(request, problem_set_id):
 
 ########################### EDIT PROBLEM SET NEW ##################################
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
-def edit_problem_set_3(request, problem_set_id):
+def edit_problem_set(request, problem_set_id):
 
+    SIREQUIRED = "Required"
+    SIOPTIONAL = "Optional"
+    SIPRACTICE = "Practice"
+    SIEXTRA = "Extra Credit"
+
+    SEQUENCEITEMOPTIONS = (
+        (SIREQUIRED, "Required"),
+        (SIPRACTICE, "Practice"),
+        (SIOPTIONAL, "Optional"),
+        (SIEXTRA, "Extra Credit"),
+    )
     # Get the problem set
     problem_group = ProblemSet.objects.get(pk=problem_set_id)
     problem_set = problem_group
 
     problem_group_form = ProblemSetEditForm(instance=problem_group)
 
-    ProblemFormset = inlineformset_factory(
-        ProblemSet, ProblemSetItems,
-        fields=('problem','item_position','item_instructions','required'),
-        can_delete=True,
-        widgets={
-            'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
-            # 'problem': forms.
-            },
-        formset=ProblemSetItemsFormset,
-        extra=0)
+    # ProblemFormset2 = inlineformset_factory(
+    #     ProblemSet, ProblemSetItems,
+    #     fields=('problem','item_position','item_instructions','required'),
+    #     can_delete=True,
+    #     widgets={
+    #         'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
+    #         # 'problem': forms.
+    #         # 'required': forms.ChoiceField(choices=SEQUENCEITEMOPTIONS, initial="Required", required=False),
+    #         },
+    #     formset=ProblemSetItemsFormset,
+    #     extra=0)
 
-    ProblemFormset2 = inlineformset_factory(
-        ProblemSet, ProblemSetItems,
-        fields=('problem','item_position','item_instructions','required'),
-        can_delete=True,
-        widgets={
-            'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
-            # 'problem': forms.
-            },
-        formset=ProblemSetItemsFormset,
-        extra=0)
+    ProblemFormset = formset_factory(ItemUpdateForm, extra=0)
 
     # Get list of all associated items
     item_title_sql = 'select i.id, p.problem_title from admin_app_problemsetitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.problem_set_id = "' + str(problem_set_id) + '" ORDER BY i.item_position'
 
     item_title_list = ProblemSetItems.objects.raw(item_title_sql)
-
     item_title_dict = []
-
+    item_list = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
     # Loop through them and grab either the activity or problem title and insert it into the title dictionary
     for title in item_title_list:
         item_title_dict.append( [title.problem_title] )
+
+    item_data = [{'item_position': i.item_position, 'item_instructions': i.item_instructions, 'problem': i.problem, 'problem_set': i.problem_set, 'required': i.required}
+        for i in item_list]
+    print("ITEM_DATA:")
+    print(item_data)
 
     if request.method == 'POST':
 
@@ -312,24 +321,67 @@ def edit_problem_set_3(request, problem_set_id):
 
             return redirect('edit_problem_set', problem_set_id=problem_group.id)
 
+        ################ END BULK PROCESSING
         # Handle problems using the inline formset
         else:
 
             problem_group_form = ProblemSetEditForm(request.POST, instance=problem_group)
 
-            problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
+            item_formset = ProblemFormset(request.POST)
 
-            if problem_group_item_form.is_valid() and problem_group_form.is_valid():
-                problem_group_item_form.save()
+            # problem_group_item_form = ProblemFormset2(request.POST, instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
+            #
+            # if problem_group_item_form.is_valid() and problem_group_form.is_valid():
+            #     problem_group_item_form.save()
+            #
+            #     problem_group_form.save()
+            #
+            #     return redirect('edit_problem_set', problem_set_id=problem_group.id)
 
-                problem_group_form.save()
+            if problem_group_form.is_valid() and item_formset.is_valid():
+                problem_set = problem_group_form.save(commit=False)
+                problem_set.author = request.user
+                problem_set.save()
 
-                return redirect('edit_problem_set', problem_set_id=problem_group.id)
+                new_items = []
 
-    # problem_set_item_form = ProblemFormset(instance=problem_set)
+                for f in item_formset:
+                    print("STARTING NEW FORMSET ITEM")
+                    cd = f.cleaned_data
+                    # print("CD: " + str(cd))
+                    item_instructions = cd.get('item_instructions')
+                    item_position = cd.get('item_position')
+                    required = cd.get('required')
+                    # print("REQUIRED: " + required)
+                    problem_set = cd.get('problem_set')
+                    problem = cd.get('problem')
+
+                    # if item_position and role_in_sequence:
+                    # print("LOADING NEW ITEM INTO ARRAY")
+
+                    new_items.append(ProblemSetItems(item_position=item_position, item_instructions=item_instructions, problem_set=problem_set, problem=problem, required=required))
+                    # print("NEW ITEMS ARRAY: " + str(new_items))
+
+                try:
+                    with transaction.atomic():
+                        # print("DELETING ORIGINAL ITEMS")
+                        ProblemSetItems.objects.filter(problem_set_id=problem_set_id).delete()
+
+                        # print("ADDING NEW ITEMS IN BULK")
+                        # SequenceItems.objects.bulk_create(new_items)
+                        ProblemSetItems.objects.bulk_create(new_items)
+
+                        messages.success(request, 'You have updated your sequence.')
+
+                except IntegrityError:
+                    messages.error(request, 'There was an error updating your sequence')
+                    # return.redirect(reverse('profile-settings'))
+
+
+
     # problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
 
-    problem_group_item_form = ProblemFormset2(instance=problem_group, queryset=problem_group.set_problems.order_by("item_position"))
+    item_formset = ProblemFormset(initial=item_data)
 
     # for n in problem_group_item_form:
     #     n.fields['problem'].queryset = Menu.objects.filter(problem=problem).order_by('problem')
@@ -342,7 +394,8 @@ def edit_problem_set_3(request, problem_set_id):
     print(available_problems.query)
 
     context = {
-        'formset': problem_group_item_form,
+        # 'formset': problem_group_item_form,
+        'item_formset': item_formset,
         'available_problems': available_problems,
         'problem_group': problem_group,
         'problem_set': problem_set,
@@ -370,12 +423,24 @@ def problem_set_details(request, problem_set_id):
     problem_set_pdf_solution = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=True).order_by('-id')[:1]
     problem_set_pdf = ProblemSetPDFs.objects.filter(problem_set_id=problem_set_id).filter(solution=False).order_by('-id')[:1]
     # print(problem_set_problems)
+
+    # Get list of all associated items
+    item_title_sql = 'select i.id, p.problem_title from admin_app_problemsetitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.problem_set_id = "' + str(problem_set_id) + '" ORDER BY i.item_position'
+
+    item_title_list = ProblemSetItems.objects.raw(item_title_sql)
+    item_title_dict = []
+    item_list = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
+    # Loop through them and grab either the activity or problem title and insert it into the title dictionary
+    for title in item_title_list:
+        item_title_dict.append( [title.problem_title] )
+        
     context = {
         'problem_set': problem_set,
         'problem_set_items': problem_set_items,
         'problem_set_problems': problem_set_problems,
         'problem_set_pdf': problem_set_pdf,
         'problem_set_pdf_solution': problem_set_pdf_solution,
+        'item_title_dict': item_title_dict,
         'page_title': problem_set.title,
     }
     return render(request, 'problem_sets/problem_set_detail.html', context)
@@ -383,9 +448,9 @@ def problem_set_details(request, problem_set_id):
 # Associate problem/activity, remove problem/activity
 def associate_problem_to_set(request, problem_set_id, problem_id):
     ProblemSet.objects.get(id=problem_set_id).items.add(problem_id)
-    return redirect('edit_problem_set_3', problem_set_id=problem_set_id)
+    return redirect('edit_problem_set', problem_set_id=problem_set_id)
 
 def unassociate_problem_from_set(request, problem_set_id, problem_id):
     problem = Problem.objects.get(id=problem_id)
     ProblemSet.objects.get(id=problem_set_id).items.remove(problem_id)
-    return redirect('edit_problem_set_3', problem_set_id=problem_set_id)
+    return redirect('edit_problem_set', problem_set_id=problem_set_id)

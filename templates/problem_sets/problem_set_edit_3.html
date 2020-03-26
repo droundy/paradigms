@@ -15,7 +15,7 @@
       <li class="breadcrumb-item"><a href="{% url 'list_problem_sets' %}">Problem Sets</a></li>
       <li class="breadcrumb-item"><a href="{% url 'problem_set_details' problem_set_id=problem_set_id %}">{{ problem_set.title }}</a></li>
       <li class="breadcrumb-item"><a href="{% url 'problem_set_details_solution' problem_set_id=problem_set_id%}">View with Solution</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'edit_problem_set_3' problem_set_id=problem_set_id %}">Edit</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'edit_problem_set' problem_set_id=problem_set_id %}">Edit</a></li>
     </ol>
   </nav>
   <form method="POST" class="problem-set-form">
@@ -34,15 +34,15 @@
     <div class="row">
       <div class="col">
         <h3>Problem Set Content and Order</h3>
-
-        {{ formset.management_form }}
-        {% for form in formset.forms %}
-        <div class="item-formset">
-            <h5></h5>
+        {{ item_formset.management_form }}
+        {% for form in item_formset.forms %}
+        <div class="item-formset" style="margin-bottom: 2em;">
+            <h5>{{ item_title_dict|get_item:forloop.counter0 }}</h5>
             {{ form|crispy }}
             <!-- {% if item.activity.value %}{{ item.activity.value }}{% endif %}{% if item.problem.value %}{{ item.problem.value }}{% endif %} -->
+            <hr>
         </div>
-        <hr>
+
 
         {% endfor %}
 
@@ -69,7 +69,7 @@
                 <div class="col">
                   {% if available_problems.count %}
                     <ul class="list-group list-group-flush" id="availableProblemList">
-                    
+
                     {% for problem in available_problems %}
                       <li class="list-group-item">
                         <form action="{% url 'associate_problem_to_set' problem_set.id problem.id %}" method="post">

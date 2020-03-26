@@ -12,7 +12,7 @@ urlpatterns = [
     path('solution/<problem_set_id>/', views.problem_set_details_solution, name='problem_set_details_solution'),
     path('edit/<problem_set_id>/', views.edit_problem_set, name='edit_problem_set'),
     # path('edit2/<problem_set_id>/', views.edit_problem_set_2, name='edit_problem_set_2'),
-    path('edit3/<problem_set_id>/', views.edit_problem_set_3, name='edit_problem_set_3'),
+    # path('edit3/<problem_set_id>/', views.edit_problem_set_3, name='edit_problem_set_3'),
 
     path('associate_problem_to_set/<int:problem_set_id>/<int:problem_id>/', views.associate_problem_to_set, name='associate_problem_to_set'),
     path('unassociate_problem_from_set/<int:problem_set_id>/<int:problem_id>/', views.unassociate_problem_from_set, name='unassociate_problem_from_set'),
