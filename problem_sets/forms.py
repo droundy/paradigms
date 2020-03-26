@@ -175,7 +175,8 @@ ProblemSetItemsFormset = inlineformset_factory(
     fields=(
         'item_position',
         'problem',
-        'item_instructions',),
+        'item_instructions',
+        'required',),
     )
 
 ### BORROWED FROM SEQUENCES AND MODIFIED
@@ -191,37 +192,37 @@ class SetItemUpdateForm(forms.ModelForm):
             }
 # DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-    # required = forms.ChoiceField(
-    #     choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
-    #     )
-    #
-    # item_position = forms.DecimalField(
-    #                 max_digits=5,
-    #                 decimal_places=2,
-    #                 widget=forms.NumberInput(
-    #                     attrs={
-    #                     'class': 'form-control',
-    #                     'placeholder': 'Position',
-    #                     }
-    #                 ),
-    #                 help_text='Position. Decimal. Sorted in ascending order after saving.',
-    #                 required=False)
-    # item_instructions = forms.CharField(
-    #                 max_length=1024,
-    #                 widget=forms.Textarea(
-    #                     attrs={'style':'max-height: 6em',
-    #                     'rows':4,
-    #                     'placeholder': 'Instructions.',
-    #                     'class': 'form-control',
-    #                 }),
-    #                 help_text='Appears above problem on problem set page.',
-    #                 required=False)
+    required = forms.ChoiceField(
+        choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
+        )
+    
+   	item_position = forms.DecimalField(
+                    max_digits=5,
+                    decimal_places=2,
+                    widget=forms.NumberInput(
+                        attrs={
+                        'class': 'form-control',
+                        'placeholder': 'Position',
+                        }
+                    ),
+                    help_text='Position. Decimal. Sorted in ascending order after saving.',
+                    required=False)
+    item_instructions = forms.CharField(
+                    max_length=1024,
+                    widget=forms.Textarea(
+                        attrs={'style':'max-height: 6em',
+                        'rows':4,
+                        'placeholder': 'Instructions.',
+                        'class': 'form-control',
+                    }),
+                    help_text='Appears above problem on problem set page.',
+                    required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['item_position'].label = ""
-        # self.fields['item_instructions'].label = ""
-        # self.fields['required'].label = "Optional?"
+        self.fields['item_position'].label = ""
+        self.fields['item_instructions'].label = ""
+        self.fields['required'].label = "Optional?"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
