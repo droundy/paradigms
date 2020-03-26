@@ -44,34 +44,35 @@ class ItemUpdateForm(forms.ModelForm):
             }
 # DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-	required = forms.ChoiceField(
-		choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
-		)
+    required = forms.ChoiceField(
+        choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
+    )
+	# required = forms.ChoiceField(
+	# 	choices=SEQUENCEITEMOPTIONS, initial="Required", required=False
+	# 	)
 
-	item_position = forms.DecimalField(
-		max_digits=5,
-		decimal_places=2,
-		widget=forms.NumberInput(
-			attrs={
-				'class': 'form-control',
-				'placeholder': 'Position',
-				}
-			),
-			help_text='Sequence order. Decimal. Sorted in ascending order after saving.',
-			required=False)
-            
-	role_in_sequence = forms.CharField(
-		max_length=1024,
-		widget=forms.Textarea(
-			attrs={
-				'style':'max-height: 6em',
-				'rows':4,
-				'placeholder': 'Role in sequence.',
-				'class': 'form-control',
-				}
-			),
-			help_text='Appears above activity or problem on sequence page.',
-			required=False)
+    item_position = forms.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Position',
+        }),
+        help_text='Sequence order. Decimal. Sorted in ascending order after saving.',
+        required=False)
+
+    role_in_sequence = forms.CharField(
+        max_length=1024,
+        widget=forms.Textarea(
+            attrs={
+                'style':'max-height: 6em',
+                'rows':4,
+                'placeholder': 'Role in sequence.',
+                'class': 'form-control',
+        }),
+        help_text='Appears above activity or problem on sequence page.',
+        required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
