@@ -83,6 +83,7 @@ class Problem(models.Model):
         return self.problem_title
 
     class Meta:
+        ordering = ['problem_title']
         permissions = (
             ("can_edit_problem", "Edit Problem"),
             ("can_add_problem","Add Problem"),

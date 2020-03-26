@@ -201,15 +201,13 @@ def edit_problem_set(request, problem_set_id):
     }
     return render(request, 'problem_sets/problem_set_edit.html', context)
 
-
+########################### EDIT PROBLEM SET NEW ##################################
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
 def edit_problem_set_3(request, problem_set_id):
 
+    # Get the problem set
     problem_group = ProblemSet.objects.get(pk=problem_set_id)
-
     problem_set = problem_group
-
-    available_problems = Problem.objects.exclude(id__in = problem_group.set_problems.all().values_list('id').order_by('problem_title'))
 
     problem_group_form = ProblemSetEditForm(instance=problem_group)
 
@@ -336,9 +334,16 @@ def edit_problem_set_3(request, problem_set_id):
     # for n in problem_group_item_form:
     #     n.fields['problem'].queryset = Menu.objects.filter(problem=problem).order_by('problem')
 
+    # Get all problems tha are not assigned to this problem set
+    available_problems = Problem.objects.exclude(id__in = problem_set.set_problems.all().values_list('problem_id'))
+
+    # available_problems = Problem.objects.all()
+
+    print(available_problems.query)
+
     context = {
         'formset': problem_group_item_form,
-        'problems': available_problems,
+        'available_problems': available_problems,
         'problem_group': problem_group,
         'problem_set': problem_set,
         'problem_group_form': problem_group_form,
@@ -347,37 +352,6 @@ def edit_problem_set_3(request, problem_set_id):
         'page_title': problem_group.title + ' - Edit',
     }
     return render(request, 'problem_sets/problem_set_edit_3.html', context)
-# @permission_required('admin_app.can_edit_problem_set',login_url='/')
-# def edit_problem_set_2(request, problem_set_id):
-#     # Find the problem set details
-#     problem_set = ProblemSet.objects.get(pk=problem_set_id)
-#
-#     problem_set_form = ProblemSetEditForm(instance=problem_set)
-#
-#     ProblemsFormset = inlineformset_factory(
-#         ProblemSet, ProblemSetItems,
-#         fields=('item_position','problem','item_instructions',),
-#         can_delete=True,
-#         widgets={
-#             'item_instructions': forms.Textarea(attrs={'cols': 80, 'rows': 2, 'class': 'testclass'}),
-#             # 'problem': forms.
-#             },
-#         extra=5,
-#         formset=ProblemSetItemsFormset,
-#     )
-#
-#     problem_set_item_form = ProblemsFormset(instance=problem_set, queryset=problem_set.set_problems.order_by("item_position"))
-#
-#     context = {
-#         'formset': problem_set_item_form,
-#         'problem_set': problem_set,
-#         'problem_set_form': problem_set_form,
-#         'problem_set_id': problem_set_id,
-#         'page_title': problem_set.title + ' - Edit',
-#     }
-#     return render(request, 'problem_sets/problem_set_edit_2.html', context)
-
-# Make it more like editing a Sequence of activities.
 
 @permission_required('admin_app.can_edit_problem_set',login_url='/')
 def list_problem_sets(request):
@@ -410,7 +384,6 @@ def problem_set_details(request, problem_set_id):
 def associate_problem_to_set(request, problem_set_id, problem_id):
     ProblemSet.objects.get(id=problem_set_id).items.add(problem_id)
     return redirect('edit_problem_set_3', problem_set_id=problem_set_id)
-
 
 def unassociate_problem_from_set(request, problem_set_id, problem_id):
     problem = Problem.objects.get(id=problem_id)

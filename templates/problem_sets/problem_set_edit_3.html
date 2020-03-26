@@ -67,9 +67,10 @@
               <div class="row overflow-auto" style="max-height: 400px">
                 <!-- Available Problems -->
                 <div class="col">
-                  {% if problems.count %}
+                  {% if available_problems.count %}
                     <ul class="list-group list-group-flush" id="availableProblemList">
-                    {% for problem in problems.all|dictsort:"problem_title" %}
+                    
+                    {% for problem in available_problems %}
                       <li class="list-group-item">
                         <form action="{% url 'associate_problem_to_set' problem_set.id problem.id %}" method="post">
                           {% csrf_token %}

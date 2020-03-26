@@ -47,7 +47,7 @@ def sequence_edit(request, pk):
     view_name = 'sequence_edit'
     sequence = get_object_or_404(Sequence, pk=pk)
 
-    available_problems = Problem.objects.exclude(id__in = sequence.problems.all().values_list('id').order_by('problem_title'))
+    available_problems = Problem.objects.exclude(id__in = sequence.problems.all().values_list('id'))
 
     available_activities = Activity.objects.exclude(id__in = sequence.activities.all().values_list('id'))
     thisSequenceID = sequence.pk
