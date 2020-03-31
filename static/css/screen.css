@@ -36,8 +36,9 @@
   } */
   .solution {
     margin: 0 auto;
-    padding: 1em;
-    border-left: 5px solid #999;
+    margin-top: 1em;
+    padding: 0em 0em 0.5em 1.5em;
+    border-left: 5px solid #E6E6E6;
   }
   .solution:not(:first-of-type) {
     margin-top: .5em;
@@ -94,19 +95,54 @@
     width: inherit !important;
   }
 
-  .latextorender ol {
-      counter-reset: list;
-  }
-  .latextorender ol > li {
-      list-style: none;
-      position: relative;
-  }
-  .latextorender ol > li:before {
-      counter-increment: list;
-      content: counter(list, lower-alpha) ") ";
-      position: absolute;
-      left: -1.4em;
-  }
+  /* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
+.latextorender ol, #problem_latexs ol {
+  list-style: none;
+  counter-reset: list;
+  margin-left: -1em;
+}
+
+.latextorender li, #problem_latexs li {
+  text-indent: -1.2em;
+  margin-left: 1em;
+  margin-bottom: .75em;
+}
+
+.latextorender ol > li:before, #problem_latexs ol > li:before {
+  counter-increment: list;
+  content: counter(list, lower-alpha)') ';
+  font-weight: bold;
+}
+
+.latextorender ol > li:after, #problem_latexs ol > li:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* #problem_latexs ol {
+  list-style: none;
+  counter-reset: list;
+  margin-left: -1em;
+} */
+
+/* #problem_latexs li {
+  text-indent: -1em;
+  margin-left: 1em;
+  margin-bottom: .75em;
+} */
+
+/* #problem_latexs ol > li:before {
+  counter-increment: list;
+  content: counter(list, lower-alpha)') ';
+  font-weight: bold;
+} */
+
+/* #problem_latexs ol > li:after {
+  content: '';
+  display: table;
+  clear: both;
+} */
 
   /* The following style may only be necessary for public_app and not needed site-wide. Test. */
 h1, h2, h3 {

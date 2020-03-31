@@ -371,10 +371,10 @@ def edit_problem_set(request, problem_set_id):
                         # SequenceItems.objects.bulk_create(new_items)
                         ProblemSetItems.objects.bulk_create(new_items)
 
-                        messages.success(request, 'You have updated your sequence.')
+                        messages.success(request, 'You have updated your problem set.')
 
                 except IntegrityError:
-                    messages.error(request, 'There was an error updating your sequence')
+                    messages.error(request, 'There was an error updating your problem set')
                     # return.redirect(reverse('profile-settings'))
 
 
