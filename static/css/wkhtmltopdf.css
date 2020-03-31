@@ -90,7 +90,7 @@ body {
 .homework ol > li:before {
     counter-increment: list;
     content: counter(list, lower-alpha)') ';
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .homework ol > li:after {
