@@ -23,6 +23,12 @@ blockquote, pre, div, .card-body, .card-header, .card {
     border: none;
     background-color: rgba(0,0,0,0);
 }
+h1 {
+    color: #333;
+}
+h2 {
+    color: #333;
+}
 a:not(.btn), a {
     text-decoration: none;
     color: #000000;
@@ -31,7 +37,7 @@ a:not(.btn), a {
     display: none;
 }
 blockquote.solution {
-    border-left: 5px solid #999;
+    /* border-left: 5px solid #999; */
 }
 .card-body {
     padding-bottom: 0.25rem;
@@ -39,41 +45,56 @@ blockquote.solution {
 }
 body {
     font-family: "Times New Roman", Times, serif;
-    margin: 1.6cm; /* to make up for the zero margin on @page */
+    /* to make up for the zero margin on @page */
+    /* Not required for wkhtmltopdf */
+    /* margin: 1.6cm; */
 }
-.solution {
-    margin: 0 auto;
-    padding: 0.5em;
-    border-left: 5px solid #999;
-    page-break-inside: auto;
-}
-
 
 * { overflow: visible !important; }
 
 .solution {
     margin: 0 auto;
-    padding: 1em;
-    border-left: 5px solid #999;
+    margin-top: 1em;
+    padding: 0em 0em 0.5em 1.5em;
+    border-left: 5px solid #E6E6E6;
+    page-break-inside: auto;
 }
 .solution:not(:first-of-type) {
     margin-top: .5em;
 }
-.homework .solution:before {
-    content: "Solution";
-    font-size: 1.25rem;
-    font-weight: 500;
+.solution h5 {
+    font-size: 110%;
+    margin-bottom: 0em;
+    color: rgb(26, 26, 26);
 }
-ol {
-    counter-reset: list;
-}
-ol > li {
+
+/* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
+.homework ol {
     list-style: none;
-    position: relative;
+    counter-reset: list;
+    margin-left: -1em;
 }
-ol > li:before {
+
+.homework li {
+    text-indent: -1em;
+    margin-left: 1em;
+    margin-bottom: .75em;
+}
+
+.homework ol > li:before {
     counter-increment: list;
-    content: counter(list, lower-alpha) ") ";
-    position: absolute;
-    left: -1.4em;
+    content: counter(list, lower-alpha)') ';
+}
+
+.homework ol > li:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+div .homework {
+    margin-bottom: 4em;
+}
+div .homework:last-of-type {
+    margin-bottom: 0em;
 }

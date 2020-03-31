@@ -6,12 +6,12 @@
 .solution:not(:first-of-type) {
   margin-top: .5em;
 }
-.homework .solution:before {
+/* .homework .solution:before {
     content: "Solution";
     font-size: 1.25rem;
     font-weight: 500;
-}
-.homework ol {
+} */
+/* .homework ol {
     counter-reset: list;
 }
 .homework ol > li {
@@ -23,4 +23,28 @@
     content: counter(list, lower-alpha) ") ";
     position: absolute;
     left: -1.4em;
+} */
+
+/* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
+.homework ol {
+  list-style: none;
+  counter-reset: list;
+  margin-left: -1em;
+}
+
+.homework li {
+  text-indent: -1em;
+  margin-left: 1em;
+  margin-bottom: .75em;
+}
+
+.homework ol > li:before {
+  counter-increment: list;
+  content: counter(list, lower-alpha)') ';
+}
+
+.homework ol > li:after {
+  content: '';
+  display: table;
+  clear: both;
 }
