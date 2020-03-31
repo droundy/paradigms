@@ -68,11 +68,11 @@ body {
     color: rgb(26, 26, 26);
 }
 
-/* .homework .solution:before {
+.homework .solution:before {
     content: "Solution";
     font-size: 1.25rem;
     font-weight: 500;
-} */
+}
 
 /* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
 .homework ol {
