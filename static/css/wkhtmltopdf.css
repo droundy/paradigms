@@ -1,0 +1,79 @@
+@page  {
+    size: auto;   /* auto is the initial value */
+    margin: 0mm;  /* avoid header/footer in chrome/firefox */
+    padding: 1in;
+}
+img[src$='.pdf'] {
+    display: none;
+}
+img[src$='.svg'] {
+    display: none;
+}
+.badge {
+    display: none;
+}
+.noprint {
+    visibility: hidden;
+    display: none;
+}
+nav {
+  display: none;
+}
+blockquote, pre, div, .card-body, .card-header, .card {
+    border: none;
+    background-color: rgba(0,0,0,0);
+}
+a:not(.btn), a {
+    text-decoration: none;
+    color: #000000;
+}
+.btn {
+    display: none;
+}
+blockquote.solution {
+    border-left: 5px solid #999;
+}
+.card-body {
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+}
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 1.6cm; /* to make up for the zero margin on @page */
+}
+.solution {
+    margin: 0 auto;
+    padding: 0.5em;
+    border-left: 5px solid #999;
+    page-break-inside: auto;
+}
+
+
+* { overflow: visible !important; }
+
+.solution {
+    margin: 0 auto;
+    padding: 1em;
+    border-left: 5px solid #999;
+}
+.solution:not(:first-of-type) {
+    margin-top: .5em;
+}
+.homework .solution:before {
+    content: "Solution";
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+ol {
+    counter-reset: list;
+}
+ol > li {
+    list-style: none;
+    position: relative;
+}
+ol > li:before {
+    counter-increment: list;
+    content: counter(list, lower-alpha) ") ";
+    position: absolute;
+    left: -1.4em;
+}

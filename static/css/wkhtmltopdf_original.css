@@ -1,0 +1,134 @@
+body {
+  /* color: #F00; */
+}
+
+img[src$='.pdf'] {
+  display: none;
+}
+img[src$='.svg'] {
+  display: none;
+}
+
+a::after{
+  content: " (" attr(href) ") ";
+}
+
+.preview h5 {
+    font-size: 1em;
+    font-color: #000;
+  }
+  .ace_editor {
+    width: 100%;
+  }
+  aside {
+      float: right;
+      width: 100%;
+  }
+  .ace_content {
+    color: #5C5C5C;
+  }
+  /* The preview window */
+  .preview {
+      background-color: #FFF;
+      /* margin-left: 50%; */
+      width: 100%;
+      position: absolute;
+      color: #5C5C5C;
+      border: 1px solid #ced4da;
+      padding: 0.5em;
+  }
+  div.center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  /* .solution {
+      margin-bottom: 0.5em;
+      color: #000;
+      border: 1px solid #ced4da;
+      padding: 1em;
+
+  } */
+  .solution {
+    margin: 0 auto;
+    padding: 1em;
+    border-left: 5px solid #999;
+  }
+  .solution:not(:first-of-type) {
+    margin-top: .5em;
+  }
+  .solution p {
+    color: #555;
+    font-size: 12pt;
+    line-height: 1.4;
+    font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
+  }
+  .solution footer {
+    margin-top: .5em;
+    padding: 0;
+    color: #777;
+    font-size: 12pt;
+    text-align: left;
+    font-style: italic;
+  }
+  .solution footer:before {
+    content: '— ';
+  }
+  .solution:nth-of-type(even) {
+    text-align: left;
+    border-left: 5px solid #999;
+    border-right: none;
+  }
+  .solution:nth-of-type(even) footer {
+    text-align: left;
+  }
+  .solution:nth-of-type(even) footer:before {
+    content: '';
+  }
+  .solution:nth-of-type(even) footer:after {
+    content: ' —';
+  }
+  @element '.solution' and (min-width: 300px) {
+    .solution {
+      padding: 1em 20% 1em 1em;
+    }
+    .solution p {
+      font-size: 14pt;
+    }
+    .solution:nth-of-type(even) {
+      padding: 1em 1em 1em 20%;
+    }
+  }
+  .error {
+      background-color: #ff6666;
+  }
+  .warning {
+      background-color: #ffff66;
+  }
+  #id_problem_latex {
+    width: inherit !important;
+  }
+
+  .latextorender ol {
+      counter-reset: list;
+  }
+  .latextorender ol > li {
+      list-style: none;
+      position: relative;
+  }
+  .latextorender ol > li:before {
+      counter-increment: list;
+      content: counter(list, lower-alpha) ") ";
+      position: absolute;
+      left: -1.4em;
+  }
+
+  /* The following style may only be necessary for public_app and not needed site-wide. Test. */
+h1, h2, h3 {
+  font-family: 'Literata', serif;
+}
+
+/* For the Pages App */
+.page_list {
+  list-style-type: none;
+}

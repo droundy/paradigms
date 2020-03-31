@@ -4,6 +4,9 @@
         margin: 0mm;  /* avoid header/footer in chrome/firefox */
         padding: 1in;
     }
+    .badge {
+        display: none;
+    }
     .noprint {
         visibility: hidden;
         display: none;
