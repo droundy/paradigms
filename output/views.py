@@ -60,10 +60,10 @@ def output_problem_set_pdf(request, problem_set_id):
 	# This is needed to give mathjax a chance to render before the pdf is created
 	wkoptions = {
 		'javascript-delay': 5000, # 5000 = 5 sec
-		# 'margin-top': '1in',
-		# 'margin-right': '1in',
-		# 'margin-bottom': '1in',
-		# 'margin-left': '1in',
+		'margin-top': '1in',
+		'margin-right': '1in',
+		'margin-bottom': '1in',
+	 	'margin-left': '1in',
 		'encoding': "UTF-8",
 		# 'load-media-error-handling': 'ignore',
 	}
@@ -127,16 +127,16 @@ def output_problem_set_pdf(request, problem_set_id):
 	ProblemSetPDFs.objects.create(problem_set=problem_set, solution=True, pdf="problem_set_pdfs/" + this_file_name2)
 
 	# Define a variable to contain the PDF for serving to user. Serve to user.
-	fs = FileSystemStorage(settings.MEDIA_ROOT + "/problem_set_pdfs/")
-	with fs.open(this_file_name) as pdf:
-		response = HttpResponse(pdf, content_type='application/pdf')
-		response['Content-Disposition'] = 'attachment; filename="' + this_file_name + '"'
-		return response
+	# fs = FileSystemStorage(settings.MEDIA_ROOT + "/problem_set_pdfs/")
+	# with fs.open(this_file_name) as pdf:
+	#	response = HttpResponse(pdf, content_type='application/pdf')
+	#	response['Content-Disposition'] = 'attachment; filename="' + this_file_name + '"'
+	#	return response
 
-	return response
+	# return response
 
 	# Assuming that this request is coming from the edit problem set page... return there.
-	# return redirect('edit_problem_set', problem_set_id=problem_set.id)
+	return redirect('edit_problem_set', problem_set_id=problem_set.id)
 
 def output_home(request):
     problem_sets = ProblemSet.objects.all().order_by('title')

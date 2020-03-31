@@ -1,7 +1,7 @@
 @page  {
     size: auto;   /* auto is the initial value */
     margin: 0mm;  /* avoid header/footer in chrome/firefox */
-    padding: 1in;
+/*    padding: 1in; */ /* Better to do padding with wkhtmltopdf */
 }
 img[src$='.pdf'] {
     display: none;
