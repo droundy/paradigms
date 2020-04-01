@@ -290,6 +290,7 @@
       });
     </script>
 
+    
 
 
     </head>
@@ -297,4 +298,10 @@
       {% block content %}
       {% endblock %}
     </body>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        // $(".homework ol li").find("p:first").css("background-color", "yellow");
+        // For some reason P tags are being wrapped around the contents of li within homework item iterations. Remove them.
+        $(".homework ol li").find("p:first").contents().unwrap();
+    </script>
 </html>

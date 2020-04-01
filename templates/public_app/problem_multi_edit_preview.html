@@ -12,7 +12,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
-        {% if thisPrimaryKey %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=thisPrimaryKey %}">{{ latex_problem.problem_title }}</a></li>
+        {% if thisPrimaryKey %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html' pk=thisPrimaryKey %}">{{ latex_problem.problem_title }}</a></li><li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=thisPrimaryKey %}">View with Solution</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
         <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=thisPrimaryKey %}">Upload &amp; Manage Media</a></li>{% endif %}
       </ol>

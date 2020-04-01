@@ -133,6 +133,7 @@
             deleteText: 'remove',
         });
 
+
         $(".delete-row").addClass("btn btn-sm btn-warning");
         $(".delete-row").append(' <span class="oi oi-arrow-right" title="Remove Activity" alt="Remove Activity from Sequence"></span>')
 
@@ -453,6 +454,10 @@
         };
       });
     </script>
+    <script type="text/javascript" charset="utf-8">
+      // $(".homework ol li").find("p:first").css("background-color", "yellow");
+      $(".homework ol li").find("p:first").contents().unwrap();
+  </script>
 
   </body>
 </html>
