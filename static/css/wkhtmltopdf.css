@@ -81,9 +81,19 @@ body {
     margin-left: -1em;
 }
 
-.homework li {
+.homework ol > li {
     text-indent: -1em;
     margin-left: 1em;
+    margin-bottom: .75em;
+}
+
+.homework ul {
+    list-style: outside;
+}
+
+.homework ul > li, .homework blockquote p {
+    text-indent: 0em;
+    margin-left: 0em;
     margin-bottom: .75em;
 }
 

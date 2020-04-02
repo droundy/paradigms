@@ -67,7 +67,7 @@
   }
   .solution:nth-of-type(even) {
     text-align: left;
-    border-left: 5px solid #999;
+    border-left: 5px solid #E6E6E6;
     border-right: none;
   }
   .solution:nth-of-type(even) footer {
@@ -111,6 +111,7 @@
   text-indent: -1.2em;
   margin-left: 1em;
   margin-bottom: .75em;
+  /* color: red; */
 }
 
 .latextorender ol > li:before, #problem_latexs ol > li:before, .preview ol > li:before, .homework ol > li:before {
@@ -123,6 +124,16 @@
   content: '';
   display: table;
   clear: both;
+}
+
+.homework ul {
+  list-style: outside;
+}
+
+.homework ul > li, .homework blockquote p {
+  text-indent: 0em;
+  margin-left: 0em;
+  margin-bottom: .75em;
 }
 
   /* The following style may only be necessary for public_app and not needed site-wide. Test. */

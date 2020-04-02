@@ -455,8 +455,18 @@
       });
     </script>
     <script type="text/javascript" charset="utf-8">
-      // $(".homework ol li").find("p:first").css("background-color", "yellow");
-      $(".homework ol li").find("p:first").contents().unwrap();
+      // For some reason P tags are being wrapped around the contents of li within homework item iterations. Remove them.
+      $(".homework > ol > li").find("p:first").css("background-color", "yellow");
+      // $(".homework > ol > li").find("p:first").contents().unwrap();
+
+      // Problem Set Display
+      $(".homework > .card-body > ol > li > p").css("background-color", "pink");
+      $(".homework > .card-body > ol > li > p").contents().unwrap();
+
+      $(".homework  ol > li > blockquote > ol > li > p").contents().unwrap();
+
+      // $(".homework > .card-body > ol > li").find("p:first").contents().unwrap();
+      // $(".homework > .card-body > ol > li").not("blockquote").find("p:first").contents().unwrap();
   </script>
 
   </body>
