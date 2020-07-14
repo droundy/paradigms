@@ -431,9 +431,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        tex2jax: {
-          ignoreClass: "tex2jax_ignore|error",
-        },
         "fast-preview": {
             disabled: true
         },
@@ -442,7 +439,8 @@
         // enable inline equation rendering
         tex2jax: {
           inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-          processEscapes: true
+          processEscapes: true,
+          ignoreClass: "error",
         }
       });
       MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
