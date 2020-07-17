@@ -183,6 +183,11 @@ def problem_display_html(request, pk):
         return redirect('/accounts/login/?next=%s' % request.path)
 
 
+def problem_title(request, pk):
+    activity = get_object_or_404(Problem, pk=pk)
+    problem_title = problem.title
+    return HttpResponse(problem_title)
+
 # For display within site layout.
 #@csrf_exempt
 
