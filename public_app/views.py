@@ -185,7 +185,7 @@ def problem_display_html(request, pk):
 
 def problem_title(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
-    problem_title = problem.title
+    problem_title = problem.problem_title
     return HttpResponse(problem_title)
 
 # For display within site layout.
