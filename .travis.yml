@@ -17,6 +17,7 @@ install:
   - build/create_venv
   - echo $PATH
   - source venv/bin/activate
+  - export PATH=$HOME/.cargo/bin:$PATH
   - python --version
   - echo $PATH
   - which cargo
