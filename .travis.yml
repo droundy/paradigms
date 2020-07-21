@@ -16,6 +16,7 @@ install:
   - build/create_venv
   - source venv/bin/activate
   - python --version
+  - which cargo
   - build/get_latex_snippet
 # before_script:
 #   - mysql -e 'create database test;' -u root
