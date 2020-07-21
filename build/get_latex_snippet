@@ -35,6 +35,8 @@ cp -v pkg/latex_snippet{_bg.wasm,.js} ../../static/public_app/js/
 
 rm -rf target/wheels
 
+echo ensure that we have maturin before we use it...
+cargo install maturin
 maturin build -b cffi --release --strip
 
 rm -rf python-module

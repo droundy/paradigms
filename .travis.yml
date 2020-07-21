@@ -21,7 +21,6 @@ install:
   - python --version
   - echo $PATH
   - which cargo
-  - cargo install maturin
   - build/get_latex_snippet
 # before_script:
 #   - mysql -e 'create database test;' -u root
