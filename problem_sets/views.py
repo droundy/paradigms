@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
+from django_tex.shortcuts import render_to_pdf
 from admin_app.models import ProblemSet, Problem, ProblemSetItems, ProblemSetPDFs
 from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm, SetItemUpdateForm, BaseProblemSetForm, ItemUpdateForm
 
@@ -470,6 +471,7 @@ def problem_set_pdf(request, problem_set_id):
     }
     x = render_to_string('problem_sets/problem_set_pdf.tex', context)
     print('render gave ', x)
+    return render_to_pdf(request, 'problem_sets/problem_set_pdf.tex', context, filename='test.pdf')
     return HttpResponse(x, content_type="text/plain")
 
 # Associate problem/activity, remove problem/activity

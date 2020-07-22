@@ -1,3 +1,20 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{cancel}
+
+\newenvironment{solution}{\expandafter\comment}{\expandafter\endcomment}
+
+% deal with missing images which are not directly included in the repository
+\newcommand{\noimage}{\setlength{\fboxsep}{-\fboxrule}%
+  \fbox{\phantom{\rule{10pt}{10pt}}File missing\phantom{\rule{10pt}{10pt}}}% Framed box
+}
+\let\includegraphicsoriginal\includegraphics
+\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{ #2}{\includegraphicsoriginal[#1]{ #2}}{\noimage}}
+
+\begin{document}
 {{ problem_set.title }}
 
 {{ problem_set.instructions }}
@@ -9,3 +26,4 @@
 
 {{item.problem.problem_latex }}
 {% endfor %}
+\end{document}

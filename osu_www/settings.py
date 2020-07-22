@@ -74,6 +74,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
 	'wkhtmltopdf',
+    'django_tex',
 
     'pages',
     'page_media',
@@ -120,7 +121,15 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'NAME': 'tex',
+        'BACKEND': 'django_tex.engine.TeXEngine', 
+        'DIRS': [TEMPLATES_DIR],
+        'APP_DIRS': True,
+    },
 ]
+
+LATEX_INTERPRETER = 'pdflatex'
 
 WSGI_APPLICATION = 'osu_www.wsgi.application'
 
