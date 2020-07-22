@@ -6,6 +6,7 @@ from django.forms import modelformset_factory, inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.forms.formsets import BaseFormSet
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 import logging
@@ -415,7 +416,6 @@ def list_problem_sets(request):
     }
     return render(request, 'problem_sets/problem_set_list.html', context)
 
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
 def problem_set_details(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
@@ -444,6 +444,33 @@ def problem_set_details(request, problem_set_id):
         'page_title': problem_set.title,
     }
     return render(request, 'problem_sets/problem_set_detail.html', context)
+
+def problem_set_pdf(request, problem_set_id):
+    problem_set = ProblemSet.objects.get(pk=problem_set_id)
+    problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
+    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
+    # print(problem_set_problems)
+
+    # Get list of all associated items
+    item_title_sql = 'select i.id, p.problem_title from admin_app_problemsetitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.problem_set_id = "' + str(problem_set_id) + '" ORDER BY i.item_position'
+
+    item_title_list = ProblemSetItems.objects.raw(item_title_sql)
+    item_title_dict = []
+    item_list = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
+    # Loop through them and grab either the activity or problem title and insert it into the title dictionary
+    for title in item_title_list:
+        item_title_dict.append( [title.problem_title] )
+        
+    context = {
+        'problem_set': problem_set,
+        'problem_set_items': problem_set_items,
+        'problem_set_problems': problem_set_problems,
+        'item_title_dict': item_title_dict,
+        'page_title': problem_set.title,
+    }
+    x = render_to_string('problem_sets/problem_set_pdf.tex', context)
+    print('render gave ', x)
+    return HttpResponse(x, content_type="text/plain")
 
 # Associate problem/activity, remove problem/activity
 def associate_problem_to_set(request, problem_set_id, problem_id):

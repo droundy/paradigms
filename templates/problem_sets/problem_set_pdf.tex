@@ -1,0 +1,11 @@
+{{ problem_set.title }}
+
+{{ problem_set.instructions }}
+
+{% for item in problem_set_problems %}
+\section{ {{ item.problem.problem_title }} }
+
+{{ item.item_instructions }}
+
+{{item.problem.problem_latex }}
+{% endfor %}

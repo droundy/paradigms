@@ -9,6 +9,7 @@ urlpatterns = [
     path('new/', views.problem_set_add, name='problem_set_add'),
     path('list/', views.list_problem_sets, name='list_problem_sets'),
     path('<problem_set_id>/', views.problem_set_details, name='problem_set_details'),
+    path('pdf/<problem_set_id>/', views.problem_set_pdf, name='problem_set_pdf'),
     path('solution/<problem_set_id>/', views.problem_set_details_solution, name='problem_set_details_solution'),
     path('edit/<problem_set_id>/', views.edit_problem_set, name='edit_problem_set'),
     # path('edit2/<problem_set_id>/', views.edit_problem_set_2, name='edit_problem_set_2'),
