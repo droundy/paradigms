@@ -471,6 +471,9 @@ def problem_set_pdf(request, problem_set_id):
                     c = '/var/www/osu_production_env/osu_www'+c
                 else:
                     c = '/var/www/osu_production_env/osu_www/media/figures/'+c
+                if c[-4:] == '.svg':
+                    # use PDF files rather than SVG files.
+                    c = c[:-4] + '.pdf'
                 if os.path.isfile(c):
                     latex += r'\includegraphics'+b+'{'+c+'}'
                 else:
