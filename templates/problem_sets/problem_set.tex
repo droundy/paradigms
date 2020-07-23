@@ -6,6 +6,8 @@
 \usepackage{cancel}
 \usepackage{wrapfig}
 
+{% graphicspath %}
+
 \newenvironment{solution}{\expandafter\comment}{\expandafter\endcomment}
 
 % deal with missing images which are not directly included in the repository
@@ -21,7 +23,7 @@
 {{ problem_set.instructions }}
 
 {% for item in problem_set_problems %}
-\section{ {{ item.problem.problem_title }} }
+\section{ {{ item.problem.problem_title | safe }} }
 
 {{ item.item_instructions }}
 

@@ -130,6 +130,8 @@ TEMPLATES = [
 ]
 
 LATEX_INTERPRETER = 'pdflatex'
+LATEX_GRAPHICSPATH = ['/var/www/osu_production_env/osu_www/media/figures',
+                      '/var/www/osu_production_env/osu_www/media/activity_media']
 
 WSGI_APPLICATION = 'osu_www.wsgi.application'
 
