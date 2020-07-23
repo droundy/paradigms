@@ -469,8 +469,8 @@ def problem_set_pdf(request, problem_set_id):
         'item_title_dict': item_title_dict,
         'page_title': problem_set.title,
     }
-    x = render_to_string('problem_sets/problem_set.tex', context)
-    print('render gave ', x)
+    # x = render_to_string('problem_sets/problem_set.tex', context)
+    # print('render gave ', x)
     return render_to_pdf(request, 'problem_sets/problem_set.tex', context, filename='test.pdf')
     return HttpResponse(x, content_type="text/plain")
 
