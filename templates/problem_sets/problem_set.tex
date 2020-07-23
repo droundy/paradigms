@@ -23,7 +23,7 @@
   \fbox{\phantom{\rule{10pt}{10pt}}File missing\phantom{\rule{10pt}{10pt}}}% Framed box
 }
 \let\includegraphicsoriginal\includegraphics
-\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{/var/www/osu_production_env/osu_www/media/figures/#2}{\includegraphicsoriginal[#1]{/var/www/osu_production_env/osu_www/media/figures/#2}}{\noimage}}
+\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{/.#2}{\includegraphicsoriginal[#1]{/.#2}}{\noimage}}
 
 \begin{document}
 {{ problem_set.instructions }}

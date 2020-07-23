@@ -454,8 +454,16 @@ def problem_set_pdf(request, problem_set_id):
     problems = []
     for p in ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position"):
         latex = latex_snippet.latex_omit_solution(p.problem.problem_latex)
+        # convert absolute graphics paths to the filesystem location
         latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{/',
                        r'\\includegraphics\1{/var/www/osu_production_env/osu_www/',
+                       latex)
+        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{https://paradigms.oregonstate.edu/',
+                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/',
+                       latex)
+        # also convert relative graphics paths
+        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{([^/])',
+                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/media/figures/\2',
                        latex)
         problems.append({
             'title': latex_snippet.latex_omit_solution(p.problem.problem_title),
