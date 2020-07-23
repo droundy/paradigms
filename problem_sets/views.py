@@ -13,8 +13,11 @@ import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from django_tex.shortcuts import render_to_pdf
+import django_tex, re
 from admin_app.models import ProblemSet, Problem, ProblemSetItems, ProblemSetPDFs
 from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm, SetItemUpdateForm, BaseProblemSetForm, ItemUpdateForm
+
+import latex_snippet
 
 HTML_WHITESPACE = ' \t\n\f\r'
 
@@ -448,29 +451,31 @@ def problem_set_details(request, problem_set_id):
 
 def problem_set_pdf(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
-    problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
-    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
-    # print(problem_set_problems)
-
-    # Get list of all associated items
-    item_title_sql = 'select i.id, p.problem_title from admin_app_problemsetitems i LEFT JOIN admin_app_problem p ON i.problem_id = p.id WHERE i.problem_set_id = "' + str(problem_set_id) + '" ORDER BY i.item_position'
-
-    item_title_list = ProblemSetItems.objects.raw(item_title_sql)
-    item_title_dict = []
-    item_list = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
-    # Loop through them and grab either the activity or problem title and insert it into the title dictionary
-    for title in item_title_list:
-        item_title_dict.append( [title.problem_title] )
+    problems = []
+    for p in ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position"):
+        latex = latex_snippet.latex_omit_solution(p.problem.problem_latex)
+        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{/',
+                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/',
+                       latex)
+        problems.append({
+            'title': latex_snippet.latex_omit_solution(p.problem.problem_title),
+            'instructions': latex_snippet.latex_omit_solution(p.item_instructions),
+            'latex': latex,
+        })
+    print(problems)
         
     context = {
         'problem_set': problem_set,
-        'problem_set_items': problem_set_items,
-        'problem_set_problems': problem_set_problems,
-        'item_title_dict': item_title_dict,
-        'page_title': problem_set.title,
+        'problem_set_problems': problems,
     }
     # x = render_to_string('problem_sets/problem_set.tex', context)
     # print('render gave ', x)
+    tex = django_tex.core.render_template_with_context('problem_sets/problem_set.tex', context)
+    print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    texlines = list(tex.splitlines())
+    for i in range(len(texlines)):
+        print('{:4}'.format(i+1), texlines[i])
+    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     return render_to_pdf(request, 'problem_sets/problem_set.tex', context, filename='test.pdf')
     return HttpResponse(x, content_type="text/plain")
 

@@ -1,13 +1,22 @@
 \documentclass{article}
 
-\usepackage{fullpage}
+\usepackage[margin=1.5cm,includeheadfoot]{geometry}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage{verbatim}
 \usepackage{cancel}
 \usepackage{wrapfig}
+\usepackage{url}
+\usepackage{fancyhdr}
 
-\newenvironment{solution}{\expandafter\comment}{\expandafter\endcomment}
+\pagestyle{fancy}
+
+%\rfoot{Name:\hspace{10em}}
+\lhead{\bf {{problem_set.title}}}
+\cfoot{\thepage}
+%\lfoot{118 minutes}
+%\rhead{\total{points} points total}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
 
 % deal with missing images which are not directly included in the repository
 \newcommand{\noimage}{\setlength{\fboxsep}{-\fboxrule}%
@@ -17,15 +26,11 @@
 \renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{/var/www/osu_production_env/osu_www/media/figures/#2}{\includegraphicsoriginal[#1]{/var/www/osu_production_env/osu_www/media/figures/#2}}{\noimage}}
 
 \begin{document}
-{{ problem_set.title }}
-
 {{ problem_set.instructions }}
 
 {% for item in problem_set_problems %}
-\section{ {{ item.problem.problem_title | safe }} }
+\section{ {{ item.title }} }
 
-{{ item.item_instructions }}
-
-{{item.problem.problem_latex }}
+\emph{ {{ item.instructions }} }  {{ item.latex }}
 {% endfor %}
 \end{document}
