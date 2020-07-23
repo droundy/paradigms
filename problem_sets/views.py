@@ -13,7 +13,7 @@ import logging
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from django_tex.shortcuts import render_to_pdf
-import django_tex, re
+import django_tex, re, os
 from admin_app.models import ProblemSet, Problem, ProblemSetItems, ProblemSetPDFs
 from problem_sets.forms import ProblemSetEditForm, ProblemSetItemsFormset, ProblemSetAddForm, SetItemUpdateForm, BaseProblemSetForm, ItemUpdateForm
 
@@ -454,23 +454,33 @@ def problem_set_pdf(request, problem_set_id):
     problems = []
     for p in ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position"):
         latex = latex_snippet.latex_omit_solution(p.problem.problem_latex)
-        # convert absolute graphics paths to the filesystem location
-        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{/',
-                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/',
-                       latex)
-        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{https://paradigms.oregonstate.edu/',
-                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/',
-                       latex)
-        # also convert relative graphics paths
-        latex = re.sub(r'\\includegraphics(\[[^\]]*\])?{([^/])',
-                       r'\\includegraphics\1{/var/www/osu_production_env/osu_www/media/figures/\2',
-                       latex)
+        # The following splits up the latex on any includegraphics, so we can
+        # adjust the paths to any files, and also change svg files to pdf.
+        splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
+        latex = ''
+        for a,b,c in zip(*[splitup[i::3] for i in range(3)]):
+            latex += a
+
+            print('b is', b)
+            if len(c) > 0:
+                if b is None:
+                    b = ''
+                if c[0] == '/' or c.startswith('https://'):
+                    if c.startswith('https://'):
+                        c = c[len('https:/'):]
+                    c = '/var/www/osu_production_env/osu_www'+c
+                else:
+                    c = '/var/www/osu_production_env/osu_www/media/figures/'+c
+                if os.path.isfile(c):
+                    latex += r'\includegraphics'+b+'{'+c+'}'
+                else:
+                    latex += r'{\tiny Missing \verb!%s!}' % c
+        latex += splitup[-1]
         problems.append({
             'title': latex_snippet.latex_omit_solution(p.problem.problem_title),
             'instructions': latex_snippet.latex_omit_solution(p.item_instructions),
             'latex': latex,
         })
-    print(problems)
         
     context = {
         'problem_set': problem_set,
