@@ -453,7 +453,7 @@ def problem_set_pdf(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problems = []
     for p in ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position"):
-        latex = latex_snippet.omit_solution(p.problem.problem_latex)
+        latex = latex_snippet.omit_solutions(p.problem.problem_latex)
         # The following splits up the latex on any includegraphics, so we can
         # adjust the paths to any files, and also change svg files to pdf.
         splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
@@ -480,8 +480,8 @@ def problem_set_pdf(request, problem_set_id):
                     latex += r'{\tiny Missing \verb!%s!}' % c
         latex += splitup[-1]
         problems.append({
-            'title': latex_snippet.omit_solution(p.problem.problem_title),
-            'instructions': latex_snippet.omit_solution(p.item_instructions),
+            'title': latex_snippet.omit_solutions(p.problem.problem_title),
+            'instructions': latex_snippet.omit_solutions(p.item_instructions),
             'latex': latex,
         })
         
