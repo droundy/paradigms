@@ -16,3 +16,10 @@ EOF
 sed -i s/utf8mb4_0900_ai_ci/utf8mb4_general_ci/g $1
 
 mysql -e "source $1" osu_production
+
+cat > ../my.cnf <<END
+[client]
+database = osu_production
+user = $USER
+default-character-set = utf8
+END
