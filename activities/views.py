@@ -146,7 +146,6 @@ def activity_pdf_guide(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
     figures_list = Activity.objects.get(id=this_key).media.all()
-    view_name = 'activity_detail'
     form = ActivityFormReadOnly(instance=activity)
 
     # Find the sequence(s) in which this Activity has been assigned
@@ -161,7 +160,7 @@ def activity_pdf_guide(request, pk):
         'activity_sequences': activity_sequences,
         'this_key': this_key,
         'form': form,
-        'view_name': view_name,
+        'view_name': "Instructor's guide",
         'figures': figures_list,
         'page_title': activity.title,
     }
@@ -170,14 +169,13 @@ def activity_pdf_guide(request, pk):
 def activity_pdf_solution(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
-    view_name = 'activity_detail_solution'
     form = ActivityFormReadOnly(instance=activity)
     context = {
         'activity': activity,
         'latex': activity.solution_latex,
         'this_key': this_key,
         'form': form,
-        'view_name': view_name,
+        'view_name': 'Solution',
         'page_title': activity.title + ' - Solution',
     }
     return render_to_pdf(request, 'activities/activity.tex', context, filename='solution.pdf')
@@ -185,14 +183,13 @@ def activity_pdf_solution(request, pk):
 def activity_pdf_handout(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk
-    view_name = 'activity_detail_handout'
     form = ActivityFormReadOnly(instance=activity)
     context = {
         'activity': activity,
         'latex': activity.pdf_handout_latex,
         'this_key': this_key,
         'form': form,
-        'view_name': view_name,
+        'view_name': 'Handout',
         'page_title': activity.title + ' - Handout',
     }
     return render_to_pdf(request, 'activities/activity.tex', context, filename='handout.pdf')
