@@ -4,9 +4,15 @@ from activities import views
 urlpatterns = [
         path('', views.activity_list, name='activity_list'),
         path('list', views.activity_list, name='activity_list'),
+
         path('<int:pk>/', views.activity_detail, name='activity_detail'),
         path('solution/<int:pk>', views.activity_detail_solution, name='activity_detail_solution'),
         path('handout/<int:pk>', views.activity_detail_handout, name='activity_detail_handout'),
+
+        path('<int:pk>/pdf/', views.activity_pdf_guide, name='activity_pdf_guide'),
+        path('solution/<int:pk>/pdf/', views.activity_pdf_solution, name='activity_pdf_solution'),
+        path('handout/<int:pk>/pdf/', views.activity_pdf_handout, name='activity_pdf_handout'),
+
         path('title/<int:pk>', views.activity_title, name='activity_title'),
         path('<int:pk>/title', views.activity_title, name='activity_title'),
         path('edit/<int:pk>', views.activity_edit, name='activity_edit'),

@@ -18,21 +18,21 @@
       <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
       <!-- If this is the solution view page, show link to view only, disable link on solution -->
       {% if view_name == 'activity_detail_solution' %}
-        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>{% endif %}
-        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a></li>{% endif %}
-        <li class="breadcrumb-item active" aria-current="page">View with Solution</li>
+        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
+        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a> <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">View with Solution <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>
       {% elif view_name == 'activity_detail_handout' %}
-        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>{% endif %}
-        <li class="breadcrumb-item active" aria-current="page">Student handout</li>
-        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>{% endif %}
+        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Student handout <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>
+        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
       {% else %}
-        <li class="breadcrumb-item active" aria-current="page">{{ activity.title }}</li>
-        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a></li>{% endif %}
-        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">{{ activity.title }} <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>
+        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a > <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
+        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
       {% endif %}
       <li class="breadcrumb-item"><a href="{% url 'activity_edit' pk=activity.pk %}">Edit</a></li>
       {% if this_key %}
-      <li class="breadcrumb-item"><a href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}">Upload and Manage Media</a>-Save activity first!</li>{% endif %}
+      <li class="breadcrumb-item"><a href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}">Upload and Manage Media</a></li>{% endif %}
     </ol>
   </nav>
   {% endif %}
@@ -41,7 +41,11 @@
     <div class="container">
       <div class="card">
         <h2 class="card-header">
+          {% if view_name == 'activity_detail_handout' %}
+          Student handout: {{ activity.title }}
+          {% else %}
           Activity: {{ activity.title }}
+          {% endif %}
         </h2>
         <div class="card-body">
           <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.overview_paragraph|latex_with_solution }}{% else %}{{ activity.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>

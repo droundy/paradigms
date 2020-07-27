@@ -14,10 +14,9 @@
         <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
         <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
         {% if this_key %}
-          {% if activity.title %}
-              <li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>
-          {% endif %}
-          <li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>
+          {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
+          {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a > <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
+          {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
         {% endif %}
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
         {% if this_key %}

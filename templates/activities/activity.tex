@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage[margin=1.5cm,includeheadfoot]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{framed} % for the solution environment
+
+\pagestyle{fancy}
+
+%\rfoot{Name:\hspace{10em}}
+\lhead{\bf {{activity.title}}}
+\rhead{\bf Handout}
+\cfoot{\thepage}
+%\lfoot{118 minutes}
+%\rhead{\total{points} points total}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+
+\newenvironment{solution}{\def\FrameCommand{\textcolor{lightgray}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{Solution}}%
+{\endMakeFramed}
+
+\newenvironment{handout}{\def\FrameCommand{\textcolor{CornflowerBlue}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{\textcolor{CornflowerBlue}{Student handout}}}%
+{\endMakeFramed}
+
+\newenvironment{guide}{\def\FrameCommand{\textcolor{Lavender}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{\textcolor{Lavender}{Instructor's guide}}}%
+{\endMakeFramed}
+
+\begin{document}
+{{ latex }}
+\end{document}
