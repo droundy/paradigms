@@ -45,34 +45,37 @@
     font-size: 1.25rem;
     font-weight: 500;
   }
-  .solution , .guide {
+  .handout:before {
+    content: "Student handout";
+    color: #66e;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .solution , .guide, .handout {
     margin: 0 auto;
-    margin-top: 1em;
+    margin-top: 0.5em;
     padding: 0em 0em 0.5em 1.0em;
     border-left: 5px solid #E6E6E6;
-  }
-  .guide {
-    border-left: 5px solid #f99;
-  }
-  .solution:not(:first-of-type), .guide:not(:first-of-type)  {
-    margin-top: .5em;
-  }
-  .solution p , .guide p {
+
     color: #555;
     font-size: 12pt;
     line-height: 1.4;
     font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
   }
-  .solution footer, .guide footer {
+  .guide {
+    border-left: 5px solid #fcc;
+  }
+  .handout {
+    border-left: 5px solid #ccf;
+  }
+  /* The following is for footnotes.  Not sure how important it really is... */
+  .solution aside, .guide aside, .handout aside {
     margin-top: .5em;
     padding: 0;
     color: #777;
     font-size: 12pt;
-    text-align: left;
+    text-align: right;
     font-style: italic;
-  }
-  .solution footer:before, .guide footer:before  {
-    content: '— ';
   }
   @element '.solution' and (min-width: 300px), @element '.guide' and (min-width: 300px) {
     .solution {
