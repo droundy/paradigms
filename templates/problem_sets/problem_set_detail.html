@@ -26,8 +26,8 @@
       <div class="card">
         <h2 class="card-header">
           {% if perms.admin_app.can_add_problem_set %}<a href="{% url 'edit_problem_set' problem_set_id=problem_set.pk %}">{{ problem_set.title }} </a>{% else %}{{ problem_set.title }} {% endif %}
-          <a href='pdf'>PDF</a>
-          <a href='solution/pdf'>Solution PDF</a>
+          <a href="{% url 'problem_set_pdf' problem_set_id=problem_set.pk%}">PDF</a>
+          <a href="{% url 'problem_set_pdf_solution' problem_set_id=problem_set.pk%}">Solution PDF</a>
         </h2>
         {% if problem_set.publication != 1 %}
           <span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>
