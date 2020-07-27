@@ -10,7 +10,7 @@
         {{ message }}
     </div>
   {% endfor %}
-  
+
   {% if perms.admin_app.can_add_activity %}
   <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
@@ -19,10 +19,16 @@
       <!-- If this is the solution view page, show link to view only, disable link on solution -->
       {% if view_name == 'activity_detail_solution' %}
         {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>{% endif %}
+        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a></li>{% endif %}
         <li class="breadcrumb-item active" aria-current="page">View with Solution</li>
+      {% elif view_name == 'activity_detail_handout' %}
+        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">Student handout</li>
+        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>{% endif %}
       {% else %}
         <li class="breadcrumb-item active" aria-current="page">{{ activity.title }}</li>
-        <li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>
+        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a></li>{% endif %}
+        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a></li>{% endif %}
       {% endif %}
       <li class="breadcrumb-item"><a href="{% url 'activity_edit' pk=activity.pk %}">Edit</a></li>
       {% if this_key %}
@@ -79,9 +85,9 @@
         {% endif %}
       </div>
 
-      {% if activity.instructor_guide %}
+      {% if latex %}
         
-        <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.instructor_guide|latex_with_solution }}{% else %}{{ activity.instructor_guide|latex_omit_solution }}{% endif %}</span>{% endif %}
+        <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ latex|latex_with_solution }}{% else %}{{ latex|latex_omit_solution }}{% endif %}</span>{% endif %}
         
         <!-- {% if figures %}
           <hr>      

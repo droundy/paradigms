@@ -63,6 +63,8 @@ class Figure(models.Model):
         return extension
 
 def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
+    if latex is None:
+        return None
     # The following splits up the latex on any includegraphics, so we can
     # adjust the paths to any files, and also change svg files to pdf.
     splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
@@ -227,6 +229,52 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def solution_latex(self):
+        ''' return the latex content for the student solutions '''
+        if r'\begin{handout}' in self.instructor_guide:
+            h = latex_snippet.only_handout(self.instructor_guide)
+        elif r'\begin{guide}' in self.instructor_guide:
+            h = latex_snippet.omit_guide(self.instructor_guide)
+        else:
+            return None
+        if r'\begin{solution}' not in h:
+            return None
+        return latex_snippet.physics_macros(h)
+    @property
+    def handout_latex(self):
+        ''' return the latex content for the student handout '''
+        if r'\begin{handout}' in self.instructor_guide:
+            h = latex_snippet.only_handout(self.instructor_guide)
+        elif r'\begin{guide}' in self.instructor_guide:
+            h = latex_snippet.omit_guide(self.instructor_guide)
+        else:
+            return None
+        return latex_snippet.omit_solutions(latex_snippet.physics_macros(h))
+    @property
+    def guide_latex(self):
+        ''' return the latex content for the instructor guide '''
+        return latex_snippet.omit_solutions(latex_snippet.physics_macros(self.instructor_guide))
+
+    @property
+    def pdf_guide_latex(self):
+        ''' return the latex content for the instructor guide, modified for pdf generation by making image paths
+          absolute, removing image paths that don't correspond to actual files, and converting
+          SVG files to PDF '''
+        return convert_latex_for_pdf(self.guide_latex, imagedir='/media/activity_media/')
+    @property
+    def pdf_handout_latex(self):
+        ''' return the latex content for the student, modified for pdf generation by making image paths
+          absolute, removing image paths that don't correspond to actual files, and converting
+          SVG files to PDF '''
+        return convert_latex_for_pdf(self.handout_latex, imagedir='/media/activity_media/')
+    @property
+    def pdf_solution_latex(self):
+        ''' return the latex content for the student solution, modified for pdf generation by making image paths
+          absolute, removing image paths that don't correspond to actual files, and converting
+          SVG files to PDF '''
+        return convert_latex_for_pdf(self.solution_latex, imagedir='/media/activity_media/')
 
     class Meta:
         permissions = (

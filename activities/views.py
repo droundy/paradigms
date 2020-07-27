@@ -101,6 +101,7 @@ def activity_detail(request, pk):
 
     context = {
         'activity': activity,
+        'latex': activity.guide_latex,
         'activity_sequences': activity_sequences,
         'this_key': this_key,
         'form': form,
@@ -117,9 +118,25 @@ def activity_detail_solution(request, pk):
     form = ActivityFormReadOnly(instance=activity)
     context = {
         'activity': activity,
+        'latex': activity.solution_latex,
         'this_key': this_key,
         'form': form,
         'view_name': view_name,
         'page_title': activity.title + ' - Solution',
+    }
+    return render(request, 'activities/activity_detail.html', context)
+
+def activity_detail_handout(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    this_key = pk
+    view_name = 'activity_detail_handout'
+    form = ActivityFormReadOnly(instance=activity)
+    context = {
+        'activity': activity,
+        'latex': activity.handout_latex,
+        'this_key': this_key,
+        'form': form,
+        'view_name': view_name,
+        'page_title': activity.title + ' - Handout',
     }
     return render(request, 'activities/activity_detail.html', context)
