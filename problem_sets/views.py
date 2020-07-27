@@ -451,43 +451,10 @@ def problem_set_details(request, problem_set_id):
 
 def problem_set_pdf(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
-    problems = []
-    for p in ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position"):
-        latex = latex_snippet.omit_solutions(p.problem.problem_latex)
-        # The following splits up the latex on any includegraphics, so we can
-        # adjust the paths to any files, and also change svg files to pdf.
-        splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
-        latex = ''
-        for a,b,c in zip(*[splitup[i::3] for i in range(3)]):
-            latex += a
-
-            print('b is', b)
-            if len(c) > 0:
-                if b is None:
-                    b = ''
-                if c[0] == '/' or c.startswith('https://'):
-                    if c.startswith('https://'):
-                        c = c[len('https:/'):]
-                    c = '/var/www/osu_production_env/osu_www'+c
-                else:
-                    c = '/var/www/osu_production_env/osu_www/media/figures/'+c
-                if c[-4:] == '.svg':
-                    # use PDF files rather than SVG files.
-                    c = c[:-4] + '.pdf'
-                if os.path.isfile(c):
-                    latex += r'\includegraphics'+b+'{'+c+'}'
-                else:
-                    latex += r'{\tiny Missing \verb!%s!}' % c
-        latex += splitup[-1]
-        problems.append({
-            'title': latex_snippet.omit_solutions(p.problem.problem_title),
-            'instructions': latex_snippet.omit_solutions(p.item_instructions),
-            'latex': latex,
-        })
-        
+    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
     context = {
         'problem_set': problem_set,
-        'problem_set_problems': problems,
+        'problem_set_problems': problem_set_problems,
     }
     # x = render_to_string('problem_sets/problem_set.tex', context)
     # print('render gave ', x)
@@ -498,6 +465,24 @@ def problem_set_pdf(request, problem_set_id):
         print('{:4}'.format(i+1), texlines[i])
     print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     return render_to_pdf(request, 'problem_sets/problem_set.tex', context, filename='test.pdf')
+    return HttpResponse(x, content_type="text/plain")
+
+def problem_set_pdf_solution(request, problem_set_id):
+    problem_set = ProblemSet.objects.get(pk=problem_set_id)
+    problem_set_problems = ProblemSetItems.objects.select_related().filter(problem_set_id=problem_set.pk).order_by("item_position")
+    context = {
+        'problem_set': problem_set,
+        'problem_set_problems': problem_set_problems,
+    }
+    # x = render_to_string('problem_sets/problem_set.tex', context)
+    # print('render gave ', x)
+    tex = django_tex.core.render_template_with_context('problem_sets/problem_set_solution.tex', context)
+    print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    texlines = list(tex.splitlines())
+    for i in range(len(texlines)):
+        print('{:4}'.format(i+1), texlines[i])
+    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+    return render_to_pdf(request, 'problem_sets/problem_set_solution.tex', context, filename='test.pdf')
     return HttpResponse(x, content_type="text/plain")
 
 # Associate problem/activity, remove problem/activity

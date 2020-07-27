@@ -11,6 +11,7 @@ urlpatterns = [
     path('<problem_set_id>/', views.problem_set_details, name='problem_set_details'),
     path('<problem_set_id>/pdf/', views.problem_set_pdf, name='problem_set_pdf'),
     path('solution/<problem_set_id>/', views.problem_set_details_solution, name='problem_set_details_solution'),
+    path('<problem_set_id>/solution/pdf/', views.problem_set_pdf_solution, name='problem_set_pdf_solution'),
     path('edit/<problem_set_id>/', views.edit_problem_set, name='edit_problem_set'),
     # path('edit2/<problem_set_id>/', views.edit_problem_set_2, name='edit_problem_set_2'),
     # path('edit3/<problem_set_id>/', views.edit_problem_set_3, name='edit_problem_set_3'),

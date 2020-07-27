@@ -8,16 +8,21 @@
 \usepackage{url}
 \usepackage{fancyhdr}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{framed} % for the solution environment
 
 \pagestyle{fancy}
 
 %\rfoot{Name:\hspace{10em}}
-\lhead{\bf {{problem_set.title}}}
+\lhead{\bf {{problem_set.title}} Solutions}
 \cfoot{\thepage}
 %\lfoot{118 minutes}
 %\rhead{\total{points} points total}
 
 \renewcommand{\labelenumi}{(\alph{enumi})}
+
+\newenvironment{solution}{\def\FrameCommand{\textcolor{lightgray}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{Solution}}%
+{\endMakeFramed}
 
 \begin{document}
 {{ problem_set.instructions }}
@@ -25,6 +30,6 @@
 {% for item in problem_set_problems %}
 \section{ {{ item.problem.problem_title }} }
 
-\emph{ {{ item.item_instructions }} }  {{ item.problem.pdf_latex }}
+\emph{ {{ item.item_instructions }} }  {{ item.problem.pdf_solution_latex }}
 {% endfor %}
 \end{document}

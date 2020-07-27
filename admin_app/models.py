@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from autoslug import AutoSlugField
-import os
+import os, latex_snippet, cairosvg, re
 # from admin_app.choices import *
 
 class PageMedia(models.Model):
@@ -62,6 +62,38 @@ class Figure(models.Model):
         name, extension = os.path.splitext(self.file.name)
         return extension
 
+def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
+    # The following splits up the latex on any includegraphics, so we can
+    # adjust the paths to any files, and also change svg files to pdf.
+    splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
+    latex = ''
+    for a,b,c in zip(*[splitup[i::3] for i in range(3)]):
+        latex += a
+
+        print('b is', b)
+        if len(c) > 0:
+            if b is None:
+                b = ''
+            if c[0] == '/' or c.startswith('https://'):
+                if c.startswith('https://'):
+                    c = c[len('https:/'):]
+                c = '/var/www/osu_production_env/osu_www'+c
+            else:
+                c = '/var/www/osu_production_env/osu_www'+imagedir+c
+            if c[-4:] == '.svg':
+                # use PDF files rather than SVG files.
+                path = c[:-4] + '.pdf'
+                if not os.path.isfile(path) and os.path.isfile(c):
+                    cairosvg.svg2pdf(url=c, write_to=path)
+            else:
+                path = c
+            if os.path.isfile(path):
+                latex += r'\includegraphics'+b+'{'+path+'}'
+            else:
+                latex += r'{\tiny Missing \verb!%s!}' % path
+    latex += splitup[-1]
+    return latex
+
 class Problem(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     problem_title = models.CharField(max_length=255)
@@ -81,6 +113,20 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.problem_title
+
+    @property
+    def pdf_latex(self):
+        ''' return the latex content, modified for pdf generation by making image paths
+          absolute, removing image paths that don't correspond to actual files, and converting
+          SVG files to PDF, and removing solutions. '''
+        return latex_snippet.omit_solutions(self.pdf_solution_latex)
+
+    @property
+    def pdf_solution_latex(self):
+        ''' return the latex content, modified for pdf generation by making image paths
+          absolute, removing image paths that don't correspond to actual files, and converting
+          SVG files to PDF, and including the solutions. '''
+        return convert_latex_for_pdf(latex_snippet.physics_macros(self.problem_latex))
 
     class Meta:
         ordering = ['problem_title']
