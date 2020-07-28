@@ -121,6 +121,24 @@
   clear: both;
 }
 
+dl {
+  margin-top: -1em;
+  text-indent: -2em;
+  padding-left: 2em;
+}
+dd {
+  display: inline;
+}
+dt { display: inline-block; }
+dt:first-of-type:before {
+  content: "\A";
+  white-space: pre;
+}
+dd:after {
+  content: "\A";
+  white-space: pre;
+}
+
 .homework ul {
   list-style: outside;
 }
