@@ -317,6 +317,53 @@ class SequenceItems(models.Model):
     role_in_sequence = models.TextField(blank=True, null=True)
     required = models.CharField(max_length=255, blank=True)
 
+# class CourseCatalog(models.Model):
+#     title = models.CharField(max_length=255, blank=True, null=True)
+#     date_added = models.DateTimeField(default=timezone.now)
+#     overview_paragraph = models.TextField(blank=True, null=True)
+#     problems = models.ManyToManyField(Problem, through='CourseItems', related_name='problems')
+#     activities = models.ManyToManyField(Activity, through='CourseItems', related_name='activities')
+#     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     author_info = models.CharField(max_length=4096, blank=True, null=True)
+#     publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
+
+#     def __str__(self):
+#         return self.title
+
+#     class Meta:
+#         permissions = (
+#             ("can_edit_sequence", "Edit Sequence"),
+#             ("can_add_sequence","Add Sequence"),
+#             ("can_view_solution","View Solution"))
+
+
+# class Course(models.Model):
+#     title = models.CharField(max_length=255, blank=True, null=True)
+#     date_added = models.DateTimeField(default=timezone.now)
+#     overview_paragraph = models.TextField(blank=True, null=True)
+#     problems = models.ManyToManyField(Problem, through='CourseItems', related_name='problems')
+#     activities = models.ManyToManyField(Activity, through='CourseItems', related_name='activities')
+#     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     author_info = models.CharField(max_length=4096, blank=True, null=True)
+#     publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
+
+#     def __str__(self):
+#         return self.title
+
+#     class Meta:
+#         permissions = (
+#             ("can_edit_sequence", "Edit Sequence"),
+#             ("can_add_sequence","Add Sequence"),
+#             ("can_view_solution","View Solution"))
+
+# class CourseItems(models.Model):
+#     sequence = models.ForeignKey(Sequence, blank=True, null=True, on_delete=models.CASCADE, related_name='itemSequences')
+#     problem = models.ForeignKey(Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblems')
+#     activity = models.ForeignKey(Activity, blank=True, null=True, on_delete=models.CASCADE, related_name='itemActivities')
+#     item_position = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+#     instructions = models.TextField(blank=True, null=True)
+#     required = models.CharField(max_length=255, blank=True)
+
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)
 #     contents = models.TextField(blank=True, null=True)
