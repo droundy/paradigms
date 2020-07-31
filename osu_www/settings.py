@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'site_directory',
     'activity_media',
     'sequences',
+    'courses',
     'problem_sets',
     'output',
 

@@ -1,0 +1,54 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load latex %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Courses</h1>
+  </div>
+</div>
+
+<form action="{% url 'course_list' %}" method="post">
+  {% csrf_token %}
+  {{ form.instructor.errors }}
+  {{ form.instructor.label_tag }} {{ form.instructor }}
+  {% for field in form.day_fields %}
+  <div class="fieldWrapper">
+    {{ field.errors }}
+    {{ field.label_tag }} {{ field }}
+    {% if field.help_text %}
+    <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <input type="submit" value="Submit">
+</form>
+
+<div class="container">
+  {% if perms.admin_app.can_add_course %}
+  <p><a class="btn btn-sm btn-success" href="{% url 'course_new' %}" class="top-menu"><span class="oi oi-plus"
+        title="Add new course button" alt="Create a new course."></span> Add Course </a></p>
+  {% endif %}
+  {% for course in courses %}
+  <div class="card overflow-auto" style="margin-bottom: 10px;">
+    <div class="card-body">
+      <h5><a
+          href="{% if perms.admin_app.can_add_course %}{% url 'course_detail_solution' pk=course.pk %}{% else %}{% url 'course_detail' pk=course.pk %}{% endif %}">{{ course.title }}</a>{% if course.publication != 1 %}
+        <span class="badge badge-danger">Unpublished</span>
+        {% endif%}</h5>
+      {% if course.overview_paragraph %}
+      {% if forloop.counter == 1 %}
+      <p>
+        {% if perms.admin_app.can_add_course %}{{ course.overview_paragraph | latex_with_solution }}{% else %}{{ course.overview_paragraph | latex_omit_solution }}{% endif %}
+      </p>
+      {% else %}
+      <p class="overflow-auto">
+        {% if perms.admin_app.can_add_course %}{{ course.overview_paragraph | latex_with_solution }}{% else %}{{ course.overview_paragraph | latex_omit_solution }}{% endif %}
+      </p>
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
