@@ -398,6 +398,17 @@ class CourseDay:
             if new in post and post[new] != '':
                 print('found problem', new, post[new])
                 self.problems.append(post[new])
+    @property
+    def possible_activities(self):
+        ''' a list of activities consistent with this day's topics '''
+        topics = [s.strip() for s in self.topics.split(',') if s.strip() != '']
+        print('topics are', topics)
+        if len(topics) == 0:
+            return []
+        query = models.Q(topics__icontains=topics.pop())
+        for t in topics:
+            query = query | models.Q(topics__icontains=t)
+        return list(Activity.objects.filter(query).exclude(title__in=self.activities))
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)

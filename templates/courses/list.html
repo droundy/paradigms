@@ -34,8 +34,14 @@
         <button type="submit" name="day-{{daynum}}-activity-{{activity_number}}-delete">Remove</button>
         {% endwith %}
         {% endfor %}
-      <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input type="text"
-          name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new"></li>
+      <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input list="day-{{daynum}}-possible"
+          name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new">
+          <datalist id="day-{{daynum}}-possible">
+            {% for aa in day.possible_activities %}
+            <option>{{ aa.title }}</option>
+            {% endfor %}
+          </datalist>
+        </li>
     </ul>
     <ul class="due">
       {% for problem in day.problems %}
@@ -49,8 +55,8 @@
     </ul>
     <div class="resources">
       <label for="id_day-{{daynum}}-resources">Resources:</label>
-      <textarea name="day-{{daynum}}-resources" cols="40" rows="4" style="height: 4em" maxlength="1024" class="textarea form-control"
-        id="id_day-{{daynum}}-resources">{{day.resources}}</textarea>
+      <textarea name="day-{{daynum}}-resources" cols="40" rows="4" style="height: 4em" maxlength="1024"
+        class="textarea form-control" id="id_day-{{daynum}}-resources">{{day.resources}}</textarea>
     </div>
   </div>
   {% endwith %}
