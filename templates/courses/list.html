@@ -50,8 +50,14 @@
         <button type="submit" name="day-{{daynum}}-problem-{{problem_number}}-delete">Remove</button>
         {% endwith %}
         {% endfor %}
-      <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <input type="text"
-          name="day-{{daynum}}-problem-new" id="id_day-{{daynum}}-problem-new"></li>
+      <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <input list="day-{{daynum}}-possible"
+        name="day-{{daynum}}-problem-new" id="id_day-{{daynum}}-problem-new">
+        <datalist id="day-{{daynum}}-possible">
+          {% for aa in day.possible_problems %}
+          <option>{{ aa.title }}</option>
+          {% endfor %}
+        </datalist>
+      </li>
     </ul>
     <div class="resources">
       <label for="id_day-{{daynum}}-resources">Resources:</label>

@@ -409,6 +409,17 @@ class CourseDay:
         for t in topics:
             query = query | models.Q(topics__icontains=t)
         return list(Activity.objects.filter(query).exclude(title__in=self.activities))
+    @property
+    def possible_problems(self):
+        ''' a list of problems consistent with this day's topics '''
+        topics = [s.strip() for s in self.topics.split(',') if s.strip() != '']
+        print('topics are', topics)
+        if len(topics) == 0:
+            return []
+        query = models.Q(topics__icontains=topics.pop())
+        for t in topics:
+            query = query | models.Q(topics__icontains=t)
+        return list(Problem.objects.filter(query).exclude(problem_title__in=self.problems))
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)
