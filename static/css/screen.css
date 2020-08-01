@@ -1,101 +1,120 @@
 .preview h5 {
-    font-size: 1em;
-    font-color: #000;
-  }
-  .ace_editor {
-    width: 100%;
-  }
-  aside {
-      float: right;
-      width: 100%;
-  }
-  .ace_content {
-    color: #5C5C5C;
-  }
-  /* The preview window */
-  .preview {
-      background-color: #FFF;
-      /* margin-left: 50%; */
-      width: 100%;
-      position: absolute;
-      color: #5C5C5C;
-      border: 1px solid #ced4da;
-      padding: 0.5em;
-  }
-  div.center {
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-  }
-  /* .solution {
+  font-size: 1em;
+  font-color: #000;
+}
+
+.ace_editor {
+  width: 100%;
+}
+
+aside {
+  float: right;
+  width: 100%;
+}
+
+.ace_content {
+  color: #5C5C5C;
+}
+
+/* The preview window */
+
+.preview {
+  background-color: #FFF;
+  /* margin-left: 50%; */
+  width: 100%;
+  position: absolute;
+  color: #5C5C5C;
+  border: 1px solid #ced4da;
+  padding: 0.5em;
+}
+
+div.center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* .solution {
       margin-bottom: 0.5em;
       color: #000;
       border: 1px solid #ced4da;
       padding: 1em;
 
   } */
-  .solution:before {
-    content: "Solution";
-    font-size: 1.25rem;
-    font-weight: 500;
-  }
-  .guide:before {
-    content: "Instructor's guide";
-    color: #e66;
-    font-size: 1.25rem;
-    font-weight: 500;
-  }
-  .handout:before {
-    content: "Student handout";
-    color: #66e;
-    font-size: 1.25rem;
-    font-weight: 500;
-  }
-  .solution , .guide, .handout {
-    margin: 0 auto;
-    margin-top: 0.5em;
-    padding: 0em 0em 0.5em 1.0em;
-    border-left: 5px solid #E6E6E6;
 
-    color: #555;
-    font-size: 12pt;
-    line-height: 1.4;
-    font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
-  }
-  .guide {
-    border-left: 5px solid #fcc;
-  }
-  .handout {
-    border-left: 5px solid #ccf;
-  }
-  /* The following is for footnotes.  Not sure how important it really is... */
-  .solution aside, .guide aside, .handout aside {
-    margin-top: .5em;
-    padding: 0;
-    color: #777;
-    font-size: 12pt;
-    text-align: right;
-    font-style: italic;
-  }
-  @element '.solution' and (min-width: 300px), @element '.guide' and (min-width: 300px) {
-    .solution {
-      padding: 1em 20% 1em 1em;
-    }
-    .solution p {
-      font-size: 14pt;
-    }
-  }
-  .error {
-      background-color: #ff6666;
-  }
-  .warning {
-      background-color: #ffff66;
-  }
-  #id_problem_latex {
-    width: inherit !important;
-  }
+.solution:before {
+  content: "Solution";
+  font-size: 1.25rem;
+  font-weight: 500;
+}
 
-  /* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
+.guide:before {
+  content: "Instructor's guide";
+  color: #e66;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.handout:before {
+  content: "Student handout";
+  color: #66e;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.solution, .guide, .handout {
+  margin: 0 auto;
+  margin-top: 0.5em;
+  padding: 0em 0em 0.5em 1.0em;
+  border-left: 5px solid #E6E6E6;
+  color: #555;
+  font-size: 12pt;
+  line-height: 1.4;
+  font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
+}
+
+.guide {
+  border-left: 5px solid #fcc;
+}
+
+.handout {
+  border-left: 5px solid #ccf;
+}
+
+/* The following is for footnotes.  Not sure how important it really is... */
+
+.solution aside, .guide aside, .handout aside {
+  margin-top: .5em;
+  padding: 0;
+  color: #777;
+  font-size: 12pt;
+  text-align: right;
+  font-style: italic;
+}
+
+@element '.solution' and (min-width: 300px), @element '.guide' and (min-width: 300px) {
+  .solution {
+    padding: 1em 20% 1em 1em;
+  }
+  .solution p {
+    font-size: 14pt;
+  }
+}
+
+.error {
+  background-color: #ff6666;
+}
+
+.warning {
+  background-color: #ffff66;
+}
+
+#id_problem_latex {
+  width: inherit !important;
+}
+
+/* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
+
 .latextorender ol, #problem_latexs ol, .preview ol, .homework ol {
   list-style: none;
   counter-reset: list;
@@ -109,13 +128,13 @@
   /* color: red; */
 }
 
-.latextorender ol > li:before, #problem_latexs ol > li:before, .preview ol > li:before, .homework ol > li:before {
+.latextorender ol>li:before, #problem_latexs ol>li:before, .preview ol>li:before, .homework ol>li:before {
   counter-increment: list;
   content: counter(list, lower-alpha)') ';
   /* font-weight: bold; */
 }
 
-.latextorender ol > li:after, #problem_latexs ol > li:after, .preview ol > li:after, .homework ol > li:after {
+.latextorender ol>li:after, #problem_latexs ol>li:after, .preview ol>li:after, .homework ol>li:after {
   content: '';
   display: table;
   clear: both;
@@ -126,14 +145,20 @@ dl {
   text-indent: -2em;
   padding-left: 2em;
 }
+
 dd {
   display: inline;
 }
-dt { display: inline-block; }
+
+dt {
+  display: inline-block;
+}
+
 dt:first-of-type:before {
   content: "\A";
   white-space: pre;
 }
+
 dd:after {
   content: "\A";
   white-space: pre;
@@ -143,18 +168,20 @@ dd:after {
   list-style: outside;
 }
 
-.homework ul > li, .homework blockquote p {
+.homework ul>li, .homework blockquote p {
   text-indent: 0em;
   margin-left: 0em;
   margin-bottom: .75em;
 }
 
-  /* The following style may only be necessary for public_app and not needed site-wide. Test. */
+/* The following style may only be necessary for public_app and not needed site-wide. Test. */
+
 h1, h2, h3 {
   font-family: 'Literata', serif;
 }
 
 /* For the Pages App */
+
 .page_list {
   list-style-type: none;
 }

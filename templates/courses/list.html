@@ -14,27 +14,29 @@
     required id="id_name">
   <label for="id_instructor">Instructor name:</label> <input type="text" name="instructor" value="{{course.instructor}}"
     maxlength="100" required id="id_instructor">
-  {% for day in course.days %}
-  {% with daynum=forloop.counter0 %}
-  <div class="day">
-    <label for="id_day-{{daynum}}">Day:</label> <input type="text" name="day-{{daynum}}" value="{{day.name}}" required
-      id="id_day-{{daynum}}">
-    <label for="id_day-{{daynum}}-topics">Topics</label> <input type="text" name="day-{{daynum}}-topics" value="{{day.topics}}"
-      maxlength="100" required id="id_day-{{daynum}}-topics">
-    <ul>
-      {% for activity in day.activities %}
-      {% with activity_number=forloop.counter0 %}
-      <li>{{activity}}<input type="hidden" name="day-{{daynum}}-activity-{{activity_number}}" value="{{activity}}">
-        <button type="submit" name="day-{{daynum}}-activity-{{activity_number}}-delete">Remove</button>
-        {% endwith %}
-        {% endfor %}
-      <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input type="text"
-          name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new"></li>
-    </ul>
+  <div class="schedule">
+    {% for day in course.days %}
+    {% with daynum=forloop.counter0 %}
+    <div class="day">
+      <label for="id_day-{{daynum}}">Day:</label> <input type="text" name="day-{{daynum}}" value="{{day.name}}" required
+        id="id_day-{{daynum}}">
+      <label for="id_day-{{daynum}}-topics">Topics</label> <input type="text" name="day-{{daynum}}-topics"
+        value="{{day.topics}}" maxlength="100" required id="id_day-{{daynum}}-topics">
+      <ul>
+        {% for activity in day.activities %}
+        {% with activity_number=forloop.counter0 %}
+        <li>{{activity}}<input type="hidden" name="day-{{daynum}}-activity-{{activity_number}}" value="{{activity}}">
+          <button type="submit" name="day-{{daynum}}-activity-{{activity_number}}-delete">Remove</button>
+          {% endwith %}
+          {% endfor %}
+        <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input type="text"
+            name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new"></li>
+      </ul>
 
+    </div>
+    {% endwith %}
+    {% endfor %}
   </div>
-  {% endwith %}
-  {% endfor %}
   <input type="submit" name='submit' value="Submit">
 </form>
 
