@@ -359,7 +359,7 @@ class Course:
         return v+'\n'
 
 class CourseDay:
-    def __init__(self, name, activities=None, problems=None, topics=None, prefix='', post=None):
+    def __init__(self, name, activities=None, problems=None, topics='', resources='', prefix='', post=None):
         self.name=name
         if activities is None:
             self.activities = []
@@ -369,22 +369,35 @@ class CourseDay:
             self.problems = []
         else:
             self.problems = problems
-        if topics is None:
-            self.topics = ''
-        else:
-            self.topics = topics
+        self.topics = topics
+        self.resources = resources
         if post is not None:
             self.topics = post[f'{prefix}-topics']
-            for i in range(10000):
+            self.resources = post[f'{prefix}-resources']
+            for i in range(100):
                 key = f'{prefix}-activity-{i}'
                 deleted = f'{prefix}-activity-{i}-delete' in post
+                if deleted:
+                    print('deleted', key)
                 if key in post and not deleted:
+                    print('found activity', key, post[key])
                     self.activities.append(post[key])
 
             new = f'{prefix}-activity-new'
             if new in post and post[new] != '':
                 print('found activity', new, post[new])
                 self.activities.append(post[new])
+            
+            for i in range(10000):
+                key = f'{prefix}-problem-{i}'
+                deleted = f'{prefix}-problem-{i}-delete' in post
+                if key in post and not deleted:
+                    self.problems.append(post[key])
+
+            new = f'{prefix}-problem-new'
+            if new in post and post[new] != '':
+                print('found problem', new, post[new])
+                self.problems.append(post[new])
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)
