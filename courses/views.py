@@ -6,8 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity
-from courses.forms import CourseForm
+from admin_app.models import Problem, Activity, Course, CourseDay
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -25,20 +24,15 @@ logger = logging.getLogger(__name__)
 def course_list(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = CourseForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            # return HttpResponseRedirect('/thanks/')
-            pass
+        print('post', request.POST)
+        course = Course(name=request.POST['name'], instructor=request.POST['instructor'], post=request.POST)
     else:
-        # if a GET (or any other method) we'll create a blank form
-        days = ['Monday', 'Wednesday']
-        form = CourseForm(days=days)
-    return render(request, 'courses/list.html', {'form': form})
+        # if a GET (or any other method) we'll create a blank day
+        course = Course(name='Energy and Entropy', instructor="David", days = [
+            CourseDay('Monday'),
+            CourseDay('Wednesday'),
+        ])
+    return render(request, 'courses/list.html', {'course': course})
 
 def course_title(request, pk):
     course = get_object_or_404(Course, pk=pk)

@@ -336,33 +336,55 @@ class SequenceItems(models.Model):
 #             ("can_add_sequence","Add Sequence"),
 #             ("can_view_solution","View Solution"))
 
+class Course:
+    def __init__(self, name, instructor, days=None, post=None):
+        self.name=name
+        self.instructor = instructor
+        if days is None:
+            self.days = []
+        else:
+            self.days = days
+        if post is not None:
+            for i in range(10000):
+                key = f'day-{i}'
+                if key in post and post[key] != '':
+                    self.days.append(CourseDay(post[key], prefix=key, post=post))
+        print(self)
+    def __str__(self):
+        v = 'course {} by {}'.format(self.name, self.instructor)
+        for d in self.days:
+            v += '\n  day {}'.format(d.name)
+            for a in d.activities:
+                v += '\n      activity {}'.format(a)
+        return v+'\n'
 
-# class Course(models.Model):
-#     title = models.CharField(max_length=255, blank=True, null=True)
-#     date_added = models.DateTimeField(default=timezone.now)
-#     overview_paragraph = models.TextField(blank=True, null=True)
-#     problems = models.ManyToManyField(Problem, through='CourseItems', related_name='problems')
-#     activities = models.ManyToManyField(Activity, through='CourseItems', related_name='activities')
-#     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     author_info = models.CharField(max_length=4096, blank=True, null=True)
-#     publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
+class CourseDay:
+    def __init__(self, name, activities=None, problems=None, topics=None, prefix='', post=None):
+        self.name=name
+        if activities is None:
+            self.activities = []
+        else:
+            self.activities = activities
+        if problems is None:
+            self.problems = []
+        else:
+            self.problems = problems
+        if topics is None:
+            self.topics = ''
+        else:
+            self.topics = topics
+        if post is not None:
+            self.topics = post[f'{prefix}-topics']
+            for i in range(10000):
+                key = f'{prefix}-activity-{i}'
+                deleted = f'{prefix}-activity-{i}-delete' in post
+                if key in post and not deleted:
+                    self.activities.append(post[key])
 
-#     def __str__(self):
-#         return self.title
-
-#     class Meta:
-#         permissions = (
-#             ("can_edit_sequence", "Edit Sequence"),
-#             ("can_add_sequence","Add Sequence"),
-#             ("can_view_solution","View Solution"))
-
-# class CourseItems(models.Model):
-#     sequence = models.ForeignKey(Sequence, blank=True, null=True, on_delete=models.CASCADE, related_name='itemSequences')
-#     problem = models.ForeignKey(Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblems')
-#     activity = models.ForeignKey(Activity, blank=True, null=True, on_delete=models.CASCADE, related_name='itemActivities')
-#     item_position = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-#     instructions = models.TextField(blank=True, null=True)
-#     required = models.CharField(max_length=255, blank=True)
+            new = f'{prefix}-activity-new'
+            if new in post and post[new] != '':
+                print('found activity', new, post[new])
+                self.activities.append(post[new])
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)
