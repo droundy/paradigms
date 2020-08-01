@@ -36,12 +36,12 @@
         {% endfor %}
       <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input list="day-{{daynum}}-possible"
           name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new">
-          <datalist id="day-{{daynum}}-possible">
-            {% for aa in day.possible_activities %}
-            <option>{{ aa.title }}</option>
-            {% endfor %}
-          </datalist>
-        </li>
+        <datalist id="day-{{daynum}}-possible">
+          {% for aa in day.possible_activities %}
+          <option>{{ aa.title }}</option>
+          {% endfor %}
+        </datalist>
+      </li>
     </ul>
     <ul class="due">
       {% for problem in day.problems %}
@@ -50,13 +50,17 @@
         <button type="submit" name="day-{{daynum}}-problem-{{problem_number}}-delete">Remove</button>
         {% endwith %}
         {% endfor %}
-      <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <input list="day-{{daynum}}-possible"
-        name="day-{{daynum}}-problem-new" id="id_day-{{daynum}}-problem-new">
-        <datalist id="day-{{daynum}}-possible">
-          {% for aa in day.possible_problems %}
-          <option>{{ aa.title }}</option>
+        {% with possible=day.possible_problems %}
+        {% if possible %}
+      <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <select name="day-{{daynum}}-problem-new"
+          id="id_day-{{daynum}}-problem-new">
+          <option>-</option>
+          {% for aa in possible %}
+          <option>{{ aa.problem_title | latex_with_solution }}</option>
           {% endfor %}
-        </datalist>
+        </select>
+        {% endif %}
+        {% endwith %}
       </li>
     </ul>
     <div class="resources">
