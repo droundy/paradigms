@@ -395,7 +395,7 @@ class CourseDay:
                     self.problems.append(post[key])
 
             new = f'{prefix}-problem-new'
-            if new in post and post[new] != '' and post[new] != '-':
+            if new in post and post[new] != '' and post[new] != 'assign problem':
                 print('found problem', new, post[new])
                 self.problems.append(post[new])
     @property

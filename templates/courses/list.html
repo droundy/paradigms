@@ -34,19 +34,21 @@
         <button type="submit" name="day-{{daynum}}-activity-{{activity_number}}-delete">Remove</button>
         {% endwith %}
         {% endfor %}
-      <li><label for="id_day-{{daynum}}-activity-new">new activity:</label> <input list="day-{{daynum}}-possible"
-          name="day-{{daynum}}-activity-new" id="id_day-{{daynum}}-activity-new">
-        <datalist id="day-{{daynum}}-possible">
-          {% for aa in day.possible_activities %}
-          <option>{{ aa.title }}</option>
-          {% endfor %}
-        </datalist>
+      <li>
+        <input list="day-{{daynum}}-possible" style="max-width: 100%; width: 100%;" name="day-{{daynum}}-activity-new" placeholder="new activity">
+          <datalist id="day-{{daynum}}-possible">
+            {% for aa in day.possible_activities %}
+            <option>{{ aa.title }}</option>
+            {% endfor %}
+          </datalist>
       </li>
     </ul>
     <ul class="due">
       {% for problem in day.problems %}
       {% with problem_number=forloop.counter0 %}
       <li>{{problem}}<input type="hidden" name="day-{{daynum}}-problem-{{problem_number}}" value="{{problem}}">
+        <input type="text" name="day-{{daynum}}-problem-{{problem_number}}-instructions" value=""
+          placeholder="instructions">
         <button type="submit" name="day-{{daynum}}-problem-{{problem_number}}-delete">Remove</button>
         {% endwith %}
         {% endfor %}
@@ -54,7 +56,7 @@
         {% if possible %}
       <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <select name="day-{{daynum}}-problem-new"
           id="id_day-{{daynum}}-problem-new">
-          <option>-</option>
+          <option><i>assign problem</i></option>
           {% for aa in possible %}
           <option>{{ aa.problem_title | latex_with_solution }}</option>
           {% endfor %}
