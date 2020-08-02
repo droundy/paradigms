@@ -198,6 +198,10 @@ h1, h2, h3 {
   list-style-type: none;
   padding-left: 0em;
 }
+.day ul li {
+  text-indent: -2em;
+  padding-left: 2em;
+}
 @media (min-width: 40rem) {
   .day {
     grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities due] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [end];

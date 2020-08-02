@@ -54,8 +54,7 @@
         {% endfor %}
         {% with possible=day.possible_problems %}
         {% if possible %}
-      <li><label for="id_day-{{daynum}}-problem-new">assign:</label> <select name="day-{{daynum}}-problem-new"
-          id="id_day-{{daynum}}-problem-new">
+      <li><select name="day-{{daynum}}-problem-new">
           <option><i>assign problem</i></option>
           {% for aa in possible %}
           <option>{{ aa.problem_title | latex_with_solution }}</option>
