@@ -12,4 +12,3 @@ static/open-iconic/.gitignore
 /build/latex_snippet
 latex_snippet.js
 latex_snippet_bg.wasm
-admin_app/migrations
