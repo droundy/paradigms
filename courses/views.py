@@ -28,7 +28,7 @@ def course_list(request):
         course = CourseAsTaught(name=request.POST['name'], instructor=request.POST['instructor'], post=request.POST)
     else:
         # if a GET (or any other method) we'll create a blank day
-        course = Course(name='Energy and Entropy', instructor="David", days = [
+        course = CourseAsTaught(name='Energy and Entropy', instructor="David", days = [
             CourseDay('Monday'),
             CourseDay('Wednesday'),
         ])
