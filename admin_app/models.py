@@ -317,26 +317,19 @@ class SequenceItems(models.Model):
     role_in_sequence = models.TextField(blank=True, null=True)
     required = models.CharField(max_length=255, blank=True)
 
-# class CourseCatalog(models.Model):
-#     title = models.CharField(max_length=255, blank=True, null=True)
-#     date_added = models.DateTimeField(default=timezone.now)
-#     overview_paragraph = models.TextField(blank=True, null=True)
-#     problems = models.ManyToManyField(Problem, through='CourseItems', related_name='problems')
-#     activities = models.ManyToManyField(Activity, through='CourseItems', related_name='activities')
-#     author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     author_info = models.CharField(max_length=4096, blank=True, null=True)
-#     publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
+class Course(models.Model):
+    catalog_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Course name in catalog")
+    short_name = models.CharField(max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
+    number = models.CharField(max_length=255, blank=True, null=True, help_text='include PH e.g. "PH 425"')
+    quarter_numbers = models.CharField(max_length=255, blank=True, null=True, help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
+    description = models.TextField(blank=True, null=True, verbose_name='Description in catalog')
+    publication = models.BooleanField(blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
 
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return self.name
 
-#     class Meta:
-#         permissions = (
-#             ("can_edit_sequence", "Edit Sequence"),
-#             ("can_add_sequence","Add Sequence"),
-#             ("can_view_solution","View Solution"))
 
-class Course:
+class CourseAsTaught:
     def __init__(self, name, instructor, days=None, post=None):
         self.name=name
         self.instructor = instructor

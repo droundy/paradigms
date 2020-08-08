@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages
+from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course
 
 # Register your models here.
 # admin.site.register(Problem)
@@ -22,3 +22,5 @@ class ProblemSetAdmin(admin.ModelAdmin):
 
 admin.site.register(Problem, ProblemAdmin)
 admin.site.register(ProblemSet, ProblemSetAdmin)
+
+admin.site.register(Course)

@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, Course, CourseDay
+from admin_app.models import Problem, Activity, CourseAsTaught, CourseDay
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -25,7 +25,7 @@ def course_list(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         print('post', request.POST)
-        course = Course(name=request.POST['name'], instructor=request.POST['instructor'], post=request.POST)
+        course = CourseAsTaught(name=request.POST['name'], instructor=request.POST['instructor'], post=request.POST)
     else:
         # if a GET (or any other method) we'll create a blank day
         course = Course(name='Energy and Entropy', instructor="David", days = [
