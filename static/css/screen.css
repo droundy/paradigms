@@ -189,7 +189,7 @@ h1, h2, h3 {
 .day {
   margin-bottom: 0.5em;
   display: grid;
-  grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities resources due] minmax(15rem,2fr) [end];
+  grid-template-columns: [day] minmax(8rem,1fr) [topics activities resources due] minmax(15rem,2fr) [end];
   grid-auto-rows: max-content;
   grid-auto-flow: row dense;
   grid-gap: 0.5rem;
@@ -204,10 +204,15 @@ h1, h2, h3 {
 }
 @media (min-width: 40rem) {
   .day {
+    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities resources due] minmax(15rem,2fr) [end];
+  }
+}
+@media (min-width: 50rem) {
+  .day {
     grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities due] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [end];
   }
 }
-@media (min-width: 60rem) {
+@media (min-width: 75rem) {
   .day {
     grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [due] minmax(15rem, 2fr) [end];
   }
