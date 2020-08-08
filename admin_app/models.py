@@ -326,7 +326,7 @@ class Course(models.Model):
     publication = models.BooleanField(blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
 
     def __str__(self):
-        return self.name
+        return self.short_name
 
 
 class CourseAsTaught:
