@@ -323,6 +323,7 @@ class Course(models.Model):
     number = models.CharField(max_length=255, blank=True, null=True, help_text='include PH e.g. "PH 425"')
     quarter_numbers = models.CharField(max_length=255, blank=True, null=True, help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
     description = models.TextField(blank=True, null=True, verbose_name='Description in catalog')
+    prereq = models.TextField(blank=True, null=True, verbose_name='Prerequisites')
     publication = models.BooleanField(blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
 
     def __str__(self):
