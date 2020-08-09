@@ -77,7 +77,7 @@
 
 <div class="container">
   {% if perms.admin_app.can_add_course %}
-  <p><a class="btn btn-sm btn-success" href="{% url 'course_new' %}" class="top-menu"><span class="oi oi-plus"
+  <p><a class="btn btn-sm btn-success" href="/admin/admin_app/course/add/" class="top-menu"><span class="oi oi-plus"
         title="Add new course button" alt="Create a new course."></span> Add Course </a></p>
   {% endif %}
   {% for course in courses %}
