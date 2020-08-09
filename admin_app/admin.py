@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course
+from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course, CourseLearningOutcome
 
 # Register your models here.
 # admin.site.register(Problem)
@@ -23,4 +23,9 @@ class ProblemSetAdmin(admin.ModelAdmin):
 admin.site.register(Problem, ProblemAdmin)
 admin.site.register(ProblemSet, ProblemSetAdmin)
 
-admin.site.register(Course)
+class CourseLearningOutcomeInline(admin.TabularInline):
+    model = CourseLearningOutcome
+    extra = 1
+class CourseAdmin(admin.ModelAdmin):
+    inlines = (CourseLearningOutcomeInline,)
+admin.site.register(Course, CourseAdmin)

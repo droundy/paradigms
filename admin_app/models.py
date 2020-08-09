@@ -335,6 +335,15 @@ class Course(models.Model):
             return self.number
         return 'Course<{}>'.format(self.id)
 
+class CourseLearningOutcome(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    outcome = models.CharField(max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
+
+    def __str__(self):
+        if self.course.number is not None:
+            return self.course.number+': '+ str(self.number)+') '+ self.outcome
+        return str(self.course)+': '+ str(self.number)+') '+ self.outcome
 
 class CourseAsTaught:
     def __init__(self, name, instructor, days=None, post=None):
