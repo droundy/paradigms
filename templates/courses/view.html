@@ -3,35 +3,69 @@
 {% block title %}{{ course.catalog_name }}{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="page-header">
-    <h1>Course: {{ course.catalog_name }}</h1>
-  </div>
+    <div class="page-header">
+        <h1>{{ course.catalog_name }}{% if perms.admin_app.can_edit_course %}
+            <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
+            {% endif %}</h1>
+    </div>
 </div>
 
 <div class="container">
-  <div class="card overflow-auto" style="margin-bottom: 10px;">
-    <div class="card-body">
-      <h5><a
-          href="fixme">{{ course.catalog_name }}</a>        {% if perms.admin_app.can_edit_course %}
-          <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
-          {% endif %}
-  {% if course.publication != 1 %}
-        <span class="badge badge-danger">Unpublished</span>
-        {% endif%}</h5>
-      <p>
-        {{ course.description }}
-      </p>
+    <div class="card overflow-auto" style="margin-bottom: 10px;">
+        <div class="card-body">
+            <dl>
+                <dt>Course name:</dt>
+                <dd>{{ course.catalog_name }} {% if course.publication != 1 %}
+                    <span class="badge badge-danger">Unpublished</span>
+                    {% endif%}</dd>
+                <dt>Course number:</dt>
+                <dd>{{ course.pretty_number }}</dd>
+                <dt>Course credits:</dt>
+                <dd>3???</dd>
+                <dt>Prerequisites:</dt>
+                <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
+                <dt>Course description:</dt>
+                <dd>{{ course.description }}</dd>
+                <dt>Course content:</dt>
+                <dd>
+                    <ul>
+                        <li>Decide what we want here</li>
+                        <li>Add actual content</li>
+                    </ul>
+                </dd>
+                <dt>Student learning outcomes:</dt>
+                <dd>
+                    <ul>
+                        {% for lo in course.courselearningoutcome_set.all %}
+                        <li>{{ lo.number}}) {{ lo.outcome }} </li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+                <dt>Evaluation of student performance:</dt>
+                <dd>Edit this please</dd>
+                <dt>Statement regarding students with disabilities:</dt>
+                <dd>Accommodations for students with disabilities are determined and approved
+                    by Disability Access Services (DAS). If you, as a student, believe you are
+                    eligible for accommodations but have not obtained approval please contact
+                    DAS immediately at 541-737-4098 or at
+                    <a href="http://ds.oregonstate.edu">http://ds.oregonstate.edu</a>. DAS notifies
+                    students and faculty members of approved academic accommodations and
+                    coordinates implementation of those accommodations. While not required,
+                    students and faculty members are encouraged to discuss details of the
+                    implementation of individual accommodations.</dd>
+                <dt>Expectations of student conduct:</dt>
+                <dd>Edit this please</dd>
+                <dt>Reach out for success:</dt>
+                <dd>University students encounter setbacks from time to time. If you encounter
+                    difficulties and need assistance, it’s important to reach out. Consider
+                    discussing the situation with an instructor or academic advisor. Learn
+                    about resources that assist with wellness and academic success at
+                    <a href="https://counseling.oregonstate.edu/reach-out-success">oregonstate.edu/ReachOut</a>.
+                    If you are in immediate crisis, please contact
+                    the Crisis Text Line by texting OREGON to 741-741 or call the National
+                    Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
+            </dl>
+        </div>
     </div>
-    <ul>
-        <li>Credits: </li>
-        <li>Prereqs: </li>
-    </ul>
-    <h5>Course learning outcomes</h5>
-    <ul>
-        {% for lo in course.courselearningoutcome_set.all %}
-        <li>{{ lo.number}}) {{ lo.outcome }} </li>
-        {% endfor %}
-    </ul>
-  </div>
 </div>
 {% endblock %}
