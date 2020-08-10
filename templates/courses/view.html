@@ -2,16 +2,30 @@
 {% load latex %}
 {% block title %}{{ course.catalog_name }}{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="page-header">
-        <h1>{{ course.catalog_name }}{% if perms.admin_app.can_edit_course %}
-            <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
-            {% endif %}</h1>
-    </div>
-</div>
+<nav aria-label="breadcrumb" class="noprint">
+    <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+        <li class="breadcrumb-item"><a href="{% url 'course_list'%}">Courses</a></li>
+        <!-- If this is the solution view page, show link to view only, disable link on solution -->
+        {% if view == 'overview' %}
+        <li class="breadcrumb-item active" aria-current="page">{{ course }}</li>
+        <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a>
+        </li>
+        {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Syllabus</li>
+        {% endif %}
+        <li class="breadcrumb-item">
+            <a href="/admin/admin_app/course/{{ course.pk }}/change">Edit</a></li>
+    </ol>
+</nav>
 
 <div class="container">
     <div class="card overflow-auto" style="margin-bottom: 10px;">
+        <h2 class="card-header">
+            {% if view == 'syllabus' %}Syllabus for{% endif %} {{ course.catalog_name }}
+        </h2>
         <div class="card-body">
             <dl>
                 <dt>Course name:</dt>
@@ -33,6 +47,8 @@
                         <li>Add actual content</li>
                     </ul>
                 </dd>
+
+                {% if view == 'syllabus' %}
                 <dt>Student learning outcomes:</dt>
                 <dd>
                     <ul>
@@ -64,6 +80,7 @@
                     If you are in immediate crisis, please contact
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
+                {% endif %}
             </dl>
         </div>
     </div>

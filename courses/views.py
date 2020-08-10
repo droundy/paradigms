@@ -41,15 +41,12 @@ def course_list(request):
         'courses': courses,
     })
 
-def course_view(request, number):
+def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
-    print(dir(course))
-    outcomes = CourseLearningOutcome.objects.filter(course__pk=course.pk)
-    print(outcomes)
     return render(request, 'courses/view.html', {
         'course': course,
-        'outcomes': outcomes,
+        'view': view,
     })
 
 def course_title(request, pk):
