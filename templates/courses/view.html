@@ -1,0 +1,37 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load latex %}
+{% block title %}{{ course.catalog_name }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Course: {{ course.catalog_name }}</h1>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card overflow-auto" style="margin-bottom: 10px;">
+    <div class="card-body">
+      <h5><a
+          href="fixme">{{ course.catalog_name }}</a>        {% if perms.admin_app.can_edit_course %}
+          <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
+          {% endif %}
+  {% if course.publication != 1 %}
+        <span class="badge badge-danger">Unpublished</span>
+        {% endif%}</h5>
+      <p>
+        {{ course.description }}
+      </p>
+    </div>
+    <ul>
+        <li>Credits: </li>
+        <li>Prereqs: </li>
+    </ul>
+    <h5>Course learning outcomes</h5>
+    <ul>
+        {% for lo in course.courselearningoutcome_set.all %}
+        <li>{{ lo.number}}) {{ lo.outcome }} </li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

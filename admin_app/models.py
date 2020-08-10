@@ -320,7 +320,7 @@ class SequenceItems(models.Model):
 class Course(models.Model):
     catalog_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Course name in catalog")
     short_name = models.CharField(max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
-    number = models.CharField(max_length=255, blank=True, null=True, help_text='include PH e.g. "PH 425"')
+    number = models.CharField(max_length=255, blank=True, null=True, help_text='include ph e.g. "ph425"')
     quarter_numbers = models.CharField(max_length=255, blank=True, null=True, help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
     description = models.TextField(blank=True, null=True, verbose_name='Description in catalog')
     prereq = models.TextField(blank=True, null=True, verbose_name='Prerequisites')
@@ -334,6 +334,13 @@ class Course(models.Model):
         if self.number is not None:
             return self.number
         return 'Course<{}>'.format(self.id)
+    
+    @property
+    def pretty_number(self):
+        ''' like PH 365 '''
+        if 'ph' == self.number[:2]:
+            return 'PH '+ self.number[2:]
+        return self.number
 
 class CourseLearningOutcome(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
