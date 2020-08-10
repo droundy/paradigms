@@ -2,10 +2,15 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django.urls import reverse
 from autoslug import AutoSlugField
-import os, latex_snippet, cairosvg, re
+import os
+import latex_snippet
+import cairosvg
+import re
 # from admin_app.choices import *
+
 
 class PageMedia(models.Model):
     title = models.CharField(max_length=255, blank=True)
@@ -17,16 +22,22 @@ class PageMedia(models.Model):
         name, extension = os.path.splitext(self.file.name)
         return extension
 
+
 class Pages(models.Model):
     title = models.CharField(max_length=255, blank=True)
     slug = AutoSlugField(populate_from='title')
     page_content = models.TextField(blank=True, null=True)
-    keywords = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics or keywords: adiabatic susceptibility,entropy")
+    keywords = models.TextField(
+        blank=True, null=True, help_text="Comma-separated list of topics or keywords: adiabatic susceptibility,entropy")
     published_date = models.DateTimeField(blank=True, null=True)
-    media = models.ManyToManyField(PageMedia, through='PageMediaAssociation', related_name='pagemedias')
-    whitepaper = models.BooleanField(blank=False, default=False, help_text="Is this a whitepaper?", verbose_name="Whitepaper")
-    whitepaper_category = models.CharField(max_length=255,blank=True, null=True, help_text="If this page is meant to be a whitepaper, please select a category. The category list is maintained by system administrators and can not be dynamic.")
-    publication = models.BooleanField(blank=False, default=False, help_text="Whitepaper is ready for public viewing.", verbose_name="Publish Whitepaper")
+    media = models.ManyToManyField(
+        PageMedia, through='PageMediaAssociation', related_name='pagemedias')
+    whitepaper = models.BooleanField(
+        blank=False, default=False, help_text="Is this a whitepaper?", verbose_name="Whitepaper")
+    whitepaper_category = models.CharField(max_length=255, blank=True, null=True,
+                                           help_text="If this page is meant to be a whitepaper, please select a category. The category list is maintained by system administrators and can not be dynamic.")
+    publication = models.BooleanField(
+        blank=False, default=False, help_text="Whitepaper is ready for public viewing.", verbose_name="Publish Whitepaper")
 
     def publish(self):
         self.published_date = timezone.now()
@@ -38,10 +49,11 @@ class Pages(models.Model):
     class Meta:
         permissions = (
             ("can_edit_pages", "Edit Pages"),
-            ("can_add_pages","Add Pages"),)
+            ("can_add_pages", "Add Pages"),)
 
     def get_absolute_url(self):
         return reverse('page_display', kwargs={'slug': self.slug})
+
 
 class PageMediaAssociation(models.Model):
     media = models.ForeignKey(PageMedia, on_delete=models.CASCADE)
@@ -51,6 +63,8 @@ class PageMediaAssociation(models.Model):
     media_title = models.CharField(max_length=255, blank=True, null=True)
 
 # Create your models here.
+
+
 class Figure(models.Model):
     title = models.CharField(max_length=255, blank=True)
     # file = models.FileField(upload_to='figures/')
@@ -62,6 +76,7 @@ class Figure(models.Model):
         name, extension = os.path.splitext(self.file.name)
         return extension
 
+
 def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
     if latex is None:
         return None
@@ -69,7 +84,7 @@ def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
     # adjust the paths to any files, and also change svg files to pdf.
     splitup = re.split(r'\\includegraphics(\[[^\]]*\])?{([^\}]+)}', latex)
     latex = ''
-    for a,b,c in zip(*[splitup[i::3] for i in range(3)]):
+    for a, b, c in zip(*[splitup[i::3] for i in range(3)]):
         latex += a
 
         print('b is', b)
@@ -96,18 +111,25 @@ def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
     latex += splitup[-1]
     return latex
 
+
 class Problem(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     problem_title = models.CharField(max_length=255)
     problem_latex = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
-    attribution = models.CharField(max_length=255, help_text="Original source information.", blank=True, null=True)
-    old_name = models.CharField(max_length=255, help_text="Name from original homework archive.", blank=True, null=True)
-    topics = models.TextField(blank=True, null=True, help_text="Comma-separated list of topics: adiabatic susceptibility,entropy")
-    figures = models.ManyToManyField(Figure, through='FigureAssociations', related_name='problems')
+    attribution = models.CharField(
+        max_length=255, help_text="Original source information.", blank=True, null=True)
+    old_name = models.CharField(
+        max_length=255, help_text="Name from original homework archive.", blank=True, null=True)
+    topics = models.TextField(
+        blank=True, null=True, help_text="Comma-separated list of topics: adiabatic susceptibility,entropy")
+    figures = models.ManyToManyField(
+        Figure, through='FigureAssociations', related_name='problems')
     course = models.CharField(max_length=255, blank=True, null=True)
-    publication = models.BooleanField(blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
+    publication = models.BooleanField(
+        blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
 
     def publish(self):
         self.published_date = timezone.now()
@@ -134,17 +156,20 @@ class Problem(models.Model):
         ordering = ['problem_title']
         permissions = (
             ("can_edit_problem", "Edit Problem"),
-            ("can_add_problem","Add Problem"),
-            ("can_view_solution","View Solution"))
+            ("can_add_problem", "Add Problem"),
+            ("can_view_solution", "View Solution"))
+
 
 class ProblemSet(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     instructions = models.TextField(blank=True, null=True)
-    author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
-    publication = models.BooleanField(blank=False, default=False, help_text="Problem Set is ready for public viewing. Takes 5-10 seconds to generate new problem set PDFs", verbose_name="Publish Problem Set")
+    publication = models.BooleanField(
+        blank=False, default=False, help_text="Problem Set is ready for public viewing. Takes 5-10 seconds to generate new problem set PDFs", verbose_name="Publish Problem Set")
     items = models.ManyToManyField(Problem, through="ProblemSetItems")
     course = models.CharField(max_length=255, blank=True, null=True)
     due_date = models.DateTimeField(blank=True, null=True)
@@ -159,13 +184,17 @@ class ProblemSet(models.Model):
     class Meta:
         permissions = (
             ("can_edit_problem_set", "Edit Problem Set"),
-            ("can_add_problem_set","Add Problem Set"),
-            ("can_view_solution","View Solution"))
+            ("can_add_problem_set", "Add Problem Set"),
+            ("can_view_solution", "View Solution"))
+
 
 class ProblemSetItems(models.Model):
-    problem = models.ForeignKey(Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblem')
-    problem_set = models.ForeignKey(ProblemSet, blank=True, null=True, on_delete=models.CASCADE, related_name='set_problems')
-    item_position = models.DecimalField(max_digits=5, decimal_places=2, default=1, blank=True, null=True)
+    problem = models.ForeignKey(
+        Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblem')
+    problem_set = models.ForeignKey(
+        ProblemSet, blank=True, null=True, on_delete=models.CASCADE, related_name='set_problems')
+    item_position = models.DecimalField(
+        max_digits=5, decimal_places=2, default=1, blank=True, null=True)
     item_instructions = models.TextField(blank=True, null=True)
     required = models.CharField(max_length=255, blank=True)
 
@@ -174,11 +203,15 @@ class ProblemSetItems(models.Model):
     # def __str__(self):
     #     return self.problem
 
+
 class ProblemSetPDFs(models.Model):
     pdf = models.FileField(upload_to='problem_set_pdfs/')
-    problem_set = models.ForeignKey(ProblemSet, on_delete=models.CASCADE, related_name="problem_set_pdfs")
+    problem_set = models.ForeignKey(
+        ProblemSet, on_delete=models.CASCADE, related_name="problem_set_pdfs")
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    solution = models.BooleanField(blank=False, default=False, help_text="Does this include the solution?", verbose_name="Solution Included")
+    solution = models.BooleanField(
+        blank=False, default=False, help_text="Does this include the solution?", verbose_name="Solution Included")
+
 
 class FigureAssociations(models.Model):
     figure = models.ForeignKey(Figure, on_delete=models.CASCADE)
@@ -186,6 +219,7 @@ class FigureAssociations(models.Model):
     date_added = models.DateTimeField(default=timezone.now)
     figure_position = models.PositiveIntegerField(blank=True, null=True)
     figure_title = models.CharField(max_length=255, blank=True, null=True)
+
 
 class ActivityMedia(models.Model):
     title = models.CharField(max_length=255, blank=True)
@@ -196,6 +230,7 @@ class ActivityMedia(models.Model):
     def extension(self):
         name, extension = os.path.splitext(self.file.name)
         return extension
+
 
 class Activity(models.Model):
     title = models.CharField(max_length=255, blank=True)
@@ -211,16 +246,19 @@ class Activity(models.Model):
     publication_status = models.TextField(blank=True, null=True)
     publication_date = models.DateTimeField(blank=True, null=True)
     prerequisite_knowledge = models.TextField(blank=True, null=True)
-    activity_image = models.ImageField(blank=True, null=True, upload_to='activity_images/')
+    activity_image = models.ImageField(
+        blank=True, null=True, upload_to='activity_images/')
     keywords = models.TextField(blank=True, null=True)
-    author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     associated_paper_links = models.TextField(blank=True, null=True)
     program_learning_outcomes = models.TextField(blank=True, null=True)
     course_learning_outcomes = models.TextField(blank=True, null=True)
     learning_progression_concepts = models.TextField(blank=True, null=True)
     course = models.CharField(max_length=255, blank=True, null=True)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
-    media = models.ManyToManyField(ActivityMedia, through='MediaAssociation', related_name='medias')
+    media = models.ManyToManyField(
+        ActivityMedia, through='MediaAssociation', related_name='medias')
     old_name = models.CharField(max_length=255, blank=True, null=True)
 
     def publish(self):
@@ -242,6 +280,7 @@ class Activity(models.Model):
         if r'\begin{solution}' not in h:
             return None
         return latex_snippet.physics_macros(h)
+
     @property
     def handout_latex(self):
         ''' return the latex content for the student handout '''
@@ -252,6 +291,7 @@ class Activity(models.Model):
         else:
             return None
         return latex_snippet.omit_solutions(latex_snippet.physics_macros(h))
+
     @property
     def guide_latex(self):
         ''' return the latex content for the instructor guide '''
@@ -263,12 +303,14 @@ class Activity(models.Model):
           absolute, removing image paths that don't correspond to actual files, and converting
           SVG files to PDF '''
         return convert_latex_for_pdf(self.guide_latex, imagedir='/media/activity_media/')
+
     @property
     def pdf_handout_latex(self):
         ''' return the latex content for the student, modified for pdf generation by making image paths
           absolute, removing image paths that don't correspond to actual files, and converting
           SVG files to PDF '''
         return convert_latex_for_pdf(self.handout_latex, imagedir='/media/activity_media/')
+
     @property
     def pdf_solution_latex(self):
         ''' return the latex content for the student solution, modified for pdf generation by making image paths
@@ -279,8 +321,9 @@ class Activity(models.Model):
     class Meta:
         permissions = (
             ("can_edit_activity", "Edit Activity"),
-            ("can_add_activity","Add Activity"),
-            ("can_view_solution","View Solution"))
+            ("can_add_activity", "Add Activity"),
+            ("can_view_solution", "View Solution"))
+
 
 class MediaAssociation(models.Model):
     media = models.ForeignKey(ActivityMedia, on_delete=models.CASCADE)
@@ -294,11 +337,15 @@ class Sequence(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     date_added = models.DateTimeField(default=timezone.now)
     overview_paragraph = models.TextField(blank=True, null=True)
-    problems = models.ManyToManyField(Problem, through='SequenceItems', related_name='problems')
-    activities = models.ManyToManyField(Activity, through='SequenceItems', related_name='activities')
-    author = author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    problems = models.ManyToManyField(
+        Problem, through='SequenceItems', related_name='problems')
+    activities = models.ManyToManyField(
+        Activity, through='SequenceItems', related_name='activities')
+    author = author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
-    publication = models.BooleanField(blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
+    publication = models.BooleanField(
+        blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
 
     def __str__(self):
         return self.title
@@ -306,25 +353,43 @@ class Sequence(models.Model):
     class Meta:
         permissions = (
             ("can_edit_sequence", "Edit Sequence"),
-            ("can_add_sequence","Add Sequence"),
-            ("can_view_solution","View Solution"))
+            ("can_add_sequence", "Add Sequence"),
+            ("can_view_solution", "View Solution"))
+
 
 class SequenceItems(models.Model):
-    sequence = models.ForeignKey(Sequence, blank=True, null=True, on_delete=models.CASCADE, related_name='itemSequences')
-    problem = models.ForeignKey(Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblems')
-    activity = models.ForeignKey(Activity, blank=True, null=True, on_delete=models.CASCADE, related_name='itemActivities')
-    item_position = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    sequence = models.ForeignKey(
+        Sequence, blank=True, null=True, on_delete=models.CASCADE, related_name='itemSequences')
+    problem = models.ForeignKey(
+        Problem, blank=True, null=True, on_delete=models.CASCADE, related_name='itemProblems')
+    activity = models.ForeignKey(
+        Activity, blank=True, null=True, on_delete=models.CASCADE, related_name='itemActivities')
+    item_position = models.DecimalField(
+        max_digits=5, decimal_places=2, blank=True, null=True)
     role_in_sequence = models.TextField(blank=True, null=True)
     required = models.CharField(max_length=255, blank=True)
 
+
+course_number_validator = RegexValidator(
+    regex=r'^ph\d+$', message='Enter a value of form ph123')
+
+
 class Course(models.Model):
-    catalog_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Course name in catalog")
-    short_name = models.CharField(max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
-    number = models.CharField(max_length=255, blank=True, null=True, help_text='include ph e.g. "ph425"')
-    quarter_numbers = models.CharField(max_length=255, blank=True, null=True, help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
-    description = models.TextField(blank=True, null=True, verbose_name='Description in catalog')
-    prereq = models.TextField(blank=True, null=True, verbose_name='Prerequisites')
-    publication = models.BooleanField(blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
+    catalog_name = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Course name in catalog")
+    short_name = models.CharField(
+        max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
+    number = models.CharField(max_length=255, blank=True, null=True,
+                              help_text='include ph e.g. "ph425"',
+                              validators=[course_number_validator])
+    quarter_numbers = models.CharField(max_length=255, blank=True, null=True,
+                                       help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
+    description = models.TextField(
+        blank=True, null=True, verbose_name='Description in catalog')
+    prereq = models.TextField(blank=True, null=True,
+                              verbose_name='Prerequisites')
+    publication = models.BooleanField(
+        blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
 
     def __str__(self):
         if self.short_name is not None:
@@ -334,27 +399,30 @@ class Course(models.Model):
         if self.number is not None:
             return self.number
         return 'Course<{}>'.format(self.id)
-    
+
     @property
     def pretty_number(self):
         ''' like PH 365 '''
         if 'ph' == self.number[:2]:
-            return 'PH '+ self.number[2:]
+            return 'PH ' + self.number[2:]
         return self.number
+
 
 class CourseLearningOutcome(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
-    outcome = models.CharField(max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
+    outcome = models.CharField(max_length=255, blank=True, null=True,
+                               help_text="A human-friendly short name of course")
 
     def __str__(self):
         if self.course.number is not None:
-            return self.course.number+': '+ str(self.number)+') '+ self.outcome
-        return str(self.course)+': '+ str(self.number)+') '+ self.outcome
+            return self.course.number+': ' + str(self.number)+') ' + self.outcome
+        return str(self.course)+': ' + str(self.number)+') ' + self.outcome
+
 
 class CourseAsTaught:
     def __init__(self, name, instructor, days=None, post=None):
-        self.name=name
+        self.name = name
         self.instructor = instructor
         if days is None:
             self.days = []
@@ -364,8 +432,10 @@ class CourseAsTaught:
             for i in range(10000):
                 key = f'day-{i}'
                 if key in post and post[key] != '':
-                    self.days.append(CourseDay(post[key], prefix=key, post=post))
+                    self.days.append(
+                        CourseDay(post[key], prefix=key, post=post))
         print(self)
+
     def __str__(self):
         v = 'course {} by {}'.format(self.name, self.instructor)
         for d in self.days:
@@ -374,9 +444,10 @@ class CourseAsTaught:
                 v += '\n      activity {}'.format(a)
         return v+'\n'
 
+
 class CourseDay:
     def __init__(self, name, activities=None, problems=None, topics='', resources='', prefix='', post=None):
-        self.name=name
+        self.name = name
         if activities is None:
             self.activities = []
         else:
@@ -403,7 +474,7 @@ class CourseDay:
             if new in post and post[new] != '':
                 print('found activity', new, post[new])
                 self.activities.append(post[new])
-            
+
             for i in range(10000):
                 key = f'{prefix}-problem-{i}'
                 deleted = f'{prefix}-problem-{i}-delete' in post
@@ -414,6 +485,7 @@ class CourseDay:
             if new in post and post[new] != '' and post[new] != 'assign problem':
                 print('found problem', new, post[new])
                 self.problems.append(post[new])
+
     @property
     def possible_activities(self):
         ''' a list of activities consistent with this day's topics '''
@@ -425,6 +497,7 @@ class CourseDay:
         for t in topics:
             query = query | models.Q(topics__icontains=t)
         return list(Activity.objects.filter(query).exclude(title__in=self.activities))
+
     @property
     def possible_problems(self):
         ''' a list of problems consistent with this day's topics '''
