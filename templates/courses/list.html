@@ -84,20 +84,15 @@
   <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
       <h5><a
-          href="{% if perms.admin_app.can_add_course %}{% url 'course_detail_solution' pk=course.pk %}{% else %}{% url 'course_detail' pk=course.pk %}{% endif %}">{{ course.title }}</a>{% if course.publication != 1 %}
+          href="fixme">{{ course.catalog_name }}</a>        {% if perms.admin_app.can_edit_course %}
+          <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
+          {% endif %}
+  {% if course.publication != 1 %}
         <span class="badge badge-danger">Unpublished</span>
         {% endif%}</h5>
-      {% if course.overview_paragraph %}
-      {% if forloop.counter == 1 %}
       <p>
-        {% if perms.admin_app.can_add_course %}{{ course.overview_paragraph | latex_with_solution }}{% else %}{{ course.overview_paragraph | latex_omit_solution }}{% endif %}
+        {{ course.description }}
       </p>
-      {% else %}
-      <p class="overflow-auto">
-        {% if perms.admin_app.can_add_course %}{{ course.overview_paragraph | latex_with_solution }}{% else %}{{ course.overview_paragraph | latex_omit_solution }}{% endif %}
-      </p>
-      {% endif %}
-      {% endif %}
     </div>
   </div>
   {% endfor %}
