@@ -35,7 +35,9 @@ def course_list(request):
             CourseDay('Monday'),
             CourseDay('Wednesday'),
         ])
-    courses = Course.objects.all().order_by('quarter_numbers')
+    courses = Course.objects.all().extra(
+        select={'quarter_integer': 'CAST(quarter_numbers AS INTEGER)'}
+    ).order_by('quarter_integer', 'quarter_numbers')
     return render(request, 'courses/list.html', {
         'course': course,
         'courses': courses,
