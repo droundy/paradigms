@@ -407,6 +407,20 @@ class Course(models.Model):
             return 'PH ' + self.number[2:]
         return self.number
 
+    @property
+    def quarter_integer(self):
+        ''' gives an integer that is the first quarter listed in its quarter_numbers '''
+        n = self.quarter_numbers
+        idx = self.quarter_numbers.find(',')
+        if idx > 0:
+            n = n[:idx]
+        n = n.strip()
+        try:
+            return int(n)
+        except:
+            return 13
+
+
 
 class CourseLearningOutcome(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)

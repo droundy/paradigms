@@ -22,7 +22,6 @@ user = get_user_model()
 # This retrieves a Python logging instance (or creates it)
 logger = logging.getLogger(__name__)
 
-
 def course_list(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -35,9 +34,7 @@ def course_list(request):
             CourseDay('Monday'),
             CourseDay('Wednesday'),
         ])
-    courses = Course.objects.all().extra(
-        select={'quarter_integer': 'CAST(quarter_numbers AS INTEGER)'}
-    ).order_by('quarter_integer', 'quarter_numbers')
+    courses = sorted(Course.objects.all(), key=lambda c: c.quarter_integer)
     return render(request, 'courses/list.html', {
         'course': course,
         'courses': courses,
