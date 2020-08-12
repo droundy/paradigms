@@ -1,0 +1,65 @@
+{% extends 'public_app/base_multi_editor.html' %}
+
+{% block content %}
+{% load problem_extras %}
+{% load activity_extras %}
+{% load latex %}
+    <h2>Search</h2>
+
+    <form method="get" action=".">
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="Search">
+                </td>
+            </tr>
+        </table>
+
+        {% if query %}
+            <h3>Results</h3>
+
+            {% for result in page.object_list %}
+            {% with activity=result.object %}
+            <div class="card overflow-auto" style="margin-bottom: 10px;">
+              <div class="card-body">
+                <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }} {% if activity.publication_status == "Draft" or activity.publication_status == "Post-Publication Draft" or not activity.publication_status %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
+  
+                <p class="card-text" style="margin-bottom: 5px;"> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min.</p>
+                {% if activity.topics %}<p class="card-text" style="margin-bottom: 5px;"><span style="margin-right: 1em;">{{ activity.topics|tagbuttons }}</span></p>{% endif %}
+                
+                {% if activity.overview_paragraph %}
+                  {% if forloop.counter == 1 %}
+                    <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                  {% else %}
+                    <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div> <!-- End Activity Card -->
+            {% endwith %}
+            {% empty %}
+              <p class="card-text" style="margin-bottom: 5px;">No Activities Found</p>
+            {% endfor %}
+  
+            <!-- {% for result in page.object_list %}
+                <p>
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+                </p>
+            {% empty %}
+                <p>No results found.</p>
+            {% endfor %} -->
+
+            {% if page.has_previous or page.has_next %}
+                <div>
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+    </form>
+{% endblock %}

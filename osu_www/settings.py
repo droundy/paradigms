@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
+    'haystack',
+
     'pydjax',
     #'latexify',
 
@@ -95,6 +97,13 @@ INSTALLED_APPS = [
 
 MATHJAX_ENABLED=True
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
