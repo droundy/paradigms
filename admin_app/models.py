@@ -433,6 +433,15 @@ class CourseLearningOutcome(models.Model):
             return self.course.number+': ' + str(self.number)+') ' + self.outcome
         return str(self.course)+': ' + str(self.number)+') ' + self.outcome
 
+class CourseAsTaught(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    year = models.CharField(max_length=255)
+    instructor = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        if self.course.number is not None:
+            return self.course.number+' ' + self.year
+        return str(self.course)+' ' + self.year
 
 class CourseAsTaught:
     def __init__(self, name, instructor, days=None, post=None):
