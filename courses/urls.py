@@ -10,6 +10,8 @@ urlpatterns = [
     path('new', views.course_list, name='course_new'),
     path('<slug:number>', views.course_view, name='course_view'),
     path('<slug:number>/syllabus', views.course_view, {'view': 'syllabus'}, name='course_syllabus'),
+    path('<slug:number>/years', views.course_view, {'view': 'years'}, name='course_years'),
+    path('<slug:number>/<slug:year>', views.course_as_taught, name='course_as_taught'),
 ]
 
 if settings.DEBUG:

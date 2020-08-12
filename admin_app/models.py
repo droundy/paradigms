@@ -435,12 +435,17 @@ class CourseLearningOutcome(models.Model):
 class CourseAsTaught(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     year = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from='year')
     instructor = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         if self.course.number is not None:
             return self.course.number+' ' + self.year
         return str(self.course)+' ' + self.year
+    
+    class Meta:
+        verbose_name = 'Course as taught'
+        verbose_name_plural = 'Courses as taught'
 
 class CourseAsTaughtOld:
     def __init__(self, name, instructor, days=None, post=None):
