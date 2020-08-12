@@ -26,11 +26,11 @@ def course_list(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         print('post', request.POST)
-        course = CourseAsTaught(
+        course = CourseAsTaughtOld(
             name=request.POST['name'], instructor=request.POST['instructor'], post=request.POST)
     else:
         # if a GET (or any other method) we'll create a blank day
-        course = CourseAsTaught(name='Energy and Entropy', instructor="David", days=[
+        course = CourseAsTaughtOld(name='Energy and Entropy', instructor="David", days=[
             CourseDay('Monday'),
             CourseDay('Wednesday'),
         ])

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course, CourseLearningOutcome
+from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course, CourseLearningOutcome, CourseAsTaught
 
 # Register your models here.
 # admin.site.register(Problem)
@@ -29,3 +29,5 @@ class CourseLearningOutcomeInline(admin.TabularInline):
 class CourseAdmin(admin.ModelAdmin):
     inlines = (CourseLearningOutcomeInline,)
 admin.site.register(Course, CourseAdmin)
+
+admin.site.register(CourseAsTaught)

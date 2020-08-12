@@ -421,7 +421,6 @@ class Course(models.Model):
             return 13
 
 
-
 class CourseLearningOutcome(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
@@ -443,7 +442,7 @@ class CourseAsTaught(models.Model):
             return self.course.number+' ' + self.year
         return str(self.course)+' ' + self.year
 
-class CourseAsTaught:
+class CourseAsTaughtOld:
     def __init__(self, name, instructor, days=None, post=None):
         self.name = name
         self.instructor = instructor
