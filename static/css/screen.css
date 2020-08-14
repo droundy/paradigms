@@ -187,12 +187,21 @@ h1, h2, h3 {
 }
 
 .day {
-  margin-bottom: 0.5em;
   display: grid;
   grid-template-columns: [day] minmax(8rem,1fr) [topics activities resources due] minmax(15rem,2fr) [end];
   grid-auto-rows: max-content;
   grid-auto-flow: row dense;
-  grid-gap: 0.5rem;
+  grid-gap: 0rem;
+}
+.day:after {
+  display: block;
+  content: "";
+  grid-column: 1/-1;
+  grid-row: auto / span 1;
+  background-color: #ddd;
+  height: 2px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .day ul {
   list-style-type: none;
@@ -231,16 +240,6 @@ h1, h2, h3 {
   grid-column-start: due ;
   grid-row: auto / span 1;
   background-color: #fdf;
-}
-.day:after {
-  display: block;
-  content: "";
-  grid-column: 1/-1;
-  grid-row: auto / span 1;
-  background-color: #aaa;
-  height: 2px;
-  margin-top: 2px;
-  margin-bottom: 2px;
 }
 @media (min-width: 40rem) {
   .day {
