@@ -99,8 +99,8 @@
     </div>
     <div class="day">
         <h5 class="thisday">Day</h5>
-        <h5 class="topics">Topics</h5>
-        <h5 class="activities">Activities</h5>
+        <h5 class="topic">Topic</h5>
+        <h5 class="activities">In class today</h5>
         <h5 class="resources">Resources</h5>
         <h5 class="due">Due</h5>
     </div>
@@ -109,7 +109,7 @@
     <div class="day">
         <div class="thisday">{{day.day}}</div>
         {% if day.topic %}
-        <div class="topics">{{day.topic}}</div>{% endif %}
+        <div class="topic">{{day.topic}}</div>{% endif %}
         {% if day.activities %}
         <ul class="activities">
             {% for activity in day.activities %}
