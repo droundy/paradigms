@@ -447,6 +447,13 @@ class CourseAsTaught(models.Model):
         verbose_name = 'Course as taught'
         verbose_name_plural = 'Courses as taught'
 
+class CourseDay(models.Model):
+    taught: models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
+    day = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.taught)+' day ' + self.day
+
 class CourseAsTaughtOld:
     def __init__(self, name, instructor, days=None, post=None):
         self.name = name
