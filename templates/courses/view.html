@@ -88,14 +88,15 @@
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
                 {% endif %}
-                {% if view == 'years' %}
-                Hello
-                {% for y in course.courseastaught_set.all %}
-                <a href="{% url 'course_as_taught' course.number y.slug %}">taught {{y.year}}</a>
-                {% endfor %}
-                {% endif %}
             </dl>
         </div>
+        {% if view == 'years' %}
+        <ul>
+            {% for taught in course.courseastaught_set.all %}
+            <li>{% include "courses/taught-list.html" %}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

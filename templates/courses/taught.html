@@ -6,32 +6,30 @@
     <ol class="breadcrumb">
         <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
         <li class="breadcrumb-item"><a href="{% url 'course_list'%}">Courses</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
         <!-- If this is the solution view page, show link to view only, disable link on solution -->
         {% if view == 'overview' %}
-        <li class="breadcrumb-item active" aria-current="page">{{ course }}</li>
-        <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a>
-        <li class="breadcrumb-item"><a href="{% url 'course_years' course.number %}">Years</a>
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ taught.year }}</li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
         {% elif view == 'syllabus' %}
-        <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
-        </li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Syllabus</li>
-        <li class="breadcrumb-item"><a href="{% url 'course_years' course.number %}">Years</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
         {% else %}
-        <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Schedule</li>
         </li>
-        <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Years</li>
         {% endif %}
-        <li class="breadcrumb-item">
-            <a href="/admin/admin_app/course/{{ course.pk }}/change">Edit</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_edit' course.number taught.slug %}">Edit</a></li>
     </ol>
 </nav>
 
 <div class="container">
     <div class="card overflow-auto" style="margin-bottom: 10px;">
         <h2 class="card-header">
-            {% if view == 'syllabus' %}Syllabus for{% endif %} {{ course.catalog_name }}
+            {% if view == 'syllabus' %}Syllabus for{% endif %} {{taught.year}} {{ course.short_name }}
         </h2>
         <div class="card-body">
             <dl>
@@ -41,6 +39,8 @@
                     {% endif%}</dd>
                 <dt>Course number:</dt>
                 <dd>{{ course.pretty_number }}</dd>
+                <dt>Instructor:</dt>
+                <dd>{{ taught.instructor }}</dd>
                 <dt>Course credits:</dt>
                 <dd>3???</dd>
                 <dt>Prerequisites:</dt>
@@ -89,9 +89,8 @@
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
                 {% endif %}
                 {% if view == 'years' %}
-                Hello
-                {% for y in course.courseastaught_set.all %}
-                <a href="{% url 'course_as_taught' course.number y.slug %}">taught {{y.year}}</a>
+                {% for taught in course.courseastaught_set.all %}
+                {% include "course/taught-list.html" %}
                 {% endfor %}
                 {% endif %}
             </dl>
