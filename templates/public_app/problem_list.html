@@ -15,9 +15,7 @@
     {% endif %}
     <div class="row">
     {% for problem in problems %}
-        <div class="col-sm-4">
         {% include "public_app/problem_listview.html" %}
-        </div>
         {% if forloop.last %}
           </div>
         {% else %}
