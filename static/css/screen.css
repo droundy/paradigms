@@ -245,3 +245,13 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   background-color: #fdf;
 }
+.day:after {
+  display: block;
+  content: "";
+  grid-column: 1/-1;
+  grid-row: auto / span 1;
+  background-color: #aaa;
+  height: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
