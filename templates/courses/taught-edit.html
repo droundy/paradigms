@@ -55,15 +55,13 @@
             </ul>
         </dd>
     </dl>
-    <div class="day">
+    <div class="schedule">
         <h5 class="thisday">Day</h5>
         <h5 class="topic">Topic</h5>
         <h5 class="activities">In class today</h5>
         <h5 class="resources">Resources</h5>
         <h5 class="due">Due</h5>
-    </div>
-    {% for day in days %}
-    <div class="day">
+        {% for day in days %}
         <div class="thisday">
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
             <input type="text" style="max-width: 50%;" name="day-{{day.pk}}-order" value="{{day.order}}">
@@ -121,9 +119,7 @@
             <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024" class="textarea form-control"
                 id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
         </div>
-    </div>
-    {% endfor %}
-    <div class="day">
+        {% endfor %}
         <input class="thisday" type="text" name="day-new" value="">
     </div>
 </form>

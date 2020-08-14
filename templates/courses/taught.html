@@ -97,16 +97,17 @@
             </dl>
         </div>
     </div>
-    <div class="day">
+
+    {% if view == 'schedule' %}
+    <div class="schedule">
         <h5 class="thisday">Day</h5>
         <h5 class="topic">Topic</h5>
         <h5 class="activities">In class today</h5>
         <h5 class="resources">Resources</h5>
         <h5 class="due">Due</h5>
-    </div>
-    {% if view == 'schedule' %}
-    {% for day in days %}
-    <div class="day">
+        <hr/>
+
+        {% for day in days %}
         <div class="thisday">{{day.day}}</div>
         {% if day.topic %}
         <div class="topic">{{day.topic}}</div>{% endif %}
@@ -142,8 +143,9 @@
         {% endif %}
         {% if day.resources %}
         <div class="resources">{{ day.resources }}</div>{% endif %}
+        <hr/>
+        {% endfor %}
     </div>
-    {% endfor %}
     {% endif %}
 </div>
 {% endblock %}
