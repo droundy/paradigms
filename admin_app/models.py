@@ -460,7 +460,7 @@ class CourseAsTaughtOld:
                 key = f'day-{i}'
                 if key in post and post[key] != '':
                     self.days.append(
-                        CourseDay(post[key], prefix=key, post=post))
+                        CourseDayOld(post[key], prefix=key, post=post))
         print(self)
 
     def __str__(self):
@@ -472,7 +472,7 @@ class CourseAsTaughtOld:
         return v+'\n'
 
 
-class CourseDay:
+class CourseDayOld:
     def __init__(self, name, activities=None, problems=None, topics='', resources='', prefix='', post=None):
         self.name = name
         if activities is None:

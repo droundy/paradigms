@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDay, Course, CourseLearningOutcome
+from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDayOld, Course, CourseLearningOutcome
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -32,8 +32,8 @@ def course_list(request):
     else:
         # if a GET (or any other method) we'll create a blank day
         course = CourseAsTaughtOld(name='Energy and Entropy', instructor="David", days=[
-            CourseDay('Monday'),
-            CourseDay('Wednesday'),
+            CourseDayOld('Monday'),
+            CourseDayOld('Wednesday'),
         ])
     courses = sorted(Course.objects.all(), key=lambda c: c.quarter_integer)
     return render(request, 'courses/list.html', {
