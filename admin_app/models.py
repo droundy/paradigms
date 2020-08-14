@@ -448,7 +448,7 @@ class CourseAsTaught(models.Model):
         verbose_name_plural = 'Courses as taught'
 
 class CourseDay(models.Model):
-    taught: models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
+    taught = models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=1000)
     day = models.CharField(max_length=255)
 

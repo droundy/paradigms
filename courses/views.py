@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDayOld, Course, CourseLearningOutcome
+from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDayOld, Course, CourseLearningOutcome, CourseDay
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -70,9 +70,11 @@ def course_as_taught_edit(request, number, year):
         if as_taught.slug != year:
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
+    days = CourseDay.objects.filter(taught=as_taught)
     return render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
+        'days': days,
     })
 
 def course_view(request, number, view='overview'):
