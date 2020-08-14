@@ -202,21 +202,6 @@ h1, h2, h3 {
   text-indent: -2em;
   padding-left: 2em;
 }
-@media (min-width: 40rem) {
-  .day {
-    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities resources due] minmax(15rem,2fr) [end];
-  }
-}
-@media (min-width: 50rem) {
-  .day {
-    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities due] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [end];
-  }
-}
-@media (min-width: 75rem) {
-  .day {
-    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [due] minmax(15rem, 2fr) [end];
-  }
-}
 .thisday {
   grid-column-start: day ;
   grid-row: auto / span 1;
@@ -230,6 +215,9 @@ h1, h2, h3 {
   grid-column-start: activities ;
   grid-row: auto / span 1;
   background-color: #fdd;
+}
+.resources:before {
+  content: "Resources";
 }
 .resources {
   grid-column-start: resources ;
@@ -253,4 +241,22 @@ h1, h2, h3 {
   height: 2px;
   margin-top: 2px;
   margin-bottom: 2px;
+}
+@media (min-width: 40rem) {
+  .day {
+    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities resources due] minmax(15rem,2fr) [end];
+  }
+}
+@media (min-width: 50rem) {
+  .day {
+    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities due] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [end];
+  }
+  .resources:before {
+    content: none;
+  }
+}
+@media (min-width: 75rem) {
+  .day {
+    grid-template-columns: [day] minmax(8rem,1fr) [topics] minmax(8rem,1fr) [activities] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [due] minmax(15rem, 2fr) [end];
+  }
 }
