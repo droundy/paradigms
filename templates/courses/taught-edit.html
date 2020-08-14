@@ -68,6 +68,11 @@
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
             <button class="btn btn-sm btn-warning" type="submit" name="day-{{day.pk}}-delete">Remove</button>
         </div>
+
+        <div class="topic">
+            <textarea name="day-{{day.pk}}-topic" cols="40" rows="1" maxlength="1024"
+                class="textarea form-control" id="id_day-{{day.pk}}-topic">{{day.topic}}</textarea>
+        </div>
         <input class="topics" type="text" name="day-{{day.pk}}-topics" value="{{day.topics}}" maxlength="100">
         <ul class="activities">
             {% for activity in day.activities %}

@@ -73,21 +73,26 @@ def course_as_taught_edit(request, number, year):
                 day.delete()
             else:
                 day.day = request.POST['day-{}'.format(day.pk)]
+                day.topic = request.POST['day-{}-topic'.format(day.pk)]
+                day.resources = request.POST['day-{}-resources'.format(day.pk)]
                 day.save()
 
         if request.POST['day-new'] != '':
             print('new day', request.POST['day-new'])
             new_day_number = 1
-            last_day = CourseDay.objects.aggregate(django.db.models.Max('number'))
-            if last_day['number__max'] is not None:
-                new_day_number = last_day['number__max'] + 1
-            newday = CourseDay(taught=as_taught, day=request.POST['day-new'], number=new_day_number)
+            days = list(CourseDay.objects.filter(taught=as_taught).order_by('order'))
+            if len(days) > 0:
+                try:
+                    new_day_number = '{}'.format(float(days[-1])+1)
+                except:
+                    new_day_number = str(days[-1]) + 'x'
+            newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=new_day_number)
             newday.save()
         as_taught.save()
         if as_taught.slug != year:
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
-    days = CourseDay.objects.filter(taught=as_taught).order_by('number')
+    days = CourseDay.objects.filter(taught=as_taught).order_by('order')
     return render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
