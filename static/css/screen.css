@@ -220,7 +220,6 @@ h1, h2, h3 {
 .thisday {
   grid-column-start: day ;
   grid-row: auto / span 1;
-  background-color: #dff;
 }
 .topics {
   grid-column-start: topics ;
