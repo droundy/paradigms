@@ -53,7 +53,6 @@ def course_as_taught(request, number, year, view='overview'):
         'days': days,
     })
 
-@permission_required('admin_app.edit_course_as_taught',login_url='/')
 def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)

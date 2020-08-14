@@ -455,6 +455,7 @@ class CourseDay(models.Model):
     def __str__(self):
         return str(self.taught)+' day ' + self.day
 
+
 class CourseAsTaughtOld:
     def __init__(self, name, instructor, days=None, post=None):
         self.name = name
