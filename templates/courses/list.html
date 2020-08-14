@@ -84,9 +84,7 @@
   <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
       <h5><a
-          href="{% url 'course_view' course.number %}">{{ course.catalog_name }}</a>        {% if perms.admin_app.can_edit_course %}
-          <a href="/admin/admin_app/course/{{ course.pk }}/change">(edit)</a>
-          {% endif %}
+          href="{% url 'course_view' course.number %}">{{ course.catalog_name }}</a>
   {% if course.publication != 1 %}
         <span class="badge badge-danger">Unpublished</span>
         {% endif%}</h5>
