@@ -15,14 +15,7 @@
     {% endif %}
     <div class="row">
     {% for problem in problems %}
-        <div class="col-sm-4">
-          <div class="card" style="margin-bottom: 10px">            
-            <div class="card-body">
-              <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }} {% if problem.publication == "0" or not problem.publication %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %} </a></h5>
-              {{ problem.topics|problemtopicbuttons }}
-            </div>
-          </div>
-        </div>
+        {% include "public_app/problem_listview.html" %}
         {% if forloop.last %}
           </div>
         {% else %}

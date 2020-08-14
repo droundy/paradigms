@@ -21,6 +21,7 @@
             <h3>Results</h3>
 
             {% for result in page.object_list %}
+            {% if result.object.type_of_beast %}
             {% with activity=result.object %}
             <div class="card overflow-auto" style="margin-bottom: 10px;">
               <div class="card-body">
@@ -39,6 +40,12 @@
               </div>
             </div> <!-- End Activity Card -->
             {% endwith %}
+            {% endif %}
+            {% if result.object.problem_title %}
+            {% with problem=result.object %}
+            {% include "public_app/problem_listview.html" %}
+            {% endwith %}
+            {% endif %}
             {% empty %}
               <p class="card-text" style="margin-bottom: 5px;">No Activities Found</p>
             {% endfor %}
