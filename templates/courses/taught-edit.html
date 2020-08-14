@@ -66,6 +66,7 @@
     <div class="day">
         <div class="thisday">
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
+            <input type="text" style="max-width: 50%;" name="day-{{day.pk}}-order" value="{{day.order}}">
             <button class="btn btn-sm btn-warning" type="submit" name="day-{{day.pk}}-delete">Remove</button>
         </div>
 

@@ -75,6 +75,7 @@ def course_as_taught_edit(request, number, year):
                 day.day = request.POST['day-{}'.format(day.pk)]
                 day.topic = request.POST['day-{}-topic'.format(day.pk)]
                 day.resources = request.POST['day-{}-resources'.format(day.pk)]
+                day.order = request.POST['day-{}-order'.format(day.pk)]
                 day.save()
 
         if request.POST['day-new'] != '':
