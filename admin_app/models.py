@@ -451,8 +451,8 @@ class CourseDay(models.Model):
     taught = models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
     order = models.CharField(max_length=255, default='')
     day = models.CharField(max_length=255)
-    topic = models.TextField(blank=True, null=True)
-    resources = models.TextField(blank=True, null=True)
+    topic = models.TextField(blank=True, default='')
+    resources = models.TextField(blank=True, default='')
 
     def __str__(self):
         return str(self.taught)+' day ' + self.day
