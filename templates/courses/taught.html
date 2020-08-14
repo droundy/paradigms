@@ -7,18 +7,24 @@
         <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
         <li class="breadcrumb-item"><a href="{% url 'course_list'%}">Courses</a></li>
         <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
-        <!-- If this is the solution view page, show link to view only, disable link on solution -->
-        {% if view == 'overview' %}
+            <!-- If this is the solution view page, show link to view only, disable link on solution -->
+            {% if view == 'overview' %}
         <li class="breadcrumb-item active" aria-current="page">{{ taught.year }}</li>
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
         {% elif view == 'syllabus' %}
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Syllabus</li>
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
         {% else %}
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
         <li class="breadcrumb-item active" aria-current="page">Schedule</li>
         </li>
         {% endif %}
@@ -91,5 +97,53 @@
             </dl>
         </div>
     </div>
+    <div class="day">
+        <h5 class="thisday">Day</h5>
+        <h5 class="topics">Topics</h5>
+        <h5 class="activities">Activities</h5>
+        <h5 class="resources">Resources</h5>
+        <h5 class="due">Due</h5>
+    </div>
+    {% if view == 'schedule' %}
+    {% for day in days %}
+    <div class="day">
+        <div class="thisday">{{day.day}}</div>
+        {% if day.topics %}
+        <div class="topics">{{day.topics}}</div>{% endif %}
+        {% if day.activities %}
+        <ul class="activities">
+            {% for activity in day.activities %}
+            <li>{{activity}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if day.problems %}
+        <ul class="due">
+            {% for problem in day.problems %}
+            {% with problem_number=forloop.counter0 %}
+            <li>{{problem}}<input type="hidden" name="day-{{day.pk}}-problem-{{problem_number}}" value="{{problem}}">
+                <input type="text" name="day-{{day.pk}}-problem-{{problem_number}}-instructions" value=""
+                    placeholder="instructions">
+                <button type="submit" name="day-{{day.pk}}-problem-{{problem_number}}-delete">Remove</button>
+                {% endwith %}
+                {% endfor %}
+                {% with possible=day.possible_problems %}
+                {% if possible %}
+            <li><select name="day-{{day.pk}}-problem-new">
+                    <option><i>assign problem</i></option>
+                    {% for aa in possible %}
+                    <option>{{ aa.problem_title | latex_with_solution }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+                {% endwith %}
+            </li>
+        </ul>
+        {% endif %}
+        {% if day.resources %}
+        <div class="resources">{{ day.resources }}</div>{% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
