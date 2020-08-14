@@ -95,6 +95,9 @@
             {% for taught in course.courseastaught_set.all %}
             <li>{% include "courses/taught-list.html" %}</li>
             {% endfor %}
+            <li>
+                <a href="{% url 'course_as_taught_edit' course.number 'NEW' %}">New year</a>
+            </li>
         </ul>
         {% endif %}
     </div>

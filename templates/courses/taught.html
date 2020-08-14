@@ -88,11 +88,6 @@
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
                 {% endif %}
-                {% if view == 'years' %}
-                {% for taught in course.courseastaught_set.all %}
-                {% include "course/taught-list.html" %}
-                {% endfor %}
-                {% endif %}
             </dl>
         </div>
     </div>

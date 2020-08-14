@@ -14,7 +14,7 @@ urlpatterns = [
     path('<slug:number>/<slug:year>', views.course_as_taught, name='course_as_taught'),
     path('<slug:number>/<slug:year>/syllabus', views.course_as_taught, {'view': 'syllabus'}, name='course_as_taught_syllabus'),
     path('<slug:number>/<slug:year>/schedule', views.course_as_taught, {'view': 'schedule'}, name='course_as_taught_schedule'),
-    path('<slug:number>/<slug:year>/edit', views.course_as_taught, {'view': 'edit'}, name='course_as_taught_edit'),
+    path('<slug:number>/<slug:year>/edit', views.course_as_taught_edit, name='course_as_taught_edit'),
 ]
 
 if settings.DEBUG:

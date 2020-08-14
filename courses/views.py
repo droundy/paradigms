@@ -50,6 +50,15 @@ def course_as_taught(request, number, year, view='overview'):
         'view': view,
     })
 
+def course_as_taught_edit(request, number, year):
+    # if this is a POST request we need to process the form data
+    course = get_object_or_404(Course, number=number)
+    as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
+    return render(request, 'courses/taught-edit.html', {
+        'course': course,
+        'taught': as_taught,
+    })
+
 def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
