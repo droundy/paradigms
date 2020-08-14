@@ -23,22 +23,7 @@
             {% for result in page.object_list %}
             {% if result.object.type_of_beast %}
             {% with activity=result.object %}
-            <div class="card overflow-auto" style="margin-bottom: 10px;">
-              <div class="card-body">
-                <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }} {% if activity.publication_status == "Draft" or activity.publication_status == "Post-Publication Draft" or not activity.publication_status %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
-  
-                <p class="card-text" style="margin-bottom: 5px;"> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min.</p>
-                {% if activity.topics %}<p class="card-text" style="margin-bottom: 5px;"><span style="margin-right: 1em;">{{ activity.topics|tagbuttons }}</span></p>{% endif %}
-                
-                {% if activity.overview_paragraph %}
-                  {% if forloop.counter == 1 %}
-                    <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
-                  {% else %}
-                    <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </div> <!-- End Activity Card -->
+            {% include "public_app/activity_listview.html" %}
             {% endwith %}
             {% endif %}
             {% if result.object.problem_title %}
@@ -47,7 +32,7 @@
             {% endwith %}
             {% endif %}
             {% empty %}
-              <p class="card-text" style="margin-bottom: 5px;">No Activities Found</p>
+              <p class="card-text" style="margin-bottom: 5px;">No results found</p>
             {% endfor %}
   
             <!-- {% for result in page.object_list %}
