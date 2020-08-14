@@ -66,11 +66,20 @@ def course_as_taught_edit(request, number, year):
         as_taught.instructor = request.POST['instructor']
         as_taught.year = request.POST['year']
         as_taught.slug = as_taught.year.replace(' ', '')
+
+        if request.POST['day-new'] != '':
+            print('new day', request.POST['day-new'])
+            new_day_number = 1
+            last_day = CourseDay.objects.aggregate(django.db.models.Max('number'))
+            if last_day['number__max'] is not None:
+                new_day_number = last_day['number__max'] + 1
+            newday = CourseDay(taught=as_taught, day=request.POST['day-new'], number=new_day_number)
+            newday.save()
         as_taught.save()
         if as_taught.slug != year:
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
-    days = CourseDay.objects.filter(taught=as_taught)
+    days = CourseDay.objects.filter(taught=as_taught).order_by('number')
     return render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
