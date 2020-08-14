@@ -64,7 +64,10 @@
     </div>
     {% for day in days %}
     <div class="day">
-        <input class="thisday" type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
+        <div class="thisday">
+            <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
+            <button class="btn btn-sm btn-warning" type="submit" name="day-{{day.pk}}-delete">Remove</button>
+        </div>
         <input class="topics" type="text" name="day-{{day.pk}}-topics" value="{{day.topics}}" maxlength="100">
         <ul class="activities">
             {% for activity in day.activities %}
