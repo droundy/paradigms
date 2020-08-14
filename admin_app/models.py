@@ -447,6 +447,16 @@ class CourseAsTaught(models.Model):
         verbose_name = 'Course as taught'
         verbose_name_plural = 'Courses as taught'
 
+    @property
+    def possible_activities(self):
+        ''' a list of activities that could be added '''
+        return list(Activity.objects.all())
+
+    @property
+    def possible_problems(self):
+        ''' a list of problems that could be added '''
+        return list(Problem.objects.all())# exclude(problem_title__in=self.problems))
+
 class CourseDay(models.Model):
     taught = models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
     order = models.CharField(max_length=255, default='')

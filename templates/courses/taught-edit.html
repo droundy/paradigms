@@ -71,10 +71,9 @@
         </div>
 
         <div class="topic">
-            <textarea name="day-{{day.pk}}-topic" cols="40" rows="1" maxlength="1024"
-                class="textarea form-control" id="id_day-{{day.pk}}-topic">{{day.topic}}</textarea>
+            <textarea name="day-{{day.pk}}-topic" cols="40" rows="1" maxlength="1024" class="textarea form-control"
+                id="id_day-{{day.pk}}-topic">{{day.topic}}</textarea>
         </div>
-        <input class="topics" type="text" name="day-{{day.pk}}-topics" value="{{day.topics}}" maxlength="100">
         <ul class="activities">
             {% for activity in day.activities %}
             {% with activity_number=forloop.counter0 %}
@@ -87,7 +86,7 @@
                 <input list="day-{{day.pk}}-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-activity-new" placeholder="new activity">
                 <datalist id="day-{{day.pk}}-possible">
-                    {% for aa in day.possible_activities %}
+                    {% for aa in day.taught.possible_activities %}
                     <option>{{ aa.title }}</option>
                     {% endfor %}
                 </datalist>
@@ -102,21 +101,25 @@
                 <button type="submit" name="day-{{day.pk}}-problem-{{problem_number}}-delete">Remove</button>
                 {% endwith %}
                 {% endfor %}
-                {% with possible=day.possible_problems %}
-                {% if possible %}
-            <li><select name="day-{{day.pk}}-problem-new">
+            <li>
+                <!-- <li><select name="day-{{day.pk}}-problem-new">
                     <option><i>assign problem</i></option>
-                    {% for aa in possible %}
+                    {% for aa in day.taught.possible_problems %}
                     <option>{{ aa.problem_title | latex_with_solution }}</option>
                     {% endfor %}
-                </select>
-                {% endif %}
-                {% endwith %}
+                </select> -->
+                <input list="day-{{day.pk}}-possible-hw" style="max-width: 100%; width: 100%;"
+                    name="day-{{day.pk}}-problem-new" placeholder="search for problem">
+                <datalist id="day-{{day.pk}}-possible-hw">
+                    {% for aa in day.taught.possible_problems %}
+                    <option>{{ aa.problem_title }}</option>
+                    {% endfor %}
+                </datalist>
             </li>
         </ul>
         <div class="resources">
-            <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024"
-                class="textarea form-control" id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
+            <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024" class="textarea form-control"
+                id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
         </div>
     </div>
     {% endfor %}
