@@ -449,6 +449,7 @@ class CourseAsTaught(models.Model):
 
 class CourseDay(models.Model):
     taught: models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(default=1000)
     day = models.CharField(max_length=255)
 
     def __str__(self):
