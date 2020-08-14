@@ -110,7 +110,7 @@
         {% for day in days %}
         <div class="thisday">{{day.day}}</div>
         {% if day.topic %}
-        <div class="topic">{{day.topic}}</div>{% endif %}
+        <div class="topic">{{day.topic | latex_omit_solution  }}</div>{% endif %}
         {% if day.activities %}
         <ul class="activities">
             {% for activity in day.activities %}
@@ -142,7 +142,7 @@
         </ul>
         {% endif %}
         {% if day.resources %}
-        <div class="resources">{{ day.resources }}</div>{% endif %}
+        <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
         <hr/>
         {% endfor %}
     </div>
