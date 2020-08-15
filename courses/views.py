@@ -80,13 +80,13 @@ def course_as_taught_edit(request, number, year):
 
         if request.POST['day-new'] != '':
             print('new day', request.POST['day-new'])
-            new_day_number = 1
+            new_day_number = '001'
             days = list(CourseDay.objects.filter(taught=as_taught).order_by('order'))
             if len(days) > 0:
                 try:
-                    new_day_number = '{}'.format(float(days[-1])+1)
+                    new_day_number = '%03d' % (int(days[-1].order)+1)
                 except:
-                    new_day_number = str(days[-1]) + 'x'
+                    new_day_number = days[-1].order + 'x'
             newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=new_day_number)
             newday.save()
         as_taught.save()
