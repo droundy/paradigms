@@ -55,6 +55,16 @@
             </ul>
         </dd>
     </dl>
+    <datalist id="activities-possible">
+        {% for aa in taught.possible_activities %}
+        <option>{{ aa.title }}</option>
+        {% endfor %}
+    </datalist>
+    <datalist id="problems-possible">
+        {% for aa in taught.possible_problems %}
+        <option>{{ aa.problem_title }}</option>
+        {% endfor %}
+    </datalist>
     <div class="schedule">
         <h5 class="thisday">Day</h5>
         <h5 class="topic">Topic</h5>
@@ -81,13 +91,8 @@
                 {% endwith %}
                 {% endfor %}
             <li>
-                <input list="day-{{day.pk}}-possible" style="max-width: 100%; width: 100%;"
+                <input list="activities-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-activity-new" placeholder="new activity">
-                <datalist id="day-{{day.pk}}-possible">
-                    {% for aa in day.taught.possible_activities %}
-                    <option>{{ aa.title }}</option>
-                    {% endfor %}
-                </datalist>
             </li>
         </ul>
         <ul class="due">
@@ -106,13 +111,8 @@
                     <option>{{ aa.problem_title | latex_with_solution }}</option>
                     {% endfor %}
                 </select> -->
-                <input list="day-{{day.pk}}-possible-hw" style="max-width: 100%; width: 100%;"
+                <input list="homework-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-problem-new" placeholder="search for problem">
-                <datalist id="day-{{day.pk}}-possible-hw">
-                    {% for aa in day.taught.possible_problems %}
-                    <option>{{ aa.problem_title }}</option>
-                    {% endfor %}
-                </datalist>
             </li>
         </ul>
         <div class="resources">
