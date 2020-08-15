@@ -202,10 +202,10 @@ h1, h2, h3 {
 
 .schedule {
   display: grid;
-  grid-template-columns: [day] minmax(8rem,1fr) [topic activities resources due] minmax(15rem,2fr) [end];
+  grid-template-columns: [day] fit-content(10em) [topic activities resources due] fit-content(100%) [end];
   grid-auto-rows: max-content;
   grid-auto-flow: row;
-  grid-gap: 0rem;
+  grid-gap: 0rem 0.5rem;
 }
 .schedule hr {
   display: block;
@@ -258,14 +258,14 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   background-color: #fdf;
 }
-@media (min-width: 40rem) {
+@media (min-width: 1rem) {
   .schedule {
-    grid-template-columns: [day] minmax(8rem,1fr) [topic] minmax(8rem,1fr) [activities resources due] minmax(15rem,2fr) [end];
+    grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities resources due] fit-content(100%) [end];
   }
 }
 @media (min-width: 50rem) {
   .schedule {
-    grid-template-columns: [day] minmax(8rem,1fr) [topic] minmax(8rem,1fr) [activities due] minmax(15rem,2fr) [resources] minmax(7.5rem,1fr) [end];
+    grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities] fit-content(100%) [resources due] fit-content(20em) [end];
   }
   .resources:before {
     content: none;
@@ -273,6 +273,6 @@ h1, h2, h3 {
 }
 @media (min-width: 75rem) {
   .schedule {
-    grid-template-columns: [day] minmax(8rem,max-content) [topic] minmax(8rem,max-content) [activities] minmax(15rem,max-content) [resources] minmax(7.5rem,max-content) [due] minmax(15rem, max-content) [end];
+    grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities] fit-content(100%) [resources] fit-content(20em) [due] fit-content(15em) [end];
   }
 }

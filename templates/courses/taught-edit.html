@@ -95,6 +95,10 @@
                     name="day-{{day.pk}}-activity-new" placeholder="new activity">
             </li>
         </ul>
+        <div class="resources">
+            <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024" class="textarea form-control"
+                id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
+        </div>
         <ul class="due">
             {% for problem in day.problems %}
             {% with problem_number=forloop.counter0 %}
@@ -115,10 +119,6 @@
                     name="day-{{day.pk}}-problem-new" placeholder="search for problem">
             </li>
         </ul>
-        <div class="resources">
-            <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024" class="textarea form-control"
-                id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
-        </div>
         {% endfor %}
         <input class="thisday" type="text" name="day-new" value="">
     </div>

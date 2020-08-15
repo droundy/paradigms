@@ -118,6 +118,10 @@
             {% endfor %}
         </ul>
         {% endif %}
+        {% if day.resources %}
+        <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
+        <hr/>
+        {% endfor %}
         {% if day.problems %}
         <ul class="due">
             {% for problem in day.problems %}
@@ -141,10 +145,6 @@
             </li>
         </ul>
         {% endif %}
-        {% if day.resources %}
-        <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
-        <hr/>
-        {% endfor %}
     </div>
     {% endif %}
 </div>
