@@ -457,6 +457,19 @@ class CourseAsTaught(models.Model):
         ''' a list of problems that could be added '''
         return list(Problem.objects.all())# exclude(problem_title__in=self.problems))
 
+    @property
+    def has_activities(self):
+        ''' are there any activities in this course? '''
+        return True
+    @property
+    def has_topics(self):
+        ''' are there any topics in this course? '''
+        return CourseDay.objects.filter(taught=self).exclude(topic='')
+    @property
+    def has_resources(self):
+        ''' are there any resources in this course? '''
+        return CourseDay.objects.filter(taught=self).exclude(resources='')
+
 class CourseDay(models.Model):
     taught = models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
     order = models.CharField(max_length=255, default='')
