@@ -141,7 +141,8 @@ div.center {
 }
 
 dl {
-  margin-top: -1em;
+  margin-top: 0;
+  padding-top: 0;
   text-indent: -2em;
   padding-left: 2em;
 }
