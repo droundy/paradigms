@@ -516,6 +516,12 @@ class CourseDay(models.Model):
         ''' problem set data due today '''
         return DayProblem.objects.filter(due=self).order_by('order')
 
+    @property
+    def problemset_slug(self):
+        return slugify(self.problemsetname)
+
+def slugify(x):
+    return x.replace(' ', '').lower()
 
 class DayActivity(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE)

@@ -148,6 +148,7 @@ def get_title(query, all, key):
     if o is not None:
         return 0
     return all.filter(pk=key).get()
+
 def get_problem_title(query, all, key):
     o = query.filter(problem_title=key).first()
     if o is not None:
@@ -156,6 +157,28 @@ def get_problem_title(query, all, key):
     if o is not None:
         return 0
     return all.filter(pk=key).get()
+
+def problem_set(request, number, year, problemset, view='html'):
+    course = get_object_or_404(Course, number=number)
+    as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
+    day = None
+    for d in CourseDay.objects.filter(taught=as_taught).order_by('order'):
+        if d.problemset_slug == problemset or d.pk == problemset:
+            day = d
+            break
+    if day is None:
+        which = 1
+        for d in CourseDay.objects.filter(taught=as_taught).order_by('order'):
+            if 'hw'+str(which) == problemset:
+                day = d
+                break
+            which += 1
+    return render(request, 'courses/problemset.html', {
+        'course': course,
+        'taught': as_taught,
+        'view': view,
+        'day': day,
+    })
 
 def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data

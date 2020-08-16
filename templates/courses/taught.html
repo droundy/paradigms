@@ -134,7 +134,7 @@
             {% endfor %}
             {% if day.problemset.exists %}
             <li>
-                <h5>{{day.problemsetname | latex_omit_solution }} due</h5>
+                <h5><a href="{% url 'taught_problemset' taught.course.number taught.slug day.problemset_slug %}">{{day.problemsetname | latex_omit_solution }} due</a></h5>
                 <ol>
                     {% for p in day.problemset_data.all %}
                     <li><strong>{{ p.problem.problem_title | latex_omit_solution }}</strong> {{ p.instructions | latex_omit_solution }}</li>
