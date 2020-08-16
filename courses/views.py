@@ -157,8 +157,8 @@ def problem_set(request, number, year, problemset, view='html'):
     if day is None:
         which = 1
         for d in CourseDay.objects.filter(taught=as_taught).order_by('order'):
+            day = d
             if 'hw'+str(which) == problemset:
-                day = d
                 break
             which += 1
     return render(request, 'courses/problemset.html', {

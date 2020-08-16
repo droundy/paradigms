@@ -521,7 +521,10 @@ class CourseDay(models.Model):
         return slugify(self.problemsetname)
 
 def slugify(x):
-    return x.replace(' ', '').lower()
+    s = x.replace(' ', '').lower()
+    if s == '':
+        return 'none'
+    return s
 
 class DayActivity(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE)
