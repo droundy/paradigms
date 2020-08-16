@@ -159,6 +159,13 @@ dd .checkbox {
   display: inline-block;
 }
 
+@media (max-width: 50rem) {
+  dd {
+    grid-column-start: 1;
+    padding-left: 1em;
+  }
+}
+
 .homework ul {
   list-style: outside;
 }
@@ -253,7 +260,7 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   background-color: #fdf;
 }
-@media (min-width: 1rem) {
+@media (min-width: 10rem) {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities resources due] fit-content(100%) [end];
   }
