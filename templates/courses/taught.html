@@ -113,8 +113,15 @@
         <div class="topic">{{day.topic | latex_omit_solution  }}</div>{% endif %}
         {% if day.activities.exists %}
         <ul class="activities">
-            {% for activity in day.activities.all %}
-            <li>{{activity}}</li>
+            {% for da in day.dayactivity_set.all %}
+            <li><a href="{% url 'activity_detail' da.activity.pk %}">{{da.activity}}</a>
+                {% if da.show_handout and da.activity.has_handout %}
+                <a href="{% url 'activity_detail_handout' da.activity.pk %}">(handout)</a>
+                {% endif %}
+                {% if da.show_solution and da.activity.has_solution %}
+                <a href="{% url 'activity_detail_solution' da.activity.pk %}">(solution)</a>
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
         {% endif %}
