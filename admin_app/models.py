@@ -494,7 +494,7 @@ class CourseDay(models.Model):
     day = models.CharField(max_length=255)
     topic = models.TextField(blank=True, default='')
     resources = models.TextField(blank=True, default='')
-    problemset = models.CharField(max_length=255, blank=True)
+    problemsetname = models.CharField(max_length=255, blank=True)
 
     activities = models.ManyToManyField(Activity, through='DayActivity', related_name='day')
     problems = models.ManyToManyField(Problem, through='DayProblem',

@@ -139,6 +139,10 @@
                 <input list="homework-possible" style="max-width: 100%; width: 100%;" name="day-{{day.pk}}-problem-new"
                     placeholder="search for problem">
             </li>
+            <li>
+            <input type="text" name="day-{{day.pk}}-problemset"
+                value="{{day.problemsetname}}" placeholder="problem set due">
+            </li>
         </ul>
         {% endfor %}
         <input class="thisday" type="text" name="day-new" value="">
