@@ -105,7 +105,7 @@
         {% if taught.has_activities %}<h5 class="activities">In class today</h5>{% endif %}
         {% if taught.has_resources %}<h5 class="resources">Resources</h5>{% endif %}
         <h5 class="due">Homework</h5>
-        <hr/>
+        <hr />
 
         {% for day in days %}
         <div class="thisday">{{day.day}}</div>
@@ -127,15 +127,27 @@
         {% endif %}
         {% if day.resources %}
         <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
-        {% if day.problems.exists %}
+        {% if day.problems.exists or day.problemset.exists %}
         <ul class="due">
             {% for problem in day.problems.all %}
             <li><a href="{% url 'problem_display_html' problem.pk %}">{{problem}}</a></li>
             {% endfor %}
+            {% if day.problemset.exists %}
+            <li>
+                <h5>{{day.problemsetname | latex_omit_solution }} due</h5>
+                <ol>
+                    {% for p in day.problemset_data.all %}
+                    <li><strong>{{ p.problem.problem_title | latex_omit_solution }}</strong> {{ p.instructions | latex_omit_solution }}</li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+            </li>
+
+
         </ul>
         {% endif %}
-        {% endfor %}
         <hr/>
+        {% endfor %}
     </div>
     {% endif %}
 </div>

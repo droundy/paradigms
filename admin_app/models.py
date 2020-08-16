@@ -511,6 +511,12 @@ class CourseDay(models.Model):
         ''' a list of days things could be due '''
         return self.taught.courseday_set.filter(order__gte=self.order).exclude(problemsetname='').order_by('order')
 
+    @property
+    def problemset_data(self):
+        ''' problem set data due today '''
+        return DayProblem.objects.filter(due=self).order_by('order')
+
+
 class DayActivity(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)

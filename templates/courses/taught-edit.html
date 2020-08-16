@@ -124,7 +124,8 @@
                 <button type="submit" name="day-{{day.pk}}-problem-{{problem.pk}}-delete">Remove</button>
                 <select name="day-{{day.pk}}-problem-{{problem.pk}}-due">
                     {% for due in day.possible_due %}
-                    <option value="{{ due.problemsetname }}"{% if due == problem.due %} selected{% endif %}>{{ due.problemsetname }}</option>
+                    <option value="{{ due.problemsetname }}" {% if due == problem.due %} selected{% endif %}>
+                        {{ due.problemsetname }}</option>
                     {% endfor %}
                 </select>
             </li>
@@ -140,8 +141,15 @@
                     placeholder="search for problem">
             </li>
             <li>
-            <input type="text" name="day-{{day.pk}}-problemset"
-                value="{{day.problemsetname}}" placeholder="problem set due">
+                <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
+                    placeholder="problem set due">
+                {% if day.problemset.exists %}
+                <ol>
+                    {% for p in day.problemset_data.all %}
+                    <li><strong>{{ p.problem }}</strong> {{ p.instructions }}</li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
             </li>
         </ul>
         {% endfor %}

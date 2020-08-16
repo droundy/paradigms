@@ -275,6 +275,6 @@ h1, h2, h3 {
 }
 @media (min-width: 75rem) {
   .schedule {
-    grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities] auto [resources] fit-content(20em) [due] fit-content(15em) [end];
+    grid-template-columns: [day] fit-content(10em) [topic] auto [activities] auto [resources] auto [due] auto [end];
   }
 }
