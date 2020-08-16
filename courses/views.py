@@ -89,6 +89,8 @@ def course_as_taught_edit(request, number, year):
                     if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
                         day.dayproblem.remove(dp)
                     dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
+                    print('instructions:', dp.instructions)
+                    dp.save()
                 day.save()
                 new = "day-{}-activity-new".format(day.pk)
                 if new in request.POST and request.POST[new] != '':

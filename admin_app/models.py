@@ -503,6 +503,7 @@ class DayProblem(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='dayproblem')
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     order = models.CharField(max_length=8, blank=True)
+    instructions = models.CharField(max_length=255, blank=True, default='')
     due = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='problem_due')
 
 class CourseAsTaughtOld:
