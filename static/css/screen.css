@@ -141,34 +141,22 @@ div.center {
 }
 
 dl {
-  margin-top: 0;
-  padding-top: 0;
-  text-indent: -2em;
-  padding-left: 2em;
-}
-
-dd {
-  display: inline;
-  text-indent: 0;
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 dt {
-  text-indent: 0;
-  display: inline-block;
+  grid-column-start: 1;
+  text-indent: -1em;
+  padding-left: 1em;
+}
+
+dd {
+  grid-column-start: 2;
 }
 
 dd .checkbox {
   display: inline-block;
-}
-
-dt:first-of-type:before {
-  content: "\A";
-  white-space: pre;
-}
-
-dd:after {
-  content: "\A";
-  white-space: pre;
 }
 
 .homework ul {

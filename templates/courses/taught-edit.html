@@ -85,6 +85,7 @@
         <dl class="activities">
             {% for da in day.dayactivity_set.all %}
             <dt>{{da.activity}}</dt>
+            <dd><button type="submit" name="day-{{day.pk}}-activity-{{da.pk}}-delete">Remove</button></dd>
             {% if da.activity.has_handout %}
             <dd>
                 <div class="checkbox">
@@ -103,7 +104,6 @@
                 </div>
             </dd>
             {% endif %}
-            <dd><button type="submit" name="day-{{day.pk}}-activity-{{da.pk}}-delete">Remove</button></dd>
             {% endfor %}
             <dt>
                 <input list="activities-possible" style="max-width: 100%; width: 100%;"
