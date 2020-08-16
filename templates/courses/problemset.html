@@ -1,0 +1,33 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load latex %}
+{% block title %}{{ course.catalog_name }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb" class="noprint">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'course_list'%}">Courses</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'course_view' course.number %}">{{ course }}</a>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item"><a
+                href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ day.problemsetname }}</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <div class="card overflow-auto" style="margin-bottom: 10px;">
+        <h2 class="card-header">
+            {{ course.short_name }} {{ day.problemsetname }} due {{ day.day }}, {{taught.year}}
+        </h2>
+        <div class="card-body">
+        </div>
+        <ol>
+            {% for p in day.problemset_data %}
+            <li class="homework">{{ p.problem.problem_latex | latex_omit_solution }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endblock %}
