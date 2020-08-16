@@ -83,7 +83,6 @@ def course_as_taught_edit(request, number, year):
                 day.resources = request.POST['day-{}-resources'.format(day.pk)]
                 day.order = request.POST['day-{}-order'.format(day.pk)]
                 for da in day.dayactivity_set.all():
-                    print('da', da)
                     if "day-{}-activity-{}-delete".format(day.pk, da.pk) in request.POST:
                         day.dayactivity_set.remove(activity)
                     da.show_handout = "day-{}-activity-{}-handout".format(day.pk, da.pk) in request.POST
@@ -93,9 +92,12 @@ def course_as_taught_edit(request, number, year):
                 for dp in day.dayproblem.all():
                     if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
                         day.dayproblem.remove(dp)
-                    dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
-                    dp.save()
                 day.save()
+                for dp in day.dayproblem.all():
+                    dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
+                    duepk = request.POST["day-{}-problem-{}-due".format(day.pk, dp.pk)]
+                    dp.due = CourseDay.objects.get(pk=duepk)
+                    dp.save()
                 new = "day-{}-activity-new".format(day.pk)
                 if new in request.POST and request.POST[new] != '':
                     activity = get_title(day.taught.possible_activities, Activity.objects, request.POST[new])

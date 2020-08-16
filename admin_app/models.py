@@ -506,6 +506,11 @@ class CourseDay(models.Model):
     def __str__(self):
         return str(self.taught)+' day ' + self.day
 
+    @property
+    def possible_due(self):
+        ''' a list of days things could be due '''
+        return self.taught.courseday_set.filter(order__gte=self.order).order_by('order')
+
 class DayActivity(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
