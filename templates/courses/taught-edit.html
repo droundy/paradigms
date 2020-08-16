@@ -124,7 +124,7 @@
                 <button type="submit" name="day-{{day.pk}}-problem-{{problem.pk}}-delete">Remove</button>
                 <select name="day-{{day.pk}}-problem-{{problem.pk}}-due">
                     {% for due in day.possible_due %}
-                    <option value="{{ due.pk }}"{% if due == problem.due %} selected{% endif %}>{{ due.problemsetname }}</option>
+                    <option value="{{ due.problemsetname }}"{% if due == problem.due %} selected{% endif %}>{{ due.problemsetname }}</option>
                     {% endfor %}
                 </select>
             </li>
