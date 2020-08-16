@@ -98,13 +98,11 @@
                 id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
         </div>
         <ul class="due">
-            {% for problem in day.problems.objects.all %}
-            {% with problem_number=forloop.counter0 %}
+            {% for problem in day.problems.all %}
             <li>{{problem}}<input type="hidden" name="day-{{day.pk}}-problem-{{problem_number}}" value="{{problem}}">
-                <input type="text" name="day-{{day.pk}}-problem-{{problem_number}}-instructions" value=""
+                <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions" value=""
                     placeholder="instructions">
-                <button type="submit" name="day-{{day.pk}}-problem-{{problem_number}}-delete">Remove</button>
-                {% endwith %}
+                <button type="submit" name="day-{{day.pk}}-problem-{{problem.pk}}-delete">Remove</button>
                 {% endfor %}
             <li>
                 <!-- <li><select name="day-{{day.pk}}-problem-new">
