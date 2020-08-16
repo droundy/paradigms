@@ -70,7 +70,7 @@
         <h5 class="topic">Topic</h5>
         <h5 class="activities">In class today</h5>
         <h5 class="resources">Resources</h5>
-        <h5 class="due">Due</h5>
+        <h5 class="due">Homework</h5>
         {% for day in days %}
         <div class="thisday">
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
@@ -82,17 +82,34 @@
             <textarea name="day-{{day.pk}}-topic" cols="40" rows="1" maxlength="1024" class="textarea form-control"
                 id="id_day-{{day.pk}}-topic">{{day.topic}}</textarea>
         </div>
-        <ul class="activities">
-            {% for activity in day.activities.all %}
-            <li>{{activity}}<input type="hidden" name="day-{{day.pk}}-activity-{{activity_number}}"
-                    value="{{activity}}">
-                <button type="submit" name="day-{{day.pk}}-activity-{{activity.pk}}-delete">Remove</button>
-                {% endfor %}
-            <li>
+        <dl class="activities">
+            {% for da in day.dayactivity_set.all %}
+            <dt>{{da.activity}}</dt>
+            {% if da.activity.has_handout %}
+            <dd>
+                <div class="checkbox">
+                    <input type="checkbox" id="day-{{day.pk}}-activity-{{da.pk}}-handout"
+                        name="day-{{day.pk}}-activity-{{da.pk}}-handout" {% if da.show_handout %} checked{% endif %}>&nbsp;<label
+                        for="day-{{day.pk}}-activity-{{da.pk}}-handout"> Show handout</label>
+                </div>
+            </dd>
+            {% endif %}
+            {% if da.activity.has_solution %}
+            <dd>
+                <div class="checkbox">
+                <input type="checkbox" id="day-{{day.pk}}-activity-{{da.pk}}-solution"
+                    name="day-{{day.pk}}-activity-{{da.pk}}-solution" {% if da.show_solution %} checked{% endif %}>&nbsp;<label
+                    for="day-{{day.pk}}-activity-{{da.pk}}-solution"> Show solution</label>
+                </div>
+            </dd>
+            {% endif %}
+            <dd><button type="submit" name="day-{{day.pk}}-activity-{{da.pk}}-delete">Remove</button></dd>
+            {% endfor %}
+            <dt>
                 <input list="activities-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-activity-new" placeholder="new activity">
-            </li>
-        </ul>
+            </dt>
+        </dl>
         <div class="resources">
             <textarea name="day-{{day.pk}}-resources" cols="40" rows="1" maxlength="1024" class="textarea form-control"
                 id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
@@ -100,8 +117,8 @@
         <ul class="due">
             {% for problem in day.dayproblem.all %}
             <li>{{problem.problem}}
-                <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions" value="{{problem.instructions}}"
-                    placeholder="instructions">
+                <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions"
+                    value="{{problem.instructions}}" placeholder="instructions">
                 <button type="submit" name="day-{{day.pk}}-problem-{{problem.pk}}-delete">Remove</button>
                 {% endfor %}
             <li>
@@ -111,8 +128,8 @@
                     <option>{{ aa.problem_title | latex_with_solution }}</option>
                     {% endfor %}
                 </select> -->
-                <input list="homework-possible" style="max-width: 100%; width: 100%;"
-                    name="day-{{day.pk}}-problem-new" placeholder="search for problem">
+                <input list="homework-possible" style="max-width: 100%; width: 100%;" name="day-{{day.pk}}-problem-new"
+                    placeholder="search for problem">
             </li>
         </ul>
         {% endfor %}

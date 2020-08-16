@@ -273,6 +273,16 @@ class Activity(models.Model):
         return self.title
 
     @property
+    def has_solution(self):
+        if r'\begin{handout}' in self.instructor_guide:
+            h = latex_snippet.only_handout(self.instructor_guide)
+        elif r'\begin{guide}' in self.instructor_guide:
+            h = latex_snippet.omit_guide(self.instructor_guide)
+        else:
+            return False
+        return r'\begin{solution}' in h
+
+    @property
     def solution_latex(self):
         ''' return the latex content for the student solutions '''
         if r'\begin{handout}' in self.instructor_guide:
@@ -284,6 +294,10 @@ class Activity(models.Model):
         if r'\begin{solution}' not in h:
             return None
         return latex_snippet.physics_macros(h)
+
+    @property
+    def has_handout(self):
+        return r'\begin{handout}' in self.instructor_guide or r'\begin{guide}' in self.instructor_guide
 
     @property
     def handout_latex(self):

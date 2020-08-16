@@ -82,14 +82,18 @@ def course_as_taught_edit(request, number, year):
                 day.topic = request.POST['day-{}-topic'.format(day.pk)]
                 day.resources = request.POST['day-{}-resources'.format(day.pk)]
                 day.order = request.POST['day-{}-order'.format(day.pk)]
-                for activity in day.activities.all():
-                    if "day-{}-activity-{}-delete".format(day.pk, activity.pk) in request.POST:
-                        day.activities.remove(activity)
+                for da in day.dayactivity_set.all():
+                    print('da', da)
+                    if "day-{}-activity-{}-delete".format(day.pk, da.pk) in request.POST:
+                        day.dayactivity_set.remove(activity)
+                    da.show_handout = "day-{}-activity-{}-handout".format(day.pk, da.pk) in request.POST
+                    da.show_solution = "day-{}-activity-{}-solution".format(day.pk, da.pk) in request.POST
+                    da.save()
+                    
                 for dp in day.dayproblem.all():
                     if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
                         day.dayproblem.remove(dp)
                     dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
-                    print('instructions:', dp.instructions)
                     dp.save()
                 day.save()
                 new = "day-{}-activity-new".format(day.pk)
