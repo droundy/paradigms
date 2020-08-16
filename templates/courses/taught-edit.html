@@ -98,9 +98,9 @@
                 id="id_day-{{day.pk}}-resources">{{day.resources}}</textarea>
         </div>
         <ul class="due">
-            {% for problem in day.problems.all %}
-            <li>{{problem}}<input type="hidden" name="day-{{day.pk}}-problem-{{problem_number}}" value="{{problem}}">
-                <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions" value=""
+            {% for problem in day.dayproblem.all %}
+            <li>{{problem.problem}}
+                <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions" value="{{problem.instructions}}"
                     placeholder="instructions">
                 <button type="submit" name="day-{{day.pk}}-problem-{{problem.pk}}-delete">Remove</button>
                 {% endfor %}

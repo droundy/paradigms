@@ -85,24 +85,25 @@ def course_as_taught_edit(request, number, year):
                 for activity in day.activities.all():
                     if "day-{}-activity-{}-delete".format(day.pk, activity.pk) in request.POST:
                         day.activities.remove(activity)
+                for dp in day.dayproblem.all():
+                    if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
+                        day.dayproblem.remove(dp)
+                    dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
                 day.save()
-                new_activity = "day-{}-activity-new".format(day.pk)
-                if new_activity in request.POST and request.POST[new_activity] != '':
-                    activity = get_title(day.taught.possible_activities, Activity.objects, request.POST[new_activity])
+                new = "day-{}-activity-new".format(day.pk)
+                if new in request.POST and request.POST[new] != '':
+                    activity = get_title(day.taught.possible_activities, Activity.objects, request.POST[new])
                     order = next_order(day.dayactivity_set)
                     da = DayActivity(day=day, activity=activity, order=order)
                     da.save()
-                new_problem = "day-{}-problem-new".format(day.pk)
-                if new_problem in request.POST and request.POST[new_problem] != '':
-                    problem = get_problem_title(day.taught.possible_problems, Problem.objects, request.POST[new_problem])
-                    print(dir(day))
-                    print(day.dayproblem)
+                new = "day-{}-problem-new".format(day.pk)
+                if new in request.POST and request.POST[new] != '':
+                    problem = get_problem_title(day.taught.possible_problems, Problem.objects, request.POST[new])
                     order = next_order(day.dayproblem)
                     dp = DayProblem(day=day, problem=problem, order=order, due=day)
                     dp.save()
 
         if request.POST['day-new'] != '':
-            print('new day', request.POST['day-new'])
             new_day_number = '001'
             order = next_order(CourseDay.objects.filter(taught=as_taught))
             newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=new_day_number)
