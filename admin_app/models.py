@@ -139,6 +139,10 @@ class Problem(models.Model):
         return self.problem_title
 
     @property
+    def title(self):
+        return self.problem_title
+
+    @property
     def pdf_latex(self):
         ''' return the latex content, modified for pdf generation by making image paths
           absolute, removing image paths that don't correspond to actual files, and converting
@@ -450,12 +454,12 @@ class CourseAsTaught(models.Model):
     @property
     def possible_activities(self):
         ''' a list of activities that could be added '''
-        return list(Activity.objects.all())
+        return Activity.objects.all()
 
     @property
     def possible_problems(self):
         ''' a list of problems that could be added '''
-        return list(Problem.objects.all())# exclude(problem_title__in=self.problems))
+        return Problem.objects.all()# exclude(problem_title__in=self.problems))
 
     @property
     def has_activities(self):
@@ -476,10 +480,30 @@ class CourseDay(models.Model):
     day = models.CharField(max_length=255)
     topic = models.TextField(blank=True, default='')
     resources = models.TextField(blank=True, default='')
+    problemset = models.CharField(max_length=255, blank=True)
+
+    activities = models.ManyToManyField(Activity, through='DayActivity', related_name='day')
+    problems = models.ManyToManyField(Problem, through='DayProblem',
+                                      through_fields=('day', 'problem'), related_name='day')
+
+    problemset = models.ManyToManyField(Problem, through='DayProblem',
+                                        through_fields=('due', 'problem'), related_name='due')
 
     def __str__(self):
         return str(self.taught)+' day ' + self.day
 
+class DayActivity(models.Model):
+    day = models.ForeignKey(CourseDay, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    order = models.CharField(max_length=8, blank=True)
+    show_handout = models.BooleanField(blank=False, default=False, help_text="Show handout to students.")
+    show_solution = models.BooleanField(blank=False, default=False, help_text="Show solution to students.")
+
+class DayProblem(models.Model):
+    day = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='dayproblem')
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    order = models.CharField(max_length=8, blank=True)
+    due = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='problem_due')
 
 class CourseAsTaughtOld:
     def __init__(self, name, instructor, days=None, post=None):

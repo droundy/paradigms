@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course, CourseLearningOutcome, CourseAsTaught
+from .models import Problem, Activity, Sequence, ProblemSet, ProblemSetItems, SequenceItems, Pages, Course, CourseLearningOutcome, CourseAsTaught, CourseDay, DayActivity, DayProblem
 
 # Register your models here.
 # admin.site.register(Problem)
@@ -31,3 +31,15 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(Course, CourseAdmin)
 
 admin.site.register(CourseAsTaught)
+
+class DayActivityInline(admin.TabularInline):
+    model = DayActivity
+    extra = 1
+class DayProblemInline(admin.TabularInline):
+    model = DayProblem
+    fk_name = 'day'
+    extra = 1
+class DayAdmin(admin.ModelAdmin):
+    inlines = (DayActivityInline, DayProblemInline,)
+
+admin.site.register(CourseDay, DayAdmin)

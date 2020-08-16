@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDayOld, Course, CourseLearningOutcome, CourseDay
+from admin_app.models import Problem, Activity, CourseAsTaught, CourseAsTaughtOld, CourseDayOld, Course, CourseLearningOutcome, CourseDay, DayActivity, DayProblem
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -46,6 +46,12 @@ def course_as_taught(request, number, year, view='overview'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
+    for d in days[:1]:
+        print('\n', d)
+        print(d.problems.all())
+        print(d.dayproblem)
+        print(d.problem_due)
+    print(dir(days[0]))
     return render(request, 'courses/taught.html', {
         'course': course,
         'taught': as_taught,
@@ -76,17 +82,29 @@ def course_as_taught_edit(request, number, year):
                 day.topic = request.POST['day-{}-topic'.format(day.pk)]
                 day.resources = request.POST['day-{}-resources'.format(day.pk)]
                 day.order = request.POST['day-{}-order'.format(day.pk)]
+                for activity in day.activities.all():
+                    if "day-{}-activity-{}-delete".format(day.pk, activity.pk) in request.POST:
+                        day.activities.remove(activity)
                 day.save()
+                new_activity = "day-{}-activity-new".format(day.pk)
+                if new_activity in request.POST and request.POST[new_activity] != '':
+                    activity = get_title(day.taught.possible_activities, Activity.objects, request.POST[new_activity])
+                    order = next_order(day.dayactivity_set)
+                    da = DayActivity(day=day, activity=activity, order=order)
+                    da.save()
+                new_problem = "day-{}-problem-new".format(day.pk)
+                if new_problem in request.POST and request.POST[new_problem] != '':
+                    problem = get_problem_title(day.taught.possible_problems, Problem.objects, request.POST[new_problem])
+                    print(dir(day))
+                    print(day.dayproblem)
+                    order = next_order(day.dayproblem)
+                    dp = DayProblem(day=day, problem=problem, order=order, due=day)
+                    dp.save()
 
         if request.POST['day-new'] != '':
             print('new day', request.POST['day-new'])
             new_day_number = '001'
-            days = list(CourseDay.objects.filter(taught=as_taught).order_by('order'))
-            if len(days) > 0:
-                try:
-                    new_day_number = '%03d' % (int(days[-1].order)+1)
-                except:
-                    new_day_number = days[-1].order + 'x'
+            order = next_order(CourseDay.objects.filter(taught=as_taught))
             newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=new_day_number)
             newday.save()
         as_taught.save()
@@ -99,6 +117,32 @@ def course_as_taught_edit(request, number, year):
         'taught': as_taught,
         'days': days,
     })
+
+def next_order(query):
+    l = list(query.order_by('order'))
+    if len(l) > 0:
+        try:
+            return '%02d' % (int(l[-1].order)+1)
+        except:
+            return l[-1].order + 'x'
+    return '01'
+
+def get_title(query, all, key):
+    o = query.filter(title=key).first()
+    if o is not None:
+        return o
+    o = all.filter(title=key).first()
+    if o is not None:
+        return 0
+    return all.filter(pk=key).get()
+def get_problem_title(query, all, key):
+    o = query.filter(problem_title=key).first()
+    if o is not None:
+        return o
+    o = all.filter(problem_title=key).first()
+    if o is not None:
+        return 0
+    return all.filter(pk=key).get()
 
 def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
