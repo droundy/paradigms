@@ -156,6 +156,10 @@ class Problem(models.Model):
           SVG files to PDF, and including the solutions. '''
         return convert_latex_for_pdf(latex_snippet.physics_macros(self.problem_latex))
 
+    @property
+    def split_topics(self):
+        return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+
     class Meta:
         ordering = ['problem_title']
         permissions = (
@@ -336,6 +340,14 @@ class Activity(models.Model):
           SVG files to PDF '''
         return convert_latex_for_pdf(self.solution_latex, imagedir='/media/activity_media/')
 
+    @property
+    def split_topics(self):
+        return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+
+    @property
+    def split_keywords(self):
+        return [t.strip() for t in self.keywords.split(',') if t.strip() != '']
+
     class Meta:
         permissions = (
             ("can_edit_activity", "Edit Activity"),
@@ -466,15 +478,33 @@ class CourseAsTaught(models.Model):
         verbose_name_plural = 'Courses as taught'
 
     @property
+    def possible_topics(self):
+        keys = set()
+        for d in self.courseday_set.all():
+            for a in d.activities.all():
+                keys.update(a.split_topics)
+            for a in d.problems.all():
+                keys.update(a.split_topics)
+            keys.update([t.strip() for t in d.topic.replace('\\', ' ').split(' ') if t.strip() != ''])
+        return keys
+
+    @property
     def possible_activities(self):
         ''' a list of activities that could be added '''
-        return Activity.objects.all()
+        query = models.Q(title='This should never happen')
+        for t in self.possible_topics:
+            query |= models.Q(topics__icontains=t)
+
+        return Activity.objects.filter(query)
+
 
     @property
     def possible_problems(self):
         ''' a list of problems that could be added '''
-        return Problem.objects.all()# exclude(problem_title__in=self.problems))
-
+        query = models.Q(problem_title='This should never happen')
+        for t in self.possible_topics:
+            query |= models.Q(topics__icontains=t)
+        return Problem.objects.filter(query)
     @property
     def has_activities(self):
         ''' are there any activities in this course? '''
