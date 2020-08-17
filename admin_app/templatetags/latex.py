@@ -1,8 +1,13 @@
 from django import template
+from django import urls
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 import bs4
 import latex_snippet
+
+from pages.views import page_render
+
+from admin_app.models import Activity, Problem, Pages, Sequence, Course
 
 register = template.Library()
 
@@ -28,13 +33,34 @@ def modify_html(html):
     for a in soup.find_all('a'):
         print('href:', a['href'])
         print('contents:', a.contents)
-        if len(a['href']) > 0 and a['href'][0] == '/' and [a['href']] == a.contents:
-            # FIXME we could now look this up on the server rather
-            # than asking the client to look up the title...
-            iframe = soup.new_tag('iframe', src=a['href']+'/title',
-                                  onload = "this.before(this.contentDocument.body.innerHTML);this.remove()")
-            a.clear()
-            a.append(iframe)
+        href = a['href']
+        if len(href) > 0 and href[0] == '/' and [href] == a.contents:
+            match = urls.resolve(href+'/')
+            if match.view_name == 'activity_detail' and 'pk' in match.kwargs:
+                for activity in Activity.objects.filter(pk=match.kwargs['pk']):
+                    new = soup.new_tag('a', href=href)
+                    new.string = latex_snippet.html_omit_solution(activity.title)
+                    a.replaceWith(new)
+            elif match.view_name == 'problem_display_html' and 'pk' in match.kwargs:
+                for problem in Problem.objects.filter(pk=match.kwargs['pk']):
+                    new = soup.new_tag('a', href=href)
+                    new.string = latex_snippet.html_omit_solution(problem.problem_title)
+                    a.replaceWith(new)
+            elif match.func == page_render and 'pagename' in match.kwargs:
+                for page in Pages.objects.filter(slug=match.kwargs['pagename']):
+                    new = soup.new_tag('a', href=href)
+                    new.string = latex_snippet.html_omit_solution(page.title)
+                    a.replaceWith(new)
+            elif match.view_name == 'sequence_detail' and 'pk' in match.kwargs:
+                for sequence in Sequence.objects.filter(pk=match.kwargs['pk']):
+                    new = soup.new_tag('a', href=href)
+                    new.string = latex_snippet.html_omit_solution(sequence.title)
+                    a.replaceWith(new)
+            elif match.view_name == 'course_view' and 'number' in match.kwargs:
+                for course in Course.objects.filter(number=match.kwargs['number']):
+                    new = soup.new_tag('a', href=href)
+                    new.string = latex_snippet.html_omit_solution(course.short_name)
+                    a.replaceWith(new)
     # Apply the bootstrap classes to semantic elements.
     for t in soup.find_all('img'):
         append_class(t, 'img-fluid')
