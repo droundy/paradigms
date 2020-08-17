@@ -4,96 +4,128 @@
 {% load latex %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block content %}
-  {% for message in messages %}
-    <div class="alert alert-success">
-        <a class="close" href="#" data-dismiss="alert">×</a>
-        {{ message }}
-    </div>
-  {% endfor %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <a class="close" href="#" data-dismiss="alert">×</a>
+  {{ message }}
+</div>
+{% endfor %}
 
-  {% if perms.admin_app.can_add_activity %}
-  <nav aria-label="breadcrumb" class="noprint">
-    <ol class="breadcrumb">
-      <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
-      <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
-      <!-- If this is the solution view page, show link to view only, disable link on solution -->
-      {% if view_name == 'activity_detail_solution' %}
-        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
-        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a> <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
-        <li class="breadcrumb-item active" aria-current="page">View with Solution <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>
-      {% elif view_name == 'activity_detail_handout' %}
-        {% if activity.title %}<li class="breadcrumb-item"><a href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
-        <li class="breadcrumb-item active" aria-current="page">Student handout <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>
-        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
+{% if perms.admin_app.can_add_activity %}
+<nav aria-label="breadcrumb" class="noprint">
+  <ol class="breadcrumb">
+    <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+    <li class="breadcrumb-item"><a href="{% url 'activity_list' %}">Activities</a></li>
+    <!-- If this is the solution view page, show link to view only, disable link on solution -->
+    {% if view_name == 'activity_detail_solution' %}
+    {% if activity.title %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a
+        href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
+    {% if activity.handout_latex %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a> <a
+        href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
+    <li class="breadcrumb-item active" aria-current="page">View with Solution <a
+        href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>
+    {% elif view_name == 'activity_detail_handout' %}
+    {% if activity.title %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail' pk=this_key %}">{{ activity.title }}</a> <a
+        href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>{% endif %}
+    <li class="breadcrumb-item active" aria-current="page">Student handout <a
+        href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>
+    {% if activity.solution_latex %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a
+        href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
+    {% else %}
+    <li class="breadcrumb-item active" aria-current="page">{{ activity.title }} <a
+        href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>
+    {% if activity.handout_latex %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a> <a
+        href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
+    {% if activity.solution_latex %}<li class="breadcrumb-item"><a
+        href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a
+        href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
+    {% endif %}
+    <li class="breadcrumb-item"><a href="{% url 'activity_edit' pk=activity.pk %}">Edit</a></li>
+    {% if this_key %}
+    <li class="breadcrumb-item"><a
+        href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}">Upload and Manage Media</a>
+    </li>{% endif %}
+  </ol>
+</nav>
+{% endif %}
+
+{% if activity.publication_status == 'Published' or perms.admin_app.can_add_activity %}
+<div class="container">
+  <div class="card">
+    <h2 class="card-header">
+      {% if view_name == 'activity_detail_handout' %}
+      Student handout: {{ activity.title }}
       {% else %}
-        <li class="breadcrumb-item active" aria-current="page">{{ activity.title }} <a href="{% url 'activity_pdf_guide' pk=this_key %}">(PDF)</a></li>
-        {% if activity.handout_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_handout' pk=this_key %}">Student handout</a > <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a></li>{% endif %}
-        {% if activity.solution_latex %}<li class="breadcrumb-item"><a href="{% url 'activity_detail_solution' pk=this_key %}">View with Solution</a> <a href="{% url 'activity_pdf_solution' pk=this_key %}">(PDF)</a></li>{% endif %}
+      Activity: {{ activity.title }}
       {% endif %}
-      <li class="breadcrumb-item"><a href="{% url 'activity_edit' pk=activity.pk %}">Edit</a></li>
-      {% if this_key %}
-      <li class="breadcrumb-item"><a href="{% url 'activity_media:progress_bar_upload_media' activity_id=this_key %}">Upload and Manage Media</a></li>{% endif %}
-    </ol>
-  </nav>
-  {% endif %}
+    </h2>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        {% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.overview_paragraph|latex_with_solution }}{% else %}{{ activity.overview_paragraph|latex_omit_solution }}{% endif %}
+      </blockquote>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }} {% endif %}
+        {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span>
+        {{ activity.time_estimate }} min. {% endif %}
+        {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span>
+        {{ activity.equipment_required }}{% endif %}
+        {% if "Draft" in activity.publication_status %} <span class="badge badge-danger" style="margin-left: 1em;"><span
+            class="oi oi-warning"></span> Draft</span>{% endif %}</li>
+      {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}
+      </li>{% endif %}
+    </ul>
 
-  {% if activity.publication_status == 'Published' or perms.admin_app.can_add_activity %}
-    <div class="container">
-      <div class="card">
-        <h2 class="card-header">
-          {% if view_name == 'activity_detail_handout' %}
-          Student handout: {{ activity.title }}
-          {% else %}
-          Activity: {{ activity.title }}
-          {% endif %}
-        </h2>
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.overview_paragraph|latex_with_solution }}{% else %}{{ activity.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }}  {% endif %}
-          {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span> {{ activity.time_estimate }} min. {% endif %}
-          {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span> {{ activity.equipment_required }}{% endif %}
-          {% if "Draft" in activity.publication_status %} <span class="badge badge-danger" style="margin-left: 1em;"><span class="oi oi-warning"></span> Draft</span>{% endif %}</li>
-          {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}</li>{% endif %}
-        </ul>
+    {% if activity.learning_outcom}
 
         {% if activity_sequences %}
-        <ul class="list-group list-group-flush">          
-          <li class="list-group-item">
-            This activity is used in the following sequences
-            {% for sequence in activity_sequences %}
-              <p>{{ forloop.counter }}. {{ sequence.pk|activitysequencepager:activity.pk }}</p>
-            {% endfor %}
-          </li>
-        </ul>
-        {% endif %}
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        This activity is used in the following sequences
+        {% for sequence in activity_sequences %}
+        <p>{{ forloop.counter }}. {{ sequence.pk|activitysequencepager:activity.pk }}</p>
+        {% endfor %}
+      </li>
+    </ul>
+    {% endif %}
 
-        <div class="card-body">{% if activity.what_students_learn %}What students learn
-          <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.what_students_learn|latex_with_solution }}{% else %}{{ activity.what_students_learn|latex_omit_solution }}{% endif %}</span>{% endif %}
-        </div>
-        {% if activity.notes %}<ul class="list-group list-group-flush"><li class="list-group-item">
-          <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.activity_notes|latex_with_solution }}{% else %}{{ activity.activity_notes|latex_omit_solution }}{% endif %}</span></li></ul>{% endif %}
-        {% if figures %}
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              Media
-              <ul>      
-              {% for figure in figures %}
-                <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
-              {% empty %}
-                <li class="list-inline-item">No Media Available</li>
-              {% endfor %}
-            </li>
-          </ul>
-        {% endif %}
-      </div>
+    <div class="card-body">{% if activity.what_students_learn %}What students learn
+      <span
+        class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.what_students_learn|latex_with_solution }}{% else %}{{ activity.what_students_learn|latex_omit_solution }}{% endif %}</span>{% endif %}
+    </div>
+    {% if activity.notes %}<ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <span
+          class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.activity_notes|latex_with_solution }}{% else %}{{ activity.activity_notes|latex_omit_solution }}{% endif %}</span>
+      </li>
+    </ul>{% endif %}
+    {% if figures %}
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        Media
+        <ul>
+          {% for figure in figures %}
+          <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded"
+                src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+          {% empty %}
+          <li class="list-inline-item">No Media Available</li>
+          {% endfor %}
+      </li>
+    </ul>
+    {% endif %}
+  </div>
 
-      {% if latex %}
-        
-        <span class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ latex|latex_with_solution }}{% else %}{{ latex|latex_omit_solution }}{% endif %}</span>{% endif %}
-        
-        <!-- {% if figures %}
+  {% if latex %}
+
+  <span
+    class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ latex|latex_with_solution }}{% else %}{{ latex|latex_omit_solution }}{% endif %}</span>{% endif %}
+
+  <!-- {% if figures %}
           <hr>      
           <h5>Media</h5>
           <ul>        
@@ -105,53 +137,62 @@
           </ul>
         {% endif %} -->
 
-        <hr>
-          
-        <dl>
-        {% if activity.author and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Editor</dt>
-        <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
+  <hr>
 
-        {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
-        <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
+  <dl>
+    {% if activity.author and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Editor</dt>
+    <dd class="col-sm-9" id="activity_author">{{ activity.author }}</dd>{% endif %}
 
-        {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
-        <dd class="col-sm-9" id="activity_keywords">{{ activity.topics|tagbuttons }}</dd>{% endif %}
+    {% if activity.author_info %}<dt class="col-sm-3">Author Information</dt>
+    <dd class="col-sm-9" id="activity_author_info">{{ activity.author_info }}</dd>{% endif %}
 
-        {% if activity.associated_paper_links and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Associated Papers</dt>
-        <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
+    {% if activity.keywords %}<dt class="col-sm-3">Keywords</dt>
+    <dd class="col-sm-9" id="activity_keywords">{{ activity.topics|tagbuttons }}</dd>{% endif %}
 
-        {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite Knowledge</dt>
-        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.prerequisite_knowledge|latex_with_solution }}{% else %}{{ activity.prerequisite_knowledge|latex_omit_solution }}{% endif %}</dd>{% endif %}
+    {% if activity.associated_paper_links and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Associated Papers
+    </dt>
+    <dd class="col-sm-9" id="activity_associated_paper_links">{{ activity.associated_paper_links }}</dd>{% endif %}
 
-        {% if activity.program_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Program Learning Outcomes</dt>
-        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.program_learning_outcomes|latex_with_solution }}{% else %}{{ activity.program_learning_outcomes|latex_omit_solution }}{% endif %}</dd>{% endif %}
+    {% if activity.prerequisite_knowledge and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Prerequisite
+      Knowledge</dt>
+    <dd class="col-sm-9">
+      {% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.prerequisite_knowledge|latex_with_solution }}{% else %}{{ activity.prerequisite_knowledge|latex_omit_solution }}{% endif %}
+    </dd>{% endif %}
 
-        {% if activity.course_learning_outcomes and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Course Learning Outcomes</dt>
-        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.course_learning_outcomes|latex_with_solution }}{% else %}{{ activity.course_learning_outcomes|latex_omit_solution }}{% endif %}</dd>{% endif %}
+    {% if activity.learning_outcomes %}<dt class="col-sm-3">Learning Outcomes</dt>
+    <dd class="col-sm-9">
+      <ul>
+        {% for lo in activity.learning_outcomes.all %}
+        <li>{{ lo }}</li>
+        {% endfor %}
+      </ul>
+    </dd>
+    {% endif %}
 
-        {% if activity.learning_progression_concepts and perms.admin_app.can_add_activity%}<dt class="col-sm-3">Learning Progression Concepts</dt>
-        <dd class="col-sm-9">{% if perms.admin_app.can_add_activity and '/activity/solution/' in request.path %}{{ activity.learning_progression_concepts|latex_with_solution }}{% else %}{{ activity.learning_progression_concepts|latex_omit_solution }}{% endif %}</dd>{% endif %}
+    {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
+    <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded"
+          src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>
+    {% endif %}
 
-        {% if activity.activity_image and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Activity Image</dt>
-        <dd class="col-sm-9"><a href="{{ activity.activity_image.url }}"><img class="img-fluid rounded" src="{{ activity.activity_image.url }}" alt="{{ activity.activity_image.name }}" width="100px"></a></dd>{% endif %}
+    {% if activity.publication_status and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Status
+    </dt>
+    <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
 
-        {% if activity.publication_status and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Status</dt>
-        <dd class="col-sm-9" id="activity_">{{ activity.publication_status }}</dd>{% endif %}
-
-        {% if activity.publication_date and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Date</dt>
-        <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
-      </dl>
-    </div>
-  {% else %} <!--Unpublished -->
-  <div class="container">
-    <div class="card">
-      <h2 class="card-header">
-        Activity: {{ activity.title }}
-      </h2>
-      <div class="card-body">
-        <blockquote class="blockquote mb-0">This Activity is not available to the public at this time.</blockquote>
-      </div>
+    {% if activity.publication_date and perms.admin_app.can_add_activity %}<dt class="col-sm-3">Publication Date</dt>
+    <dd class="col-sm-9" id="activity_">{{ activity.publication_date }}</dd>{% endif %}
+  </dl>
+</div>
+{% else %}
+<!--Unpublished -->
+<div class="container">
+  <div class="card">
+    <h2 class="card-header">
+      Activity: {{ activity.title }}
+    </h2>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">This Activity is not available to the public at this time.</blockquote>
     </div>
   </div>
-  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from admin_app.models import Activity
+from admin_app.models import Activity, CourseLearningOutcome
 
 from admin_app.choices import *
 
@@ -29,11 +29,15 @@ class ActivityForm(forms.ModelForm):
 
     prerequisite_knowledge = forms.CharField(required=False,  widget=forms.Textarea(attrs={'rows':6}), help_text='Comma-separated list of topics: adiabatic susceptibility,entropy')
 
+    learning_outcomes = forms.ModelMultipleChoiceField(required=False,
+                                                       queryset=CourseLearningOutcome.objects.all().order_by('course__number'),
+                                                       widget=forms.CheckboxSelectMultiple)
+
     activity_image = forms.ImageField(required=False)
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'learning_outcomes', 'course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -42,6 +46,8 @@ class ActivityForm(forms.ModelForm):
         self.fields['instructor_guide'].label = "Instructor's Guide"
         self.fields['author'].label = "Editor"
         self.fields['author_info'].label = "Author Information"
+        if self.instance.course:
+            self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Activity'))
 
@@ -80,7 +86,7 @@ class ActivityFormReadOnly(forms.ModelForm):
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'learning_outcomes', 'course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):

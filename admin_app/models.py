@@ -260,6 +260,7 @@ class Activity(models.Model):
     author = author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     associated_paper_links = models.TextField(blank=True, null=True)
+    learning_outcomes = models.ManyToManyField('CourseLearningOutcome', related_name='activities')
     course = models.CharField(max_length=255, blank=True, null=True)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
     media = models.ManyToManyField(
