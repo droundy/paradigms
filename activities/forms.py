@@ -33,7 +33,7 @@ class ActivityForm(forms.ModelForm):
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','program_learning_outcomes','course_learning_outcomes','learning_progression_concepts','course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -80,7 +80,7 @@ class ActivityFormReadOnly(forms.ModelForm):
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','program_learning_outcomes','course_learning_outcomes','learning_progression_concepts','course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links','course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
