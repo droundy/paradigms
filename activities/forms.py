@@ -46,7 +46,12 @@ class ActivityForm(forms.ModelForm):
         self.fields['instructor_guide'].label = "Instructor's Guide"
         self.fields['author'].label = "Editor"
         self.fields['author_info'].label = "Author Information"
-        if self.instance.course:
+        if self.instance.dayactivity_set.exists():
+            courses = set()
+            for d in self.instance.dayactivity_set.all():
+                courses.add(d.day.taught.course)
+            self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__in=courses)
+        elif self.instance.course:
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Activity'))

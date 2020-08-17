@@ -27,6 +27,11 @@ class ProblemForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        if self.instance.course:
+        if self.instance.dayproblem_set.exists():
+            courses = set()
+            for d in self.instance.dayproblem_set.all():
+                courses.add(d.day.taught.course)
+            self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__in=courses)
+        elif self.instance.course:
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
         self.helper.add_input(Submit('submit', 'Save Problem'))
