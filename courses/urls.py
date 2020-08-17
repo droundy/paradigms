@@ -16,6 +16,7 @@ urlpatterns = [
     path('<slug:number>/<slug:year>/schedule', views.course_as_taught, {'view': 'schedule'}, name='course_as_taught_schedule'),
     path('<slug:number>/<slug:year>/edit', views.course_as_taught_edit, name='course_as_taught_edit'),
     path('<slug:number>/<slug:year>/hw/<slug:problemset>', views.problem_set, {'view': 'html'}, name='taught_problemset'),
+    path('<slug:number>/<slug:year>/solution/<slug:problemset>', views.problem_set, {'view': 'solution'}, name='taught_solution'),
 ]
 
 if settings.DEBUG:
