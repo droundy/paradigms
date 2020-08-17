@@ -94,9 +94,12 @@ def course_as_taught_edit(request, number, year):
                 new = "day-{}-problem-new".format(day.pk)
                 if new in request.POST and request.POST[new] != '':
                     problem = get_problem_title(day.taught.possible_problems, Problem.objects, request.POST[new])
-                    order = next_order(day.dayproblem)
-                    dp = DayProblem(day=day, problem=problem, order=order, due=day)
-                    dp.save()
+                    if problem is not None:
+                        order = next_order(day.dayproblem)
+                        dp = DayProblem(day=day, problem=problem, order=order, due=day)
+                        dp.save()
+                    else:
+                        print('could not find problem')
 
         if request.POST['day-new'] != '':
             new_day_number = '001'
@@ -139,7 +142,10 @@ def get_problem_title(query, all, key):
     o = all.filter(problem_title=key).first()
     if o is not None:
         return 0
-    return all.filter(pk=key).get()
+    try:
+        return all.filter(pk=key).first()
+    except:
+        return None
 
 def problem_set(request, number, year, problemset, view='html'):
     course = get_object_or_404(Course, number=number)
