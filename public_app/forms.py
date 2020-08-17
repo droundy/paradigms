@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from admin_app.models import Problem
+from admin_app.models import Problem, CourseLearningOutcome
 from django_ace import AceWidget
 
 class ProblemForm(forms.ModelForm):
@@ -15,6 +15,9 @@ class ProblemForm(forms.ModelForm):
 
     course = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'placeholder':'ph123'}), help_text='Courses that might use this problem')
 
+    learning_outcomes = forms.ModelMultipleChoiceField(required=False,
+                                                       queryset=CourseLearningOutcome.objects.all().order_by('course__number'),
+                                                       widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Problem
         fields = ('problem_title','publication','problem_latex','created_date','published_date','author','id','attribution','old_name','topics','course')
@@ -24,4 +27,6 @@ class ProblemForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+        if self.instance.course:
+            self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
         self.helper.add_input(Submit('submit', 'Save Problem'))

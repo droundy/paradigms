@@ -128,6 +128,7 @@ class Problem(models.Model):
     figures = models.ManyToManyField(
         Figure, through='FigureAssociations', related_name='problems')
     course = models.CharField(max_length=255, blank=True, null=True)
+    learning_outcomes = models.ManyToManyField('CourseLearningOutcome', related_name='problems')
     publication = models.BooleanField(
         blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
 
