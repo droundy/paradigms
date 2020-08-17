@@ -70,6 +70,7 @@ def course_as_taught_edit(request, number, year):
                         day.dayactivity_set.remove(activity)
                     da.show_handout = "day-{}-activity-{}-handout".format(day.pk, da.pk) in request.POST
                     da.show_solution = "day-{}-activity-{}-solution".format(day.pk, da.pk) in request.POST
+                    da.order = request.POST["day-{}-activity-{}-order".format(day.pk, da.pk)]
                     da.save()
                     
                 for dp in day.dayproblem.all():
@@ -78,6 +79,7 @@ def course_as_taught_edit(request, number, year):
                 day.save()
                 for dp in day.dayproblem.all():
                     dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
+                    dp.order = request.POST["day-{}-problem-{}-order".format(day.pk, dp.pk)]
                     duename = "day-{}-problem-{}-due".format(day.pk, dp.pk)
                     if duename in request.POST:
                         due = CourseDay.objects.filter(problemsetname=request.POST[duename]).first()

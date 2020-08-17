@@ -563,12 +563,18 @@ class DayActivity(models.Model):
     show_handout = models.BooleanField(blank=False, default=False, help_text="Show handout to students.")
     show_solution = models.BooleanField(blank=False, default=False, help_text="Show solution to students.")
 
+    class Meta:
+        ordering = ['day__order', 'order']
+
 class DayProblem(models.Model):
     day = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='dayproblem')
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     order = models.CharField(max_length=8, blank=True)
     instructions = models.CharField(max_length=255, blank=True, default='')
     due = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='problem_due')
+
+    class Meta:
+        ordering = ['due__order', 'order']
 
 # class Pages(models.Model):
 #     title = models.TextField(blank=True, null=True)
