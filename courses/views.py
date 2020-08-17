@@ -34,12 +34,6 @@ def course_as_taught(request, number, year, view='overview'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
-    for d in days[:1]:
-        print('\n', d)
-        print(d.problems.all())
-        print(d.dayproblem)
-        print(d.problem_due)
-    print(dir(days[0]))
     return render(request, 'courses/taught.html', {
         'course': course,
         'taught': as_taught,
@@ -171,8 +165,6 @@ def problem_set(request, number, year, problemset, view='html'):
 def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
-    print(dir(course))
-    print(course.courseastaught_set.all())
     as_taught = CourseAsTaught.objects.filter(course=course)
     print(list(as_taught))
     return render(request, 'courses/view.html', {
