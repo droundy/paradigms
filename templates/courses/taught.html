@@ -59,12 +59,15 @@
                     <ul class="checkboxes">
                         {% for lo in learning_outcomes %}
                         <li>
-                            {% if lo.my_activities %}
+                            {% if lo.my_activities or lo.my_problems %}
                             <details>
                                 <summary>{{ lo.number}}) {{ lo.outcome }}</summary>
                                 <ul>
                                     {% for activity in lo.my_activities %}
                                     <li>{{ activity }}</li>
+                                    {% endfor %}
+                                    {% for problem in lo.my_problems %}
+                                    <li>{{ problem }}</li>
                                     {% endfor %}
                                 </ul>
                             </details>

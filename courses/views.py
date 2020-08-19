@@ -37,6 +37,7 @@ def course_as_taught(request, number, year, view='overview'):
     learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
     for l in learning_outcomes:
         l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
+        l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
     return render(request, 'courses/taught.html', {
         'course': course,
         'taught': as_taught,
