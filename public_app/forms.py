@@ -20,7 +20,7 @@ class ProblemForm(forms.ModelForm):
                                                        widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Problem
-        fields = ('problem_title','publication','problem_latex','created_date','published_date','author','id','attribution','old_name','topics','course')
+        fields = ('problem_title','publication','problem_latex','created_date','published_date','author','id', 'learning_outcomes', 'attribution','old_name','topics','course')
         exclude = ()
 
     def __init__(self, *args, **kwargs):

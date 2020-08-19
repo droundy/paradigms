@@ -37,6 +37,7 @@ def problem_new(request):
             # problem.author = request.user
             problem.published_date = timezone.now()
             problem.save()
+            form.save_m2m()
             return redirect('problem_edit_preview', pk=problem.pk)
         else:
             messages.error(request, form.errors)
@@ -56,6 +57,7 @@ def problem_edit(request, pk):
             # problem.author = request.user
             problem.published_date = timezone.now()
             problem.save()
+            form.save_m2m()
             return redirect('problem_display_html', pk=problem.pk)
     else:
         form = ProblemForm(instance=problem)
@@ -73,6 +75,7 @@ def problem_edit_preview(request, pk):
             # problem.author = request.user
             problem.published_date = timezone.now()
             problem.save()
+            form.save_m2m()
             return redirect('problem_edit_preview', pk=problem.pk)
         else:
             messages.error(request, form.errors)

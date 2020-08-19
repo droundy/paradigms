@@ -27,6 +27,7 @@ def activity_new(request):
             # problem.author = request.user
             activity.publication_date = timezone.now()
             activity.save()
+            form.save_m2m()
             return redirect('activity_detail', pk=activity.pk)
         else:
             messages.error(request, 'Activity Saved')

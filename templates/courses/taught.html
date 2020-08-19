@@ -64,10 +64,10 @@
                                 <summary>{{ lo.number}}) {{ lo.outcome }}</summary>
                                 <ul>
                                     {% for activity in lo.my_activities %}
-                                    <li>{{ activity }}</li>
+                                    <li>Taught: {{ activity }}</li>
                                     {% endfor %}
                                     {% for problem in lo.my_problems %}
-                                    <li>{{ problem }}</li>
+                                    <li>Assessed: {{ problem }}</li>
                                     {% endfor %}
                                 </ul>
                             </details>
