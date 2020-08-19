@@ -53,21 +53,33 @@
                 <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
                 <dt>Course description:</dt>
                 <dd>{{ course.description }}</dd>
+                {% if view == 'syllabus' %}
+                <dt>Learning outcomes:</dt>
+                <dd>
+                    <ul class="checkboxes">
+                        {% for lo in learning_outcomes %}
+                        <li>
+                            {% if lo.my_activities %}
+                            <details>
+                                <summary>{{ lo.number}}) {{ lo.outcome }}</summary>
+                                <ul>
+                                    {% for activity in lo.my_activities %}
+                                    <li>{{ activity }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </details>
+                            {% else %}
+                            {{ lo.number}}) {{ lo.outcome }}
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </dd>
                 <dt>Course content:</dt>
                 <dd>
                     <ul>
                         <li>Decide what we want here</li>
                         <li>Add actual content</li>
-                    </ul>
-                </dd>
-
-                {% if view == 'syllabus' %}
-                <dt>Student learning outcomes:</dt>
-                <dd>
-                    <ul>
-                        {% for lo in course.courselearningoutcome_set.all %}
-                        <li>{{ lo.number}}) {{ lo.outcome }} </li>
-                        {% endfor %}
                     </ul>
                 </dd>
                 <dt>Evaluation of student performance:</dt>

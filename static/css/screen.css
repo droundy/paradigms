@@ -172,6 +172,7 @@ dd .checkbox {
 
 ul.checkboxes {
   list-style: none;
+  padding-left: 0;
 }
 
 .homework ul>li, .homework blockquote p {

@@ -34,11 +34,15 @@ def course_as_taught(request, number, year, view='overview'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
+    learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
+    for l in learning_outcomes:
+        l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
     return render(request, 'courses/taught.html', {
         'course': course,
         'taught': as_taught,
         'view': view,
         'days': days,
+        'learning_outcomes': learning_outcomes,
     })
 
 def course_as_taught_edit(request, number, year):
