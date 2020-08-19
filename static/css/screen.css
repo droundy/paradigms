@@ -170,6 +170,10 @@ dd .checkbox {
   list-style: outside;
 }
 
+ul.checkboxes {
+  list-style: none;
+}
+
 .homework ul>li, .homework blockquote p {
   text-indent: 0em;
   margin-left: 0em;

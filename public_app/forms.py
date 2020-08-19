@@ -34,4 +34,5 @@ class ProblemForm(forms.ModelForm):
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__in=courses)
         elif self.instance.course:
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
+        self.fields['learning_outcomes'].widget.attrs['class'] = 'checkboxes'
         self.helper.add_input(Submit('submit', 'Save Problem'))
