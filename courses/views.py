@@ -117,9 +117,8 @@ def course_as_taught_edit(request, number, year):
                         print('could not find problem')
 
         if request.POST['day-new'] != '':
-            new_day_number = '001'
             order = next_order(CourseDay.objects.filter(taught=as_taught))
-            newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=new_day_number)
+            newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=order)
             newday.save()
         as_taught.save()
         if as_taught.slug != year:
