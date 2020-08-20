@@ -151,8 +151,8 @@
                     <option>{{ aa.problem_title | latex_with_solution }}</option>
                     {% endfor %}
                 </select> -->
-                <input autocomplete="off" list="problems-possible" style="max-width: 100%; width: 100%;" name="day-{{day.pk}}-problem-new"
-                    placeholder="New problem">
+                <input autocomplete="off" list="problems-possible" style="max-width: 100%; width: 100%;"
+                    name="day-{{day.pk}}-problem-new" placeholder="New problem">
             </p>
             <p>
                 <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
