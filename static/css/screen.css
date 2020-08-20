@@ -142,7 +142,7 @@ div.center {
 
 dl {
   display: grid;
-  grid-template-columns: fit-content(40%) auto;
+  grid-template-columns: fit-content(100%)  fit-content(100%);
 }
 
 dt {
