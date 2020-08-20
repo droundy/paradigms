@@ -494,7 +494,7 @@ class CourseAsTaught(models.Model):
         for t in self.possible_topics:
             query |= models.Q(topics__icontains=t)
 
-        return Activity.objects.filter(query)
+        return Activity.objects.filter(query).exclude(day__taught=self)
 
 
     @property
@@ -503,7 +503,7 @@ class CourseAsTaught(models.Model):
         query = models.Q(problem_title='This should never happen')
         for t in self.possible_topics:
             query |= models.Q(topics__icontains=t)
-        return Problem.objects.filter(query)
+        return Problem.objects.filter(query).exclude(day__taught=self)
     @property
     def has_activities(self):
         ''' are there any activities in this course? '''
