@@ -81,6 +81,15 @@ def course_as_taught_edit(request, number, year):
                 for dp in day.dayproblem.all():
                     if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
                         dp.delete()
+                for lo in CourseLearningOutcome.objects.filter(course=course):
+                    new = "lo-{}-new-activity".format(lo.pk)
+                    if new in request.POST and request.POST[new] != '':
+                        activity = Activity.objects.get(title=request.POST[new])
+                        activity.learning_outcomes.add(lo)
+                    new = "lo-{}-new-problem".format(lo.pk)
+                    if new in request.POST and request.POST[new] != '':
+                        problem = Problem.objects.get(problem_title=request.POST[new])
+                        problem.learning_outcomes.add(lo)
                 day.save()
                 for dp in day.dayproblem.all():
                     dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
@@ -117,10 +126,17 @@ def course_as_taught_edit(request, number, year):
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
+    learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
+    for l in learning_outcomes:
+        l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
+        l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
+        l.possible_activities = Activity.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
+        l.possible_problems = Problem.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
     return render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
         'days': days,
+        'learning_outcomes': learning_outcomes,
     })
 
 def next_order(query):

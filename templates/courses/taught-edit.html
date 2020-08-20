@@ -47,14 +47,53 @@
         <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
         <dt>Course description:</dt>
         <dd>{{ course.description }}</dd>
-        <dt>Course content:</dt>
-        <dd>
-            <ul>
-                <li>Decide what we want here</li>
-                <li>Add actual content</li>
-            </ul>
-        </dd>
     </dl>
+    <details>
+        <summary><strong>Learning outcomes:</strong></summary>
+        <ul class="checkboxes">
+            {% for lo in learning_outcomes %}
+            <li>
+                <details>
+                    <summary>{{ lo.number}}) {{ lo.outcome }}</summary>
+                    <dl>
+                        <dt>Taught:</dt>
+                        <dd>
+                            <ul>
+                                {% for activity in lo.my_activities %}
+                                <li>{{ activity }}</li>
+                                {% endfor %}
+                                <li>
+                                    <select name="lo-{{lo.pk}}-new-activity">
+                                        <option value="">-</option>
+                                        {% for o in lo.possible_activities %}
+                                        <option value="{{o.title}}">{{ o.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                            </ul>
+                        </dd>
+                        <dt>Assessed:</dt>
+                        <dd>
+                            <ul>
+                                {% for problem in lo.my_problems %}
+                                <li>{{ problem }}</li>
+                                {% endfor %}
+                                <li>
+                                    <select name="lo-{{lo.pk}}-new-problem">
+                                        <option value="">-</option>
+                                        {% for o in lo.possible_problems %}
+                                        <option value="{{o.problem_title}}">{{o.problem_title}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </details>
+            </li>
+            {% endfor %}
+        </ul>
+    </details>
     <datalist id="activities-possible" class="tex2jax_ignore">
         {% for aa in taught.possible_activities %}
         <option value="{{ aa.title }}"></option>
