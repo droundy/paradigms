@@ -55,14 +55,14 @@
             </ul>
         </dd>
     </dl>
-    <datalist id="activities-possible">
+    <datalist id="activities-possible" class="tex2jax_ignore">
         {% for aa in taught.possible_activities %}
-        <option>{{ aa.title }}</option>
+        <option value="{{ aa.title }}"></option>
         {% endfor %}
     </datalist>
-    <datalist id="problems-possible">
+    <datalist id="problems-possible" class="tex2jax_ignore">
         {% for aa in taught.possible_problems %}
-        <option>{{ aa.problem_title }}</option>
+        <option value="{{ aa.problem_title }}"></option>
         {% endfor %}
     </datalist>
     <div class="schedule">
@@ -112,7 +112,7 @@
             {% endif %}
             {% endfor %}
             <dt>
-                <input list="activities-possible" style="max-width: 100%; width: 100%;"
+                <input autocomplete="off" list="activities-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-activity-new" placeholder="New activity">
             </dt>
         </dl>
@@ -149,7 +149,7 @@
                     <option>{{ aa.problem_title | latex_with_solution }}</option>
                     {% endfor %}
                 </select> -->
-                <input list="problems-possible" style="max-width: 100%; width: 100%;" name="day-{{day.pk}}-problem-new"
+                <input autocomplete="off" list="problems-possible" style="max-width: 100%; width: 100%;" name="day-{{day.pk}}-problem-new"
                     placeholder="New problem">
             </p>
             <p>
