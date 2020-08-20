@@ -75,7 +75,9 @@
         <div class="thisday">
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
             <input type="text" style="max-width: 50%;" name="day-{{day.pk}}-order" value="{{day.order}}">
-            <button class="oi oi-trash" alt="Remove" type="submit" name="day-{{day.pk}}-delete"></button>
+            <button class="oi oi-trash" alt="Remove" type="submit"
+                onclick="return confirm('Are you sure you want to delete day {{day.day}}?')"
+                name="day-{{day.pk}}-delete"></button>
         </div>
 
         <div class="topic">
