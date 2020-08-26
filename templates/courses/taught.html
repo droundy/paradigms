@@ -152,8 +152,9 @@
                 <h5>
                     <a href="{% url 'taught_problemset' taught.course.number taught.slug day.problemset_slug %}">{{day.problemsetname | latex_omit_solution }}
                         due</a>
-                    <a
-                        href="{% url 'taught_solution' taught.course.number taught.slug day.problemset_slug %}">(Solution)</a>
+                    <a href="{% url 'taught_problemset_pdf' taught.course.number taught.slug day.problemset_slug %}">(PDF)</a>
+                    (<a href="{% url 'taught_solution' taught.course.number taught.slug day.problemset_slug %}">Solution</a>
+                    <a href="{% url 'taught_solution_pdf' taught.course.number taught.slug day.problemset_slug %}">[PDF]</a>)
                 </h5>
                 <ol>
                     {% for p in day.problemset_data.all %}

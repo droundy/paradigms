@@ -18,6 +18,8 @@ import subprocess
 import os
 import unicodedata
 import logging
+import django_tex, latex_snippet
+from django_tex.shortcuts import render_to_pdf
 user = get_user_model()
 
 # This retrieves a Python logging instance (or creates it)
@@ -183,12 +185,18 @@ def problem_set(request, number, year, problemset, view='html'):
             if 'hw'+str(which) == problemset:
                 break
             which += 1
-    return render(request, 'courses/problemset.html', {
+    context = {
         'course': course,
         'taught': as_taught,
         'view': view,
         'day': day,
-    })
+    }
+    if view == 'pdf':
+        return render_to_pdf(request, 'courses/problemset.tex', context, filename=d.problemset_slug+'.pdf')
+    elif view == 'solution-pdf':
+        return render_to_pdf(request, 'courses/problemset.tex', context, filename=d.problemset_slug+'-solution.pdf')
+    else:
+        return render(request, 'courses/problemset.html', context)
 
 def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
