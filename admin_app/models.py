@@ -159,7 +159,10 @@ class Problem(models.Model):
 
     @property
     def split_topics(self):
-        return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+        if self.topics is not None:
+            return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+        else:
+            return []
 
     class Meta:
         ordering = ['problem_title']
@@ -341,11 +344,17 @@ class Activity(models.Model):
 
     @property
     def split_topics(self):
-        return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+        if self.topics is not None:
+            return [t.strip() for t in self.topics.split(',') if t.strip() != '']
+        else:
+            return []
 
     @property
     def split_keywords(self):
-        return [t.strip() for t in self.keywords.split(',') if t.strip() != '']
+        if self.keywords is not None:
+            return [t.strip() for t in self.keywords.split(',') if t.strip() != '']
+        else:
+            return []
 
     class Meta:
         permissions = (
