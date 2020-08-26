@@ -198,6 +198,7 @@ h1, h2, h3 {
 }
 .fadeout:before {
   content:"";
+  pointer-events: none;
   width:100%;
   height:100%;
   position:absolute;
