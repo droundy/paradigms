@@ -96,7 +96,7 @@ def course_as_taught_edit(request, number, year):
                     dp.order = request.POST["day-{}-problem-{}-order".format(day.pk, dp.pk)]
                     duename = "day-{}-problem-{}-due".format(day.pk, dp.pk)
                     if duename in request.POST:
-                        due = CourseDay.objects.filter(problemsetname=request.POST[duename]).first()
+                        due = CourseDay.objects.filter(taught=as_taught, problemsetname=request.POST[duename]).first()
                         if due is not None:
                             dp.due = due
                     dp.save()
