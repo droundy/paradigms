@@ -6,6 +6,6 @@
                 {% if problem.publication == "0" or not problem.publication %}<span class="badge badge-danger"><span
                         class="oi oi-warning"></span> Draft</span>{% endif %} </a></h5>
         {{ problem.topics|problemtopicbuttons }}
-        {{ problem.problem_latex | latex_omit_solution | truncatechars:1000 }}
+        {{ problem.problem_latex | latex_omit_solution }}
     </div>
 </div>
