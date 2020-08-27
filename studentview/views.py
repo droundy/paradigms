@@ -56,7 +56,31 @@ def problem_set(request, number, year, problemset, view='html'):
     elif view == 'solution-pdf':
         return render_to_pdf(request, 'courses/problemset.tex', context, filename=d.problemset_slug+'-solution.pdf')
     else:
-        return render(request, 'courses/problemset.html', context)
+        return render(request, 'studentview/problemset.html', context)
+
+def handout(request, pk, view='html'):
+    da = get_object_or_404(DayActivity, pk=pk)
+    day = da.day
+    as_taught = day.taught
+    course = as_taught.course
+    context = {
+        'course': course,
+        'taught': as_taught,
+        'view': view,
+        'day': day,
+        'activity': da.activity,
+        'da': da,
+        'view_name': 'Handout'
+    }
+    if view == 'pdf':
+        context['latex'] = da.activity.pdf_handout_latex
+        return render_to_pdf(request, 'activities/activity.tex', context, filename='handout.pdf')
+    elif view == 'solution-pdf':
+        context['latex'] = da.activity.solution_latex
+        context['view_name'] = 'Solution'
+        return render_to_pdf(request, 'activities/activity.tex', context, filename='solution.pdf')
+    else:
+        return render(request, 'studentview/handout.html', context)
 
 def schedule(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data

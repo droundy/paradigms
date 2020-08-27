@@ -116,12 +116,15 @@
         {% if day.activities.exists %}
         <ul class="activities">
             {% for da in day.dayactivity_set.all %}
-            <li><a href="{% url 'activity_detail' da.activity.pk %}">{{da.activity}}</a>
+            <li>
                 {% if da.show_handout and da.activity.has_handout %}
-                <a href="{% url 'activity_detail_handout' da.activity.pk %}">(handout)</a>
+                <a href="{% url 'sv_handout' da.pk %}">{{da.activity}}</a>
+                <a href="{% url 'sv_handout_pdf' da.pk %}">(PDF)</a>
+                {% else %}
+                {{ da.activity }}
                 {% endif %}
                 {% if da.show_solution and da.activity.has_solution %}
-                <a href="{% url 'activity_detail_solution' da.activity.pk %}">(solution)</a>
+                <a href="{% url 'sv_activity_solution' da.pk %}">(solution)</a>
                 {% endif %}
             </li>
             {% endfor %}

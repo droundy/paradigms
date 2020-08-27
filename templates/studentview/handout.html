@@ -22,15 +22,12 @@
 <div class="container">
     <div class="card overflow-auto" style="margin-bottom: 10px;">
         <h2 class="card-header">
-            {{ course.short_name }} {{ day.problemsetname }} due {{ day.day }}, {{taught.year}}
+            {{ activity.title }} student handout
         </h2>
+        <h3>{{ day.day }}, {{taught.year}}</h3>
         <div class="card-body">
+            {{ activity.handout_latex | latex_omit_solution }}
         </div>
-        <ol>
-            {% for p in day.problemset_data %}
-            <li class="homework">{% if view == 'solution' %}{{ p.problem.problem_latex | latex_with_solution }}{% else %}{{ p.problem.problem_latex | latex_omit_solution }}{% endif %}</li>
-            {% endfor %}
-        </ol>
     </div>
 </div>
 {% endblock %}

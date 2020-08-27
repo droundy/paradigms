@@ -13,6 +13,10 @@ urlpatterns = [
     path('<slug:number>/<slug:year>/<slug:problemset>-solution.pdf', views.problem_set, {'view': 'solution-pdf'}, name='sv_solution_pdf'),
     path('<slug:number>/<slug:year>/<slug:problemset>.html', views.problem_set, {'view': 'html'}, name='sv_problemset'),
     path('<slug:number>/<slug:year>/<slug:problemset>.pdf', views.problem_set, {'view': 'pdf'}, name='sv_problemset_pdf'),
+
+    path('handout/<int:pk>', views.handout, {'view': 'html'}, name='sv_handout'),
+    path('handout/<int:pk>.pdf', views.handout, {'view': 'pdf'}, name='sv_handout_pdf'),
+    path('solution/<int:pk>', views.handout, {'view': 'solution'}, name='sv_activity_solution'),
 ]
 
 if settings.DEBUG:
