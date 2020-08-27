@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'activity_media',
     'sequences',
     'courses',
+    'studentview',
     'problem_sets',
     'output',
 

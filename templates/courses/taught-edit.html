@@ -197,6 +197,10 @@
                 <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
                     placeholder="Name of problem set due">
                 {% if day.problemset.exists %}
+                <input type="checkbox" id="day-{{day.pk}}-solution"
+                    name="day-{{day.pk}}-solution" {% if day.show_solution %}
+                    checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution"> Show
+                    solution</label>
             <ol>
                 {% for p in day.problemset_data.all %}
                 <li><strong>{{ p.problem }}</strong> {{ p.instructions }}</li>

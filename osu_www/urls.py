@@ -34,6 +34,7 @@ urlpatterns = [
 
     # Load urls for various apps
     path('courses/', include('courses.urls')),
+    path('studentview/', include('studentview.urls')),
     path('sequences/', include('sequences.urls')),
     url(r'^figures/', include(('figures.urls', 'figures'), namespace='figures')),
     path('activities/', include('activities.urls')),
