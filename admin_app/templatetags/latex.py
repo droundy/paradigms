@@ -31,11 +31,14 @@ def append_class(tag, c):
 def modify_html(html):
     soup = bs4.BeautifulSoup(html, 'html.parser')
     for a in soup.find_all('a'):
-        print('href:', a['href'])
-        print('contents:', a.contents)
+        # print('href:', a['href'])
+        # print('contents:', a.contents)
         href = a['href']
         if len(href) > 0 and href[0] == '/' and [href] == a.contents:
-            match = urls.resolve(href+'/')
+            try:
+                match = urls.resolve(href)
+            except:
+                match = urls.resolve(href+'/')
             if match.view_name == 'activity_detail' and 'pk' in match.kwargs:
                 for activity in Activity.objects.filter(pk=match.kwargs['pk']):
                     new = soup.new_tag('a', href=href)
