@@ -2,7 +2,7 @@ from django import template
 from django import urls
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-import bs4
+import bs4, os
 import latex_snippet
 
 from pages.views import page_render
@@ -10,6 +10,8 @@ from pages.views import page_render
 from admin_app.models import Activity, Problem, Pages, Sequence, Course
 
 register = template.Library()
+
+os.environ['RUST_BACKTRACE'] = '1'
 
 @register.filter()
 def latex_with_solution(value):
