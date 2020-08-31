@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.home, name='sv_home'),
     path('<slug:number>/<slug:year>/schedule', views.schedule, name='sv_schedule'),
     path('<slug:number>/<slug:year>/', views.schedule, {'view': 'schedule'}, name='sv_schedule'),
+    path('<slug:number>/', views.schedule, {'view': 'schedule', 'year': 'latest'}, name='sv_latest'),
     path('<slug:number>/<slug:year>/syllabus', views.schedule, {'view': 'syllabus'}, name='sv_syllabus'),
     path('<slug:number>/<slug:year>/<slug:problemset>-solution.html', views.problem_set, {'view': 'solution'}, name='sv_solution'),
     path('<slug:number>/<slug:year>/<slug:problemset>-solution.pdf', views.problem_set, {'view': 'solution-pdf'}, name='sv_solution_pdf'),

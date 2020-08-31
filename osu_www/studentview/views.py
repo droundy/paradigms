@@ -85,7 +85,10 @@ def handout(request, pk, view='html'):
 def schedule(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
-    as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
+    if year == 'latest':
+        as_taught = CourseAsTaught.objects.filter(course=course).order_by('-pk').first()
+    else:
+        as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
     learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
     for l in learning_outcomes:
