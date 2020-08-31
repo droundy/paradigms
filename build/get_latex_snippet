@@ -44,11 +44,8 @@ rm -rf python-module
 
 python3 -m wheel unpack --dest python-module target/wheels/latex_snippet-*.whl
 
-pwd
-ls -lh ..
-ls -lh ../..
-rm -rf ../../latex_snippet/*
-cp -av python-module/*/latex_snippet/* ../../latex_snippet/
+rm -rf ../../latex_snippet
+cp -av python-module/*/latex_snippet ../../
 
 # We create the __pycache__ directory defensively, so root won't create such
 # a directory that we are then unable to delete!
