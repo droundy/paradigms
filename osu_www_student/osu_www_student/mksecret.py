@@ -1,0 +1,1 @@
+../../osu_www/osu_www/mksecret.py

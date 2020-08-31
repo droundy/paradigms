@@ -15,3 +15,4 @@ latex_snippet_bg.wasm
 osu_www/whoosh_index/
 osu_www/osu_www/whoosh_index/
 /my.cnf
+secret_key.py

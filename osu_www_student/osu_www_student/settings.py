@@ -45,7 +45,8 @@ MYSQL_CONF = os.path.join(BASE_DIR, 'my.cnf')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*%bxc)s2u(_e9%6)@-i#jqs4-%48qj93wq&)lh=4fgx8o-oggi'
+from osu_www_student.mksecret import get_secret_key
+SECRET_KEY = get_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
