@@ -37,8 +37,8 @@ rm -rf target/wheels
 
 echo ensure that we have maturin before we use it...
 cargo install maturin
-# maturin build -b cffi --release --strip
-maturin build -b cffi
+maturin build -b cffi --release --strip
+# maturin build -b cffi
 
 rm -rf python-module
 
