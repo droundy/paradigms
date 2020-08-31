@@ -26,4 +26,5 @@ install:
 #   - mysql -e 'create database test;' -u root
 # command to run tests
 script:
-  - python manage.py test
+  - cd osu_www && python manage.py test
+  - cd ../osu_www_student && python manage.py test
