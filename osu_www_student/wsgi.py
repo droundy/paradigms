@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'osu_www.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'osu_www_student.settings')
 os.environ['MYSQL_PWD'] = 'hai8Shei4koo#noo:pha4ookiw1Eip'
 
 application = get_wsgi_application()
