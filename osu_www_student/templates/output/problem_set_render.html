@@ -1,0 +1,18 @@
+{% extends 'output/problem_set_render_base.html' %}
+{% load latex %}
+{% block title %}{{ page_title }}{% endblock %}
+  {% block content %}
+    <h1>{{ problem_set.title }}</h1>
+    {% if problem_set.due_date %}Due Date: {{ problem_set.due_date }}{% endif %}
+
+    {{ problem_set.instructions|latex_omit_solution }}
+
+    {% for item in problem_set.set_problems.all %}
+
+      <h2>{{ forloop.counter }}. {{ item.problem.problem_title }}</h2>
+      
+      <div class="homework">{% if solution == 'yes' %}{{ item.problem.problem_latex|latex_with_solution }}{% else %}{{ item.problem.problem_latex|latex_omit_solution }}{% endif %}</div>
+
+    {% endfor %}
+
+  {% endblock %}

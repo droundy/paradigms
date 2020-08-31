@@ -1,0 +1,18 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load socialaccount %}
+{% load page_extras %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ page_title }}</h1>
+    </div>
+</div>
+<div class="container">
+    {% if perms.admin_app.can_edit_page %}
+        {{ page_criteria|pagelist:1 }}
+    {% else %}
+        {{ page_criteria|pagelist:0 }}
+    {% endif %}
+</div>
+{% endblock %}

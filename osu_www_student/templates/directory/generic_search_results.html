@@ -1,0 +1,94 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block content %}
+{% load problem_extras %}
+{% load activity_extras %}
+{% load latex %}
+
+<div class="container">
+  <div class="card" style="margin-top: 10px;">
+    <div class="card-header">
+      <h5 class="card-title">Search Results for "{{ query }}"</h5>
+
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item"><a href="#a" data-toggle="tab" class="nav-link active">Activities {% if activity_list.count > 0 %}<span class="badge badge-success">{% else %}<span class="badge badge-secondary">{% endif %}{{ activity_list.count }}</span></a></li>
+        <li><a href="#activities" data-toggle="tab" class="nav-link">Sequences {% if sequence_list.count > 0 %}<span class="badge badge-success">{% else %}<span class="badge badge-secondary">{% endif %}{{ sequence_list.count }}</span></a></li>
+        <li><a href="#c" data-toggle="tab" class="nav-link">Homework Problems {% if problem_list.count > 0 %}<span class="badge badge-success">{% else %}<span class="badge badge-secondary">{% endif %}{{ problem_list.count }}</span></a></li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <div class="tab-content">
+        <div class="tab-pane active" id="a">
+          {% for activity in activity_list %}
+          <div class="card overflow-auto" style="margin-bottom: 10px;">
+            <div class="card-body">
+              <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }} {% if activity.publication_status == "Draft" or activity.publication_status == "Post-Publication Draft" or not activity.publication_status %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
+
+              <p class="card-text" style="margin-bottom: 5px;"> {{ activity.type_of_beast|trimtob }} Activity <span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min.</p>
+              {% if activity.topics %}<p class="card-text" style="margin-bottom: 5px;"><span style="margin-right: 1em;">{{ activity.topics|tagbuttons }}</span></p>{% endif %}
+              
+              {% if activity.overview_paragraph %}
+                {% if forloop.counter == 1 %}
+                  <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                {% else %}
+                  <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div> <!-- End Activity Card -->
+          {% empty %}
+            <p class="card-text" style="margin-bottom: 5px;">No Activities Found</p>
+          {% endfor %}
+        </div><!-- END ACTIVITY SEARCH RESULTS-->
+        <div class="tab-pane" id="activities">
+          {% for sequence in sequence_list %}
+            <div class="card overflow-auto" style="margin-bottom: 10px;">
+              <div class="card-body">
+                <h5><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">{{ sequence.title }}</a></h5>
+                {% if sequence.overview_paragraph %}
+                  {% if forloop.counter == 1 %}
+                    <p>{% if perms.admin_app.can_add_activity %}{{ sequence.overview_paragraph| latex_with_solution }}{% else %}{{ sequence.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                  {% else %}
+                    <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ sequence.overview_paragraph| latex_with_solution }}{% else %}{{ sequence.overview_paragraph| latex_omit_solution }}{% endif %}</p>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+            {% empty %}
+              <p class="card-text" style="margin-bottom: 5px;">No Sequences Found</p>
+            {% endfor %}
+        </div><!-- END SEQUENCE SEARCH RESULTS-->
+        <div class="tab-pane" id="c">
+          <div class="row">
+
+            {% for problem in problem_list %}
+              <div class="col-sm-4">
+                <div class="card" style="margin-bottom: 10px">            
+                  <div class="card-body">
+                    <h5><a href="{% url 'problem_display_html' pk=problem.pk %}">{{ problem.problem_title }}</a> {% if problem.publication == "0" or not problem.publication %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</h5>
+                    {{ problem.topics|problemtopicbuttons }}
+                  </div>
+                </div>
+              </div>
+              {% if forloop.last %}
+              </div>
+              {% else %}
+                {% if forloop.counter|divisibleby:"3" %}
+                  </div><div class="row">
+                {% endif %}
+              {% endif %}
+            {% empty %}
+              <p class="card-text" style="margin-left: 1em; margin-bottom: 5px;">No Homework Problems Found</p>
+            {% endfor %}
+          
+          </div><!-- end row -->
+        </div><!-- END HOMEWORK SEARCH RESULTS-->
+      </div><!-- END TAB CONTENT-->
+    </div><!-- END CARD BODY-->
+  </div><!-- END CARD-->
+</div><!-- END CONTAINER -->
+
+
+
+
+  
+{% endblock %}

@@ -1,0 +1,368 @@
+<!doctype html>
+{% load static %}
+{% load socialaccount %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Literata&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'public_app/public_app.css' %}">
+
+    <style type="text/css" media="screen">
+      .preview h5 {
+        font-size: 1em;
+        font-color: #000;
+      }
+      aside {
+          float: right;
+          width: 50%;
+      }
+      .ace_content {
+        color: #5C5C5C;
+      }
+      /* The preview window */
+      .preview {
+          background-color: #FFF;
+          /* margin-left: 50%;
+          width: 49%; */
+          position: absolute;
+          color: #5C5C5C;
+          border: 1px solid #ced4da;
+          padding: 0.5em;
+      }
+      div.center {
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+      }
+      /* .solution {
+          margin-bottom: 0.5em;
+          color: #000;
+          border: 1px solid #ced4da;
+          padding: 1em;
+
+      } */
+      .solution {
+        margin: 0 auto;
+        padding: 1em;
+        border-left: 5px solid #999;
+      }
+      .solution:before {
+        display: none;
+      }
+      .solution:not(:first-of-type) {
+        margin-top: .5em;
+      }
+      .solution p {
+        color: #555;
+        font-size: 12pt;
+        line-height: 1.4;
+        font-family: 'PT Serif', Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif;
+      }
+      .solution footer {
+        margin-top: .5em;
+        padding: 0;
+        color: #777;
+        font-size: 12pt;
+        text-align: left;
+        font-style: italic;
+      }
+      .solution footer:before {
+        content: '— ';
+      }
+      .solution:nth-of-type(even) {
+        text-align: left;
+        border-left: 5px solid #999;
+        border-right: none;
+      }
+      .solution:nth-of-type(even) footer {
+        text-align: left;
+      }
+      .solution:nth-of-type(even) footer:before {
+        content: '';
+      }
+      .solution:nth-of-type(even) footer:after {
+        content: ' —';
+      }
+      @element '.solution' and (min-width: 300px) {
+        .solution {
+          padding: 1em 20% 1em 1em;
+        }
+        .solution p {
+          font-size: 14pt;
+        }
+        .solution:nth-of-type(even) {
+          padding: 1em 1em 1em 20%;
+        }
+      }
+      .error {
+          background-color: #ff6666;
+      }
+      .warning {
+          background-color: #ffff66;
+      }
+      #id_problem_latex {
+        width: inherit !important;
+      }
+    </style>
+    <title>public_app/base_editor.html Template</title>
+    {{ form.media }}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3366cc;">
+    <a class="navbar-brand" href="/">
+      <img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;">
+      Paradigms @ OSU</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNavTop" aria-controls="publicNavTop" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="publicNavTop">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/activities">Activities</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Activities
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'activity_list' %}">Classroom Activities</a>
+            <a class="dropdown-item" href="{% url 'sequence_list' %}">Sequences</a>
+            <a class="dropdown-item" href="{% url 'courses' %}">Courses</a>
+            <a class="dropdown-item" href="{% url 'problem_list' %}">Homework Problems</a>
+          </div>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'white_papers' %}">Whitepapers</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            About
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'about' %}">About</a>
+            <a class="dropdown-item" href="{% url 'history' %}">History</a>
+          </div>
+
+        </li>
+
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account_logout' %}">Log Out {{ user.username }}</a>
+          </div>
+        </li>
+        {%  else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
+            <a class="dropdown-item" href="{% url 'account_login' %}">Log In</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% provider_login_url 'google' %}">Log In (Google)</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for Activities">
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Ace editor. Mathjax config. -->
+    <script>
+      $(function() {
+
+          var Preview = {
+            delay: 150,        // delay after keystroke before updating
+            preview: null,     // filled in by Init below
+            buffer: null,      // filled in by Init below
+            timeout: null,     // store setTimout id
+            mjRunning: false,  // true when MathJax is processing
+            mjPending: false,  // true when a typeset has been queued
+            oldText: null,     // used to check if an update is needed
+            math_html: null,   // used to store the new html we want
+            //
+            //  Get the preview and buffer DIV's
+            //
+            Init: function () {
+              this.preview = document.getElementById("preview");
+              this.buffer = document.getElementById("buffer");
+            },
+
+            //
+            //  Switch the buffer and preview, and display the right one.
+            //  (We use visibility:hidden rather than display:none since
+            //  the results of running MathJax are more accurate that way.)
+            //
+            SwapBuffers: function () {
+              var buffer = this.preview, preview = this.buffer;
+              this.buffer = buffer; this.preview = preview;
+              buffer.style.visibility = "hidden"; // buffer.style.position = "absolute";
+                  // preview.style.position = "";
+              preview.style.visibility = "";
+            },
+
+            //
+            //  Creates the preview and runs MathJax on it.
+            //  If MathJax is already trying to render the code, return
+            //  If the text hasn't changed, return
+            //  Otherwise, indicate that MathJax is running, and start the
+            //    typesetting.  After it is done, call PreviewDone.
+            //
+            CreatePreview: function () {
+              Preview.timeout = null;
+              if (this.mjPending) return;
+              var text = this.math_html;
+              if (text === this.oldtext) return;
+              if (this.mjRunning) {
+                this.mjPending = true;
+                MathJax.Hub.Queue(["CreatePreview",this]);
+              } else {
+                this.buffer.innerHTML = this.oldtext = text;
+                this.mjRunning = true;
+                // console.log('foo');
+                MathJax.Hub.Queue(
+                    // There is a confusing bug where apparently
+                    // resetEquationNumbers is sometimes undefined.  The if
+                    // statement here apparently works around that bug.
+                    function () {
+                        if (MathJax.InputJax.TeX.resetEquationNumbers) {
+                            MathJax.InputJax.TeX.resetEquationNumbers();
+                        }
+                    },
+                    // ["resetEquationNumbers",MathJax.InputJax.TeX],
+                    ["Typeset",MathJax.Hub,this.buffer],
+          	  ["PreviewDone",this]
+                );
+              }
+            },
+
+            //
+            //  Indicate that MathJax is no longer running,
+            //  and swap the buffers to show the results.
+            //
+            PreviewDone: function () {
+              this.mjRunning = this.mjPending = false;
+              this.SwapBuffers();
+            }
+
+          };
+
+          //
+          //  Cache a callback to the CreatePreview action
+          //
+          Preview.Init();
+          Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+          // make sure it can run more than once
+          Preview.callback.autoReset = true;
+          var my_timeout = null;
+
+              function update_preview () {
+
+                // alert("SENDING: " + $("#id_problem_latex").html());
+
+                $.ajax({
+                  type : 'POST',
+                  url : '/problem/render/html',
+                  data : {
+                    problem_latex : $("#id_problem_latex").val()
+                    // problem_latex : $("#id_problem_latex").html()
+                  }, // end data
+                  success : function(data) {
+                    // alert("RECEIVED: " + data);
+                    Preview.math_html = data;
+                    // Success!
+                    Preview.CreatePreview();
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+                  }, // end success
+                  error : function(data) {
+                    Preview.math_html = data;
+                    // We reached our target server, but it returned an error
+                    Preview.CreatePreview();
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+                  } // end error
+
+                }) // end ajax
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+              } // end function update_preview
+
+              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#preview"]);
+              // MathJax.Hub.Queue(["Typeset",MathJax.Hub,"#buffer"]);
+
+              var preview = $("#preview")
+
+              // ACE EDITOR SETTINGS ARE DEFINED IN forms.py IN AceWidget
+
+              update_preview($("#id_problem_latex").val());
+
+              $("body").on('DOMSubtreeModified', "#latex_editor", function() {
+                // alert("modified subtree")
+                if (my_timeout) {
+                    clearTimeout(my_timeout);
+                }
+                my_timeout = setTimeout(update_preview, 150);
+
+              });
+
+        });
+
+        // editor.setOption('showLineNumbers', false);
+        // editor.setOption('showGutter', false);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-latex.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } },
+        "CommonHTML": { availableFonts: ["TeX"] }
+      });
+      MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
+        MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions.macros,{
+          cancel: ["Extension","cancel"],
+          bcancel: ["Extension","cancel"],
+          xcancel: ["Extension","cancel"],
+          cancelto: ["Extension","cancel"]
+        });
+        TeX: {
+          equationNumbers: { autoNumber: "AMS" }
+        };
+      });
+    </script>
+
+  </body>
+</html>

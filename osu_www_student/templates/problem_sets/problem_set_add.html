@@ -1,0 +1,29 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+        <li class="breadcrumb-item"><a href="{% url 'list_problem_sets' %}">Problem Sets</a></li>
+        <li class="breadcrumb-item">Add Problem Set</li>
+      </ol>
+    </nav>
+
+    {% if perms.admin_app.can_add_problem_set %}
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <p>Add homework problems after saving.</p>
+      <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to this problem set button."></span> Save Problem Set</button>
+      </form>
+    {% else %}
+    <p>No permission to add.</p>
+    {% endif %}
+{% endblock %}

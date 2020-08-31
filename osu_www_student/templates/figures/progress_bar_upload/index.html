@@ -1,0 +1,128 @@
+{% extends 'public_app/base_multi_editor.html' %}
+<!--  extends 'figures/base.html'  -->
+
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+  {# FIGURES PAGE SCRIPTS #}
+  <script src="{% static 'figures/js/progress-bar-upload.js' %}"></script>
+{% endblock %}
+
+{% block figure_content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
+    <li class="breadcrumb-item active"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
+    {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Upload &amp; Manage Media</li>
+    {% endif %}
+  </ol>
+</nav>
+  <div style="margin-bottom: 20px;">
+    <div class="well text-muted" style="padding-top: 4rem; padding-bottom: 4rem;">
+      <div class="text-center" style="margin-bottom: 45px">
+        <h3>Drag and Drop Media Here to Upload.</h3>
+        <button type="button" class="btn btn-sm btn-primary js-upload-photos text-center">
+          <span class="oi oi-cloud-upload" title="File selection button." alt="Click here to select files."></span>
+Or, Click Here To Select Files
+        </button>
+    </div>
+    <div class="container">
+      <h4>Instructions and Notes</h4>
+      <dl class="row">
+        <dt class="col-md-3"><span class="oi oi-data-transfer-download" title="data-transfer-download"></span> All Media Available To Download<dt>
+        <dd class="col-md-9">All media uploaded, whether used in the latex for this problem or not, will be available in the Media Downloads area for this problem. Remove anything you don't want to be available to download.</dd>
+        <dt class="col-md-3"><span class="oi oi-check" title="Prefered File Types" alt="JPG and PNG files work for both on-screen and print viewing."></span> Prefered File Types</dt>
+        <dd class="col-md-9">Prefered File Types for Use in Latex: JPG and PNG. These file types work for both print and on-screen viewing.</dd>
+        <dt class="col-md-3"><span class="oi oi-warning" title="File type warning" alt="Certain file types require companions for on-screen or print viewing."></span> Accepted File Types</dt>
+        <dd class="col-md-9">Accepted File Types for Use in Latex: SVG and PDF.<br>SVGs work only for on-screen viewing so you will need to upload a matching JPG, PNG or PDF file with the same name: (figure1.svg and figure1.jpg|pdf|png)<br>PDFs work only for print so you will need to upload a matching JPG, SVG or PNG file with the same file name: (figure1.pdf and figure1.jpg|png|svg)</dd>
+      </dl>
+    </div>
+
+    </div>
+    <input id="fileupload" type="file" name="file" multiple
+           style="display: none;"
+           data-url="{% url 'figures:progress_bar_upload' %}"
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}", "origin_path": "{{ request.path }}"}'>
+  </div>
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col">
+        <form method="post" action="{% url 'figures:delete_all_figures' %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button type="submit" class="btn btn-danger pull-right">
+            <span class="glyphicon glyphicon-trash"></span> Delete All Figures
+          </button>
+        </form>
+      </div> -->
+      <div class="col">
+        <form method="post" action="{% url 'figures:delete_figures_for_problem' problem_id=thisProblemID %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button type="submit" class="btn btn-sm btn-danger pull-right">
+            <span class="oi oi-trash" title="Delete problem media button." alt="Delete All Media for this problem."></span> Delete All Figures For This Problem
+          </button>
+        </form>
+      </div>
+      <div class="col">
+        <a class="btn btn-sm btn-success" href="{% url 'problem_edit_preview' pk=thisProblemID %}"><span class="oi oi-arrow-thick-left" title="Back to Problem Editor Button" alt="Go back to problem editor."></span> Return to Problem</a>
+      </div>
+    </div>
+    <div class="row">
+      <table id="gallery" class="table table-bordered" style="margin-top: 15px">
+        <thead>
+          <tr>
+            <th colspan="2">Figures & Media</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for figure in figures %}
+            <tr>
+              <td>{% if figure.extension != '.pdf' %}<img src="{{ figure.file.url }}" alt="{{ figure.file.url }}" width="100px">{% else %}<span class="oi oi-file" title="PDF" alt="PDF"> PDF</span>{% endif %}</td>
+
+              <td><a href="{{ figure.file.url }}">{{ figure.file.name }}</a><p>
+                <!-- loop through category options  -->
+                {% for this_category in media_categories %}
+                  <!-- activate the currently selected category option -->
+                  {% if figure.media_category == this_category.0 %}
+                    <a class='btn btn-success btn-sm' role='button' href="{% url 'figures:categorize_media' figure_id=figure.pk media_category=this_category.0 %}"><span class="oi oi-star" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span> {{ this_category.0 }}</a>
+                  {% else %}
+                    <a class='btn btn-outline-secondary btn-sm' role='button' href="{% url 'figures:categorize_media' figure_id=figure.pk media_category=this_category.0 %}"><span class="oi oi-ban" title="Categorize this uploaded item." alt="Categorize this uploaded item."></span> {{ this_category.0 }}</a>
+                  {% endif %}
+                {% endfor %}</p>
+                <a class='btn btn-warning btn-sm' role='button' href="{% url 'figures:delete_figure' figure_id=figure.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a>
+              </td>
+
+
+
+
+              <!-- <td><a href="{{ figure.file.url }}">{{ figure.file.name }}</a><p><a class='btn btn-warning btn-sm' role='button' href="{% url 'figures:delete_figure' figure_id=figure.pk %}"><span class="oi oi-trash" title="Delete this uploaded item." alt="Delete this uploaded item."></span> Delete</a></td> -->
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Uploading...</h4>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+  {% endfor %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+      <li class="breadcrumb-item"><a href="{% url 'list_problem_sets' %}">Problem Sets</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'problem_set_details' problem_set_id=problem_set_id %}">{{ problem_group.title }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'problem_set_details_solution' problem_set_id=problem_set_id%}">View with Solution</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'edit_problem_set' problem_set_id=problem_set_id %}">Edit</a></li>
+    </ol>
+  </nav>
+  <form method="POST">
+    {% csrf_token %}
+    {{ problem_group_form|crispy}}
+    <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework set."></span> Save Problem Set Changes</button>
+    <a href="{% url 'output_problem_set_pdf' problem_set_id=problem_set_id %}" class="btn btn-sm btn-secondary" style="vertical-align: top;"><span class="oi oi-document" title="Create Problem Set PDFs." alt="Create Problem Set PDFs."></span> Create Problem Set PDFs (Takes 10+ Seconds. Save First.)</a>
+    <br>PDF generation is in testing. Generated PDFs will be available when viewing the problem set. Feedback welcome.
+    <hr>
+    <h4>Problems</h4>
+    Add by problem id: <input type="text" id="bulk_item_list" maxlength="1024" name="bulk_item_list"> (List of Problem IDs: 7,9,41,2,3,etc..)
+    <table class="table">
+    {{ formset.management_form }}
+    {% for form in formset.forms %}
+      {% if forloop.first %}
+        <thead>
+          <tr>
+              {% for field in form.visible_fields %}
+                  <th>{{ field.label|capfirst }}</th>
+              {% endfor %}
+          </tr>
+        </thead>
+      {% endif %}
+      <tr class="formset_row">
+          {% for field in form.visible_fields %}
+              <td>
+                  {# Include the hidden fields in the form #}
+                  {% if forloop.first %}
+                      {% for hidden in form.hidden_fields %}
+                          {{ hidden }}
+                      {% endfor %}
+                  {% endif %}
+                  {{ field.errors.as_ul }}
+                  {{ field }}
+              </td>
+          {% endfor %}
+      </tr>
+    {% endfor %}
+    </table>
+    <button type="submit" class="save btn btn-sm btn-success" style="margin-bottom: 15px;"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework set."></span> Save Problem Set Changes</button>
+  </form>
+
+{% endblock %}

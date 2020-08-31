@@ -1,0 +1,11 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block content %}
+<h1>/templates/pages/logout.html</h1>
+{% if user.is_authenticated %}
+<p>Hi {{ user.username }}
+<p><a href="{% url 'logout' %}">Log out</a></p>
+{% else %}
+<p><a href="{% url 'signup' %}">Sign Up</a></p>
+<p><a href="{% url 'login' %}">Log In </a></p>
+{% endif %}
+{% endblock %}

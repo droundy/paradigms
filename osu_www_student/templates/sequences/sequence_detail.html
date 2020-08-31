@@ -1,0 +1,95 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% load crispy_forms_tags %}
+{% load activity_extras %}
+{% load latex %}
+{% block content %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+  {% endfor %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
+      <li class="breadcrumb-item"><a href="{% url 'sequence_list' %}">Sequences</a></li>
+      <!-- If this is the solution view page, show link to view only, disable link on solution -->
+      {% if view_name == 'sequence_detail_solution' %}
+        {% if sequence.title %}<li class="breadcrumb-item"><a href="{% url 'sequence_detail' pk=sequence.pk %}">{{ sequence.title }}</a></li>{% endif %}
+        <li class="breadcrumb-item active" aria-current="page">View with Solutions</li>
+      {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{{ sequence.title }}</li>
+        {% if perms.admin_app.can_add_sequence %}<li class="breadcrumb-item"><a href="{% url 'sequence_detail_solution' pk=sequence.pk %}">View with Solution</a></li>{% endif %}
+      {% endif %}
+      {% if perms.admin_app.can_add_sequence %}<li class="breadcrumb-item"><a href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}</li>
+    </ol>
+  </nav>
+<!-- END NAVIGATION -->
+
+  {% if sequence.publication == True or perms.admin_app.can_add_sequence %}
+    <div class="container">
+      <div class="card">
+        <h2 class="card-header">
+          {{ sequence.title }} {% if perms.admin_app.can_add_sequence %}<a class="btn btn-secondary btn-sm" href="{% url 'sequence_edit' pk=sequence.pk %}">Edit</a>{% endif %}          
+        </h2>
+        {% if sequence.publication != 1 %}
+          <span class="badge badge-danger">{{ sequence.publication }} Unpublished</span>
+        {% endif%}
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ sequence.overview_paragraph|latex_with_solution }}{% else %}{{ sequence.overview_paragraph|latex_omit_solution }}{% endif %}</blockquote>
+        </div>
+      </div>
+    
+      {% if sequence_items %}
+      <div class="container">
+        {% for item in sequence_items %}
+        <div class="card" style="margin-bottom: 10px">
+          <div class="card-body">
+            <h5 class="card-title">
+              {% if item.title %}
+                {{ forloop.counter }}. <a href="{% url 'activity_detail' pk=item.activity_id %}">Activity: {{ item.title }}</a>
+              {% else %}
+                {{ forloop.counter }}. <a href="{% url 'problem_display_html' pk=item.problem_id %}">Homework Problem: {{ item.problem_title }}</a>
+              {% endif %}
+              {% if item.required == 'Optional' or item.required == 'Practice' %}
+                <span class="badge badge-secondary">{{ item.required }}</span>
+              {% endif%}
+              {% if item.required == 'Extra Credit' %}
+                <span class="badge badge-success">{{ item.required }}</span>
+              {% endif%}
+              {% if "Draft" in item.publication_status and not item.publication %}
+                <span class="badge badge-danger">Unpublished </span>
+              {% endif %}
+              {% if item.publication != 1 and not item.publication_status %}
+                <span class="badge badge-danger">Unpublished </span>
+              {% endif %}
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted ">{% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.role_in_sequence | latex_with_solution }}{% else %}{{ item.role_in_sequence | latex_omit_solution }}{% endif %}</h6>
+            <div class="card-body">
+              {% if item.overview_paragraph %}
+                {% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.overview_paragraph | latex_with_solution }}{% else %}{{ item.overview_paragraph | latex_omit_solution }}{% endif %}
+              {% endif %}              
+              {% if item.problem_latex %}
+                {% if perms.admin_app.can_add_sequence and '/sequences/solution/' in request.path %}{{ item.problem_latex | latex_with_solution }}{% else %}{{ item.problem_latex | latex_omit_solution }}{% endif %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    
+    </div>
+  {% else %}
+  <div class="container">
+    <div class="card">
+      <h2 class="card-header">
+        {{ sequence.title }}
+      </h2>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">This Sequence is not available to the public at this time.</blockquote>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

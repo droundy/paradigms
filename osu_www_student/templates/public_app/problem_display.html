@@ -1,0 +1,37 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load problem_extras %}
+{% load latex %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+  <nav aria-label="breadcrumb" class="noprint">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
+      {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View with Solution</a></li>
+      <li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=latex_problem.pk %}">Upload &amp; Manage Media</a></li>
+      {% endif %}
+    </ol>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <h2 class="card-header">
+        {{ latex_problem.problem_title }}
+      </h2>
+      <ul class="list-group list-group-flush">
+        {% if latex_problem.topics %}<li class="list-group-item">{{ latex_problem.topics|problemtopicbuttons }}</li>{% endif %}
+        <li class="list-group-item homework" id="problem_latexs">{% if perms.admin_app.can_edit_problem and '/problem/solution/' in request.path %}{{ latex_problem.problem_latex|latex_with_solution }}{% else %}{{ latex_problem.problem_latex|latex_omit_solution }}{% endif %}</li>
+        {% if figures %}
+          <li class="list-inline-item">
+            <h6 style="margin-left: 1em;">Media &amp; Figures</h6>
+            <ul>
+            {% for figure in figures %}
+              <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+            {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+    </div><!-- End Card -->
+  </div><!-- End container -->
+{% endblock %}

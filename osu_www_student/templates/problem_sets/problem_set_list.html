@@ -1,0 +1,31 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load latex %}
+{% block title %}Problem Sets{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>Problem Sets</h1>
+    </div>
+  </div>
+
+  <div class="container">
+  <!-- <p>This is the templates/public_app/problem_list.html file.</p> -->
+  {% if perms.admin_app.can_add_problem_set %}
+    <p><a class="btn btn-sm btn-success" href="{% url 'problem_set_add' %}" class="top-menu"><span class="oi oi-plus" title="Add new problem_set button" alt="Create a new problem set."></span> Add Problem Set </a></p>
+  {% endif %}
+    {% for problem_set in problem_set_list %}
+        <div class="card overflow-auto" style="margin-bottom: 10px; max-height: 275px;">
+          <div class="card-body">
+            <h5><a href="{% url 'problem_set_details' problem_set_id=problem_set.pk %}">{{ problem_set.title }}</a> {% if problem_set.publication == False %}<span class="badge badge-danger" style="margin-left: 1em;"><span class="oi oi-warning"></span> Unpublished</span>{% endif %}</h5>            
+            {% if problem_set.instructions %}
+              {% if forloop.counter == 1 %}
+                <p>{% if perms.admin_app.can_add_problem_set %}{{ problem_set.instructions| latex_with_solution }}{% else %}{{ problem_set.instructions| latex_omit_solution }}{% endif %}</p>
+              {% else %}
+                <p class="overflow-auto">{% if perms.admin_app.can_add_problem_set %}{{ problem_set.instructions| latex_with_solution }}{% else %}{{ problem_set.instructions| latex_omit_solution }}{% endif %}</p>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+{% endblock %}

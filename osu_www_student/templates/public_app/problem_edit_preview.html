@@ -1,0 +1,57 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+  {% endfor %}
+  {% if perms.admin_app.can_edit_problem %}
+      <form method="POST" class="problem-form">
+        {% csrf_token %}
+        {{ form.problem_title|as_crispy_field }}
+        <div class="row">
+          <div class="col">
+            {{ form.author|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.created_date|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.published_date|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            {{ form.attribution|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.old_name|as_crispy_field }}
+          </div>
+          <div class="col">
+            {{ form.topics|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="save btn btn-success">Save</button>
+          </div>
+        </div>
+
+        <span id="latex_editor"><div class="row">
+          <div class="col">
+            {{ form.problem_latex|as_crispy_field }}
+          </div>
+          <div class="col">
+            <div id="preview" class="preview">preview</div>
+            <div id="buffer" class="preview">buffer</div>
+          </div>
+        </div></span>
+
+
+      </form>
+  {% else %}
+    <p>No permission to edit.</p>
+  {% endif %}
+{% endblock %}

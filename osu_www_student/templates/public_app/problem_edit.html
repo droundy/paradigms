@@ -1,0 +1,32 @@
+{% extends 'public_app/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          <a class="close" href="#" data-dismiss="alert">×</a>
+          {{ message }}
+      </div>
+    {% endfor %}
+    {% if perms.admin_app.can_edit_problem %}
+      <h2>Problem</h2>
+      <form method="POST" class="problem-form">
+        {% csrf_token %}
+        {{ form.problem_title|as_crispy_field }}
+        <div class="row">
+          <div class="col-4">
+            {{ form.author|as_crispy_field }}
+          </div>
+          <div class="col-4">
+            {{ form.created_date|as_crispy_field }}
+          </div>
+          <div class="col-4">
+            {{ form.published_date|as_crispy_field }}
+          </div>
+        </div>
+        {{ form.problem_latex|as_crispy_field }}
+        <button type="submit" class="save btn btn-success">Save</button>
+      </form>
+    {% else %}
+    <p>No permission to edit.</p>
+    {% endif %}
+{% endblock %}

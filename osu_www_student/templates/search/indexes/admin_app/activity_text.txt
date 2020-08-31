@@ -1,0 +1,12 @@
+{{ object.title }}
+
+{{ object.overview_paragraph }}
+{{ object.what_students_learn }}
+{{ object.keywords }}
+{{ object.topics }}
+
+{{ object.instructor_guide }}
+{{ object.prerequisite_knowledge }}
+{{ object.equipment_required }}
+{{ object.type_of_beast }}
+{{ object.author.name }}

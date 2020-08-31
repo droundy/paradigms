@@ -5,8 +5,6 @@ from django.utils.safestring import mark_safe
 import bs4, os
 import latex_snippet
 
-from pages.views import page_render
-
 from admin_app.models import Activity, Problem, Pages, Sequence, Course
 
 register = template.Library()
@@ -51,7 +49,7 @@ def modify_html(html):
                     new = soup.new_tag('a', href=href)
                     new.string = latex_snippet.html_omit_solution(problem.problem_title)
                     a.replaceWith(new)
-            elif match.func == page_render and 'pagename' in match.kwargs:
+            elif match.view_name == 'page_display' and 'pagename' in match.kwargs:
                 for page in Pages.objects.filter(slug=match.kwargs['pagename']):
                     new = soup.new_tag('a', href=href)
                     new.string = latex_snippet.html_omit_solution(page.title)

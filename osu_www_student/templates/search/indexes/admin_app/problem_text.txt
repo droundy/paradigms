@@ -1,0 +1,8 @@
+{{ object.problem_title }}
+
+{{ object.topics }}
+
+{{ object.problem_latex }}
+
+{{ object.attribution }}
+{{ object.author.name }}

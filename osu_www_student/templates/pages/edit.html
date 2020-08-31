@@ -1,0 +1,34 @@
+{% extends 'public_app/base_multi_editor.html' %}
+{% load socialaccount %}
+{% load crispy_forms_tags %}
+{% block title %}{{ this_page.title }}{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="page-header">
+      <h1>Edit: {{ this_page.title }}</h1>
+    </div>
+  </div>
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      {% if thisPrimaryKey %}<p><a class='btn btn-sm btn-success' role='button' href="{% url 'page_media:progress_bar_upload_media' page_id=thisPrimaryKey %}"><span class="oi oi-cloud-upload" title="Upload and media manager button" alt="Go to media management and upload page."></span> Upload and Manage Media</a>-Save page first!</p>{% endif %}
+
+      {% if figures_list %}
+        <h4>Media &amp; Figures</h4>
+        <ul class="list-inline">
+        {% for figure in figures_list %}
+          <li class="list-inline-item"><a href="{{ figure.file.url }}"><img class="img-fluid rounded" src="{{ figure.file.url }}" alt="{{ figure.file.name }}" width="100px"></a></li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        No figures have been uploaded for this page.
+      {% endif %}
+
+      {% crispy form %}
+
+      <!-- <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to page."></span> Save</button> -->
+      <!-- <a class="btn btn-secondary btn-sm" href="{% url 'page_display' pagename=this_page.slug %}">View</a> -->
+    </form>
+
+  </div>
+{% endblock %}
