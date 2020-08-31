@@ -30,8 +30,8 @@ fi
 # wasm-pack build --target web --dev
 wasm-pack build --target web
 
-mkdir -p ../../static/public_app/js
-cp -v pkg/latex_snippet{_bg.wasm,.js} ../../static/public_app/js/
+mkdir -p ../../osu_www/static/public_app/js
+cp -v pkg/latex_snippet{_bg.wasm,.js} ../../osu_www/static/public_app/js/
 
 rm -rf target/wheels
 
