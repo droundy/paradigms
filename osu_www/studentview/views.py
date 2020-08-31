@@ -84,7 +84,6 @@ def handout(request, pk, view='html'):
 
 def schedule(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
-    print("looking for", number)
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
