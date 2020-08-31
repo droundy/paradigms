@@ -14,6 +14,6 @@ def get_secret_key():
     try:
         from .secret_key import SECRET_KEY
         return SECRET_KEY
-    except ModuleNotFoundError:
+    except:
         SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
         return generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
