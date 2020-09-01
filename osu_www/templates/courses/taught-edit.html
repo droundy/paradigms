@@ -184,12 +184,6 @@
                 {% endfor %}
             </dl>
             <p>
-                <!-- <li><select name="day-{{day.pk}}-problem-new">
-                    <option><i>assign problem</i></option>
-                    {% for aa in day.taught.possible_problems %}
-                    <option>{{ aa.problem_title | latex_with_solution }}</option>
-                    {% endfor %}
-                </select> -->
                 <input autocomplete="off" list="problems-possible" style="max-width: 100%; width: 100%;"
                     name="day-{{day.pk}}-problem-new" placeholder="New problem">
             </p>
@@ -197,9 +191,8 @@
                 <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
                     placeholder="Name of problem set due">
                 {% if day.problemset.exists %}
-                <input type="checkbox" id="day-{{day.pk}}-solution"
-                    name="day-{{day.pk}}-solution" {% if day.show_solution %}
-                    checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution"> Show
+                <input type="checkbox" id="day-{{day.pk}}-solution" name="day-{{day.pk}}-solution"
+                    {% if day.show_solution %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution"> Show
                     solution</label>
             <ol>
                 {% for p in day.problemset_data.all %}

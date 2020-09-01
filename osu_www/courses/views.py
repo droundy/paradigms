@@ -17,6 +17,7 @@ from subprocess import Popen, PIPE, STDOUT
 import subprocess
 import os
 import unicodedata
+import time
 import logging
 import django_tex, latex_snippet
 from django_tex.shortcuts import render_to_pdf
@@ -48,8 +49,21 @@ def course_as_taught(request, number, year, view='overview'):
         'learning_outcomes': learning_outcomes,
     })
 
+class Timer:
+    def __init__(self):
+        self._start_time = time.perf_counter()
+
+    def __getattr__(self, attr):
+        now = time.perf_counter()
+        elapsed_time = now - self._start_time
+        self._start_time = now
+        return f"  {attr.replace('_', ' ')}: {elapsed_time:0.4f} seconds"
+
+
 def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
+    timer = Timer()
+    print(timer.starting)
     course = get_object_or_404(Course, number=number)
     if year == 'NEW' and CourseAsTaught.objects.filter(course=course, slug='NEW').count() == 0:
         as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
@@ -58,6 +72,7 @@ def course_as_taught_edit(request, number, year):
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     
+    print(timer.course_and_as_taught)
     if request.method == 'POST':
         as_taught.instructor = request.POST['instructor']
         as_taught.year = request.POST['year']
@@ -123,7 +138,9 @@ def course_as_taught_edit(request, number, year):
             order = next_order(CourseDay.objects.filter(taught=as_taught))
             newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=order)
             newday.save()
+        print(timer.post_processing)
         as_taught.save()
+        print(timer.post_saving)
         if as_taught.slug != year:
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
@@ -134,12 +151,16 @@ def course_as_taught_edit(request, number, year):
         l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
         l.possible_activities = Activity.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
         l.possible_problems = Problem.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
-    return render(request, 'courses/taught-edit.html', {
+    print(timer.day_and_learning_outcomes)
+    rendered = render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
         'days': days,
+        'timer': timer,
         'learning_outcomes': learning_outcomes,
     })
+    print(timer.rendering)
+    return rendered
 
 def next_order(query):
     l = list(query.order_by('order'))
