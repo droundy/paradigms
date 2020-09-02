@@ -77,6 +77,7 @@ def course_as_taught_edit(request, number, year):
         as_taught.instructor = request.POST['instructor']
         as_taught.year = request.POST['year']
         as_taught.slug = as_taught.year.replace(' ', '')
+        as_taught.evaluation = request.POST['evaluation']
 
         for day in CourseDay.objects.filter(taught=as_taught):
             if 'day-{}-delete'.format(day.pk) in request.POST:

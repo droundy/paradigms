@@ -47,9 +47,12 @@
         <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
         <dt>Course description:</dt>
         <dd>{{ course.description }}</dd>
-        <dt>Evaluation of student performance:</dt>
-        <dd>Edit this please</dd>
     </dl>
+    <details>
+        <summary><strong>Evaluation of student performance:</strong></summary>
+        <textarea name="evaluation" cols="80" rows="8" maxlength="1024" class="textarea form-control"
+        id="evaluation" placeholder="Evaulation of student performance">{{taught.evaluation}}</textarea>
+    </details>
     <details>
         <summary><strong>Learning outcomes:</strong></summary>
         <ul class="checkboxes">
