@@ -41,6 +41,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 PROBLEM_SCRIPT = os.path.join(BASE_DIR, 'shell_scripts/homework_archive/problem')
 MYSQL_CONF = os.path.join(BASE_DIR, 'my.cnf')
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -114,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'osu_www.urls'
