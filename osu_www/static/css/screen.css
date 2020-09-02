@@ -242,12 +242,12 @@ h1, h2, h3 {
 .topic {
   grid-column-start: topic;
   grid-row: auto / span 1;
-  background-color: #dfd;
+  /* background-color: #dfd; */
 }
 .activities {
   grid-column-start: activities ;
   grid-row: auto / span 1;
-  background-color: #fdd;
+  /* background-color: #fdd; */
 }
 .resources:before {
   content: "Resources: ";
@@ -256,7 +256,7 @@ h1, h2, h3 {
 .resources {
   grid-column-start: resources ;
   grid-row: auto / span 1;
-  background-color: #ffd;
+  /* background-color: #ffd; */
 }
 .activities input, .due input {
   max-width: 12em;
@@ -264,7 +264,7 @@ h1, h2, h3 {
 .due {
   grid-column-start: due ;
   grid-row: auto / span 1;
-  background-color: #fdf;
+  /* background-color: #fdf; */
 }
 @media (min-width: 30rem) {
   .schedule {
