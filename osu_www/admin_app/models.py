@@ -476,6 +476,8 @@ class CourseAsTaught(models.Model):
     slug = AutoSlugField(populate_from='year')
     instructor = models.CharField(max_length=255, blank=True, null=True)
 
+    evaluation = models.TextField(blank=True)
+
     def __str__(self):
         if self.course.number is not None:
             return self.course.number+' ' + self.year

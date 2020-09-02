@@ -34,7 +34,7 @@
             <dt>Instructor:</dt>
             <dd>{{ taught.instructor }}</dd>
             <dt>Course credits:</dt>
-            <dd>3???</dd>
+            <dd>3</dd>
             <dt>Prerequisites:</dt>
             <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
             <dt>Course description:</dt>
@@ -64,12 +64,7 @@
                 </ul>
             </dd>
             <dt>Course content:</dt>
-            <dd>
-                <ul>
-                    <li>Decide what we want here</li>
-                    <li>Add actual content</li>
-                </ul>
-            </dd>
+            <dd>See <a href="{% url 'sv_schedule' course.number taught.slug %}">schedule</a>.</dd>
             <dt>Evaluation of student performance:</dt>
             <dd>Edit this please</dd>
             <dt>Statement regarding students with disabilities:</dt>
