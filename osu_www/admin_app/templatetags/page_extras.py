@@ -48,8 +48,8 @@ def whitepaperdropdownlist(value, autoescape=True):
 @register.filter(needs_autoescape=True)
 def pagelist(value, authorization, autoescape=True):
     if value:
-        page_links = ''
-        whitepaper_links = ''
+        page_links = None
+        whitepaper_links = None
         #  Return a list of all records, whitepapers and pages
         if value == 'all':
             # Queries for user with permissions
