@@ -18,8 +18,16 @@
     </ol>
 </nav>
 
-<form action="{% url 'course_as_taught_edit' course.number taught.slug %}" method="post">
+<form {% if course_was_changed %}onsubmit="alert('The course has been changed since we created this!'); return true;"
+   style="background-color:#f88"{% endif %}
+   action="{% url 'course_as_taught_edit' course.number taught.slug %}" method="post">
+    <input type="hidden" name="modification_version"
+    value="{{taught.modification_version}}">
+    {% if course_was_changed %}
+    <span style="font-size:40px;color:aqua;backgroud-color:#600">The course was changed simultaneously.  Please open a new tab to edit!</span>
+    {% else %}
     <input type="submit" name='submit' value="Save">
+    {% endif %}
     {% csrf_token %}
     <dl>
         <dt>Course name:</dt>
@@ -27,7 +35,7 @@
             <span class="badge badge-danger">Unpublished</span>
             {% endif%}</dd>
         <dt>Course number:</dt>
-        <dd>{{ course.pretty_number }}</dd>
+        <dd>{{ course.pretty_number }} {{ course_was_changed }}</dd>
 
         <label for="id_year">
             <dt>Term:</dt>

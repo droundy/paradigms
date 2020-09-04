@@ -63,7 +63,6 @@ class Timer:
 def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
     timer = Timer()
-    print(timer.starting)
     course = get_object_or_404(Course, number=number)
     if year == 'NEW' and CourseAsTaught.objects.filter(course=course, slug='NEW').count() == 0:
         as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
@@ -72,8 +71,13 @@ def course_as_taught_edit(request, number, year):
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     
-    print(timer.course_and_as_taught)
+    using_old_data = False
     if request.method == 'POST':
+        if str(as_taught.modification_version) != request.POST['modification_version']:
+            print('bad modification version:', request.POST['modification_version'], 'should be', as_taught.modification_version)
+            using_old_data = True
+
+        as_taught.modification_version += 1
         as_taught.instructor = request.POST['instructor']
         as_taught.year = request.POST['year']
         as_taught.slug = as_taught.year.replace(' ', '')
@@ -82,7 +86,8 @@ def course_as_taught_edit(request, number, year):
 
         for day in CourseDay.objects.filter(taught=as_taught):
             if 'day-{}-delete'.format(day.pk) in request.POST:
-                day.delete()
+                if not using_old_data:
+                    day.delete()
             else:
                 day.day = request.POST['day-{}'.format(day.pk)]
                 day.topic = request.POST['day-{}-topic'.format(day.pk)]
@@ -92,15 +97,18 @@ def course_as_taught_edit(request, number, year):
                 day.show_solution = 'day-{}-solution'.format(day.pk) in request.POST
                 for da in day.dayactivity_set.all():
                     if "day-{}-activity-{}-delete".format(day.pk, da.pk) in request.POST:
-                        da.delete()
+                        if not using_old_data:
+                            da.delete()
                     else:
                         da.show_handout = "day-{}-activity-{}-handout".format(day.pk, da.pk) in request.POST
                         da.show_solution = "day-{}-activity-{}-solution".format(day.pk, da.pk) in request.POST
                         da.order = request.POST["day-{}-activity-{}-order".format(day.pk, da.pk)]
-                        da.save()
+                        if not using_old_data:
+                            da.save()
                 for dp in day.dayproblem.all():
                     if "day-{}-problem-{}-delete".format(day.pk, dp.pk) in request.POST:
-                        dp.delete()
+                        if not using_old_data:
+                            dp.delete()
                 for lo in CourseLearningOutcome.objects.filter(course=course):
                     new = "lo-{}-new-activity".format(lo.pk)
                     if new in request.POST and request.POST[new] != '':
@@ -110,7 +118,8 @@ def course_as_taught_edit(request, number, year):
                     if new in request.POST and request.POST[new] != '':
                         problem = Problem.objects.get(problem_title=request.POST[new])
                         problem.learning_outcomes.add(lo)
-                day.save()
+                if not using_old_data:
+                    day.save()
                 for dp in day.dayproblem.all():
                     dp.instructions = request.POST["day-{}-problem-{}-instructions".format(day.pk, dp.pk)]
                     dp.order = request.POST["day-{}-problem-{}-order".format(day.pk, dp.pk)]
@@ -119,31 +128,35 @@ def course_as_taught_edit(request, number, year):
                         due = CourseDay.objects.filter(taught=as_taught, problemsetname=request.POST[duename]).first()
                         if due is not None:
                             dp.due = due
-                    dp.save()
+                    if not using_old_data:
+                        dp.save()
                 new = "day-{}-activity-new".format(day.pk)
                 if new in request.POST and request.POST[new] != '':
                     activity = get_title(day.taught.possible_activities, Activity.objects, request.POST[new])
                     order = next_order(day.dayactivity_set)
                     da = DayActivity(day=day, activity=activity, order=order)
-                    da.save()
+                    if not using_old_data:
+                        da.save()
                 new = "day-{}-problem-new".format(day.pk)
                 if new in request.POST and request.POST[new] != '':
                     problem = get_problem_title(day.taught.possible_problems, Problem.objects, request.POST[new])
                     if problem is not None:
                         order = next_order(day.dayproblem)
                         dp = DayProblem(day=day, problem=problem, order=order, due=day)
-                        dp.save()
+                        if not using_old_data:
+                            dp.save()
                     else:
                         print('could not find problem')
 
         if request.POST['day-new'] != '':
             order = next_order(CourseDay.objects.filter(taught=as_taught))
             newday = CourseDay(taught=as_taught, day=request.POST['day-new'], order=order)
-            newday.save()
-        print(timer.post_processing)
-        as_taught.save()
-        print(timer.post_saving)
-        if as_taught.slug != year:
+            if not using_old_data:
+                newday.save()
+        if not using_old_data:
+            as_taught.save()
+        if as_taught.slug != year and not using_old_data:
+            print('redirecting to new url')
             return HttpResponseRedirect(django.urls.reverse('course_as_taught_edit', args=(number, as_taught.slug)))
 
     days = CourseDay.objects.filter(taught=as_taught).order_by('order')
@@ -153,13 +166,14 @@ def course_as_taught_edit(request, number, year):
         l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
         l.possible_activities = Activity.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
         l.possible_problems = Problem.objects.filter(day__taught=as_taught).exclude(learning_outcomes=l)
-    print(timer.day_and_learning_outcomes)
+    print('using_old_data:', using_old_data)
     rendered = render(request, 'courses/taught-edit.html', {
         'course': course,
         'taught': as_taught,
         'days': days,
         'timer': timer,
         'learning_outcomes': learning_outcomes,
+        'course_was_changed': using_old_data,
     })
     print(timer.rendering)
     return rendered

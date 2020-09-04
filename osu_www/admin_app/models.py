@@ -479,6 +479,7 @@ class CourseAsTaught(models.Model):
     office_hours = models.TextField(blank=True)
 
     evaluation = models.TextField(blank=True)
+    modification_version = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         if self.course.number is not None:
