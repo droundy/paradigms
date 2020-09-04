@@ -46,7 +46,7 @@
         <dd><textarea name="office_hours" cols="80" id="id_office_hours">{{ taught.office_hours }}</textarea></dd>
 
         <dt>Course credits:</dt>
-        <dd>3</dd>
+        <dd>{{course.credits}}</dd>
 
         <dt>Prerequisites:</dt>
         <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>

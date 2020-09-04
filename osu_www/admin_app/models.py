@@ -428,6 +428,7 @@ class Course(models.Model):
                               verbose_name='Prerequisites')
     publication = models.BooleanField(
         blank=False, default=False, help_text="Course is ready for public viewing", verbose_name="Publish course")
+    credits = models.PositiveIntegerField(default=3)
 
     def __str__(self):
         if self.short_name is not None:
