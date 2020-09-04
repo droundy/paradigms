@@ -33,6 +33,10 @@
             <dd>{{ course.pretty_number }}</dd>
             <dt>Instructor:</dt>
             <dd>{{ taught.instructor }}</dd>
+            {% if taught.office_hours %}
+            <dt>Office hours:</dt>
+            <dd>{{ taught.office_hours }}</dd>
+            {% endif %}
             <dt>Course credits:</dt>
             <dd>3</dd>
             <dt>Prerequisites:</dt>

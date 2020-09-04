@@ -475,6 +475,7 @@ class CourseAsTaught(models.Model):
     year = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from='year')
     instructor = models.CharField(max_length=255, blank=True, null=True)
+    office_hours = models.TextField(blank=True)
 
     evaluation = models.TextField(blank=True)
 
