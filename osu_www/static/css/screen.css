@@ -143,6 +143,7 @@ div.center {
 dl {
   display: grid;
   grid-template-columns: fit-content(100%)  fit-content(100%);
+  gap: 0.5em;
 }
 
 dt {
