@@ -49,7 +49,7 @@
                 <dd>{{ taught.instructor }}</dd>
                 {% if taught.office_hours %}
                 <dt>Office hours:</dt>
-                <dd>{{ taught.office_hours }}</dd>
+                <dd>{{ taught.office_hours | latex_omit_solution }}</dd>
                 {% endif %}
                 <dt>Course credits:</dt>
                 <dd>{{course.credits}}</dd>
