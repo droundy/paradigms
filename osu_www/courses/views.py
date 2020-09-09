@@ -95,6 +95,7 @@ def course_as_taught_edit(request, number, year):
                 day.order = request.POST['day-{}-order'.format(day.pk)]
                 day.problemsetname = request.POST['day-{}-problemset'.format(day.pk)]
                 day.show_solution = 'day-{}-solution'.format(day.pk) in request.POST
+                day.show_problemset = 'day-{}-show-problemset'.format(day.pk) in request.POST
                 for da in day.dayactivity_set.all():
                     if "day-{}-activity-{}-delete".format(day.pk, da.pk) in request.POST:
                         if not using_old_data:

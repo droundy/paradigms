@@ -206,15 +206,17 @@
                     name="day-{{day.pk}}-problem-new" placeholder="New problem">
             </p>
             <p>
-                <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
-                    placeholder="Name of problem set due">
-                {% if day.problemset.exists %}
-                <input type="checkbox" id="day-{{day.pk}}-show-problemset" name="day-{{day.pk}}-show-problemset"
-                    {% if day.show_problemset %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-show-problemset"> Show
-                    problem set</label>
-                <input type="checkbox" id="day-{{day.pk}}-solution" name="day-{{day.pk}}-solution"
-                    {% if day.show_solution %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution"> Show
-                    solution</label>
+                <dl>
+                <dt><input type="text" style="width:6em;" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
+                    placeholder="Name of problem set due"></dt>
+                    {% if day.problemset.exists %}
+                    <dd><input type="checkbox" id="day-{{day.pk}}-show-problemset" name="day-{{day.pk}}-show-problemset"
+                    {% if day.show_problemset %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-show-problemset">Show&nbsp;problem set</label></dd>
+                    <dd><input type="checkbox" id="day-{{day.pk}}-solution" name="day-{{day.pk}}-solution"
+                    {% if day.show_solution %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution">Show&nbsp;solution</label></dd>
+                    {% endif %}
+            </dl>
+            {% if day.problemset.exists %}
             <ol>
                 {% for p in day.problemset_data.all %}
                 <li><strong>{{ p.problem }}</strong> {{ p.instructions }}</li>
