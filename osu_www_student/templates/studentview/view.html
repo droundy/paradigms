@@ -132,6 +132,7 @@
     {% if day.resources %}
     <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
     {% if day.problemset.exists %}
+    {% if day.show_problemset %}
     <ul class="due">
         <li>
             <h5>
@@ -145,6 +146,7 @@
             </h5>
         </li>
     </ul>
+    {% endif %}
     {% endif %}
     <hr />
     {% endfor %}

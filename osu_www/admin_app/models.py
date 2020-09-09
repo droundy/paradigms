@@ -539,6 +539,7 @@ class CourseDay(models.Model):
     resources = models.TextField(blank=True, default='')
     problemsetname = models.CharField(max_length=255, blank=True)
     show_solution = models.BooleanField(blank=False, default=False, help_text="Show problem set solution to students.")
+    show_problemset = models.BooleanField(blank=False, default=False, help_text="Show problem set to students.")
 
     activities = models.ManyToManyField(Activity, through='DayActivity', related_name='day')
     problems = models.ManyToManyField(Problem, through='DayProblem',

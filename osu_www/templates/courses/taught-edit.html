@@ -209,6 +209,9 @@
                 <input type="text" name="day-{{day.pk}}-problemset" value="{{day.problemsetname}}"
                     placeholder="Name of problem set due">
                 {% if day.problemset.exists %}
+                <input type="checkbox" id="day-{{day.pk}}-show-problemset" name="day-{{day.pk}}-show-problemset"
+                    {% if day.show_problemset %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-show-problemset"> Show
+                    problem set</label>
                 <input type="checkbox" id="day-{{day.pk}}-solution" name="day-{{day.pk}}-solution"
                     {% if day.show_solution %} checked{% endif %}>&nbsp;<label for="day-{{day.pk}}-solution"> Show
                     solution</label>
