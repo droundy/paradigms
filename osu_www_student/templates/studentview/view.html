@@ -143,12 +143,6 @@
                 <a href="{% url 'sv_solution_pdf' taught.course.number taught.slug day.problemset_slug %}">[PDF]</a>)
                 {% endif %}
             </h5>
-            <ol>
-                {% for p in day.problemset_data.all %}
-                <li><strong>{{ p.problem.problem_title | latex_omit_solution }}</strong>
-                    {{ p.instructions | latex_omit_solution }}</li>
-                {% endfor %}
-            </ol>
         </li>
     </ul>
     {% endif %}
