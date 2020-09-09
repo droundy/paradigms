@@ -79,6 +79,9 @@
             class="oi oi-warning"></span> Draft</span>{% endif %}</li>
       {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}
       </li>{% endif %}
+      {% if activity.readings %}<li
+      class="list-group-item"><strong>Readings:</strong>
+      {{ activity.readings | latex_omit_solution }}</li>{% endif %}
     </ul>
 
         {% if activity_sequences %}

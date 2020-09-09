@@ -89,11 +89,15 @@ def schedule(request, number, year, view='overview'):
         as_taught = CourseAsTaught.objects.filter(course=course).order_by('-pk').first()
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
-    days = CourseDay.objects.filter(taught=as_taught).order_by('order')
+    days = list(CourseDay.objects.filter(taught=as_taught).order_by('order'))
     learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
     for l in learning_outcomes:
         l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
         l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
+    for d in days:
+        for a in Activity.objects.filter(day=d):
+            if a.readings != '':
+              d.resources += '\n\n' + a.readings
     return render(request, 'studentview/view.html', {
         'course': course,
         'taught': as_taught,

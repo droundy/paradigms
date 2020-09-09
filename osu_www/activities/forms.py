@@ -29,6 +29,8 @@ class ActivityForm(forms.ModelForm):
 
     prerequisite_knowledge = forms.CharField(required=False,  widget=forms.Textarea(attrs={'rows':6}), help_text='Comma-separated list of topics: adiabatic susceptibility,entropy')
 
+    readings = forms.CharField(required=False,  widget=forms.Textarea(attrs={'rows':6}), help_text='LaTeX text describing readings')
+
     learning_outcomes = forms.ModelMultipleChoiceField(required=False,
                                                        queryset=CourseLearningOutcome.objects.all().order_by('course__number'),
                                                        widget=forms.CheckboxSelectMultiple)
@@ -37,7 +39,7 @@ class ActivityForm(forms.ModelForm):
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'learning_outcomes', 'course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'readings', 'learning_outcomes', 'course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
