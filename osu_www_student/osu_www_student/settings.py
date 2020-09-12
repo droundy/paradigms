@@ -51,7 +51,7 @@ SECRET_KEY = get_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','10.0.20.100','paradigms.oregonstate.edu','paradigms.physics.oregonstate.edu','osu.wiki','development.osu.wiki','10.0.42.189','10.0.42.188','osu.wiki:8263', 'roundy.is-a-geek.com']
+ALLOWED_HOSTS = ['127.0.0.1','10.0.20.100','paradigms.oregonstate.edu','courses.physics.oregonstate.edu','osu.wiki','development.osu.wiki','10.0.42.189','10.0.42.188','osu.wiki:8263', 'roundy.is-a-geek.com']
 
 
 # Application definition
