@@ -286,7 +286,10 @@ h1, h2, h3 {
   }
 }
 
-
 .inside-iframe .hide-in-iframe {
   display: none;
+}
+
+.inside-iframe body {
+  padding: 0;
 }
