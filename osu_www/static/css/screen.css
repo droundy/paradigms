@@ -216,6 +216,9 @@ h1, h2, h3 {
   grid-auto-flow: row;
   grid-gap: 0rem 0.5rem;
 }
+.outside-iframe .schedule {
+  padding: 0 1em 0 1em;
+}
 .schedule hr {
   display: block;
   content: "";
@@ -290,6 +293,6 @@ h1, h2, h3 {
   display: none;
 }
 
-.inside-iframe body, .inside-iframe .pages.show.home .show-content, .inside-iframe .ic-Layout-contentMain {
+.inside-iframe body, .inside-iframe .pages.show.home .show-content {
   padding: 0;
 }
