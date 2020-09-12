@@ -290,6 +290,6 @@ h1, h2, h3 {
   display: none;
 }
 
-.inside-iframe body {
+.inside-iframe body, .inside-iframe div.show-content {
   padding: 0;
 }
