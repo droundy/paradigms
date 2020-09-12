@@ -5,7 +5,7 @@
 <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
         <!-- <li class="breadcrumb-item"><a href="/">Home</a></li> -->
-        <li class="breadcrumb-item"><a href="{% url 'sv_home'%}">Courses</a></li>
+        <li class="breadcrumb-item hide-in-iframe"><a href="{% url 'sv_home'%}">Courses</a></li>
         {% if view == 'syllabus' %}
         <li class="breadcrumb-item"><a href="{% url 'sv_schedule' course.number taught.slug %}">{{ taught.year }} Schedule</a>
         </li>

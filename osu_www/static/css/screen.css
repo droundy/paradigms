@@ -285,3 +285,8 @@ h1, h2, h3 {
     grid-template-columns: [day] fit-content(10em) [topic] auto [activities] auto [resources] auto [due] auto [end];
   }
 }
+
+
+.inside-iframe .hide-in-iframe {
+  display: hidden;
+}
