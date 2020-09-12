@@ -26,9 +26,7 @@
     <div class="card-body">
         <dl>
             <dt>Course name:</dt>
-            <dd>{{ course.catalog_name }} {% if course.publication != 1 %}
-                <span class="badge badge-danger">Unpublished</span>
-                {% endif%}</dd>
+            <dd>{{ course.catalog_name }}</dd>
             <dt>Course number:</dt>
             <dd>{{ course.pretty_number }}</dd>
             <dt>Instructor:</dt>
