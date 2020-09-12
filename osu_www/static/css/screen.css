@@ -290,6 +290,6 @@ h1, h2, h3 {
   display: none;
 }
 
-.inside-iframe body, .inside-iframe div.show-content {
+.inside-iframe body, .inside-iframe .pages.show.home .show-content, .inside-iframe .ic-Layout-contentMain {
   padding: 0;
 }
