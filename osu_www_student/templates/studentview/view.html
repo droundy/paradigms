@@ -41,6 +41,9 @@
             <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
             <dt>Course description:</dt>
             <dd>{{ course.description }}</dd>
+            {% if course.learning_resources %}
+            <dt>Learning resources:</dt>
+            <dd>{{ course.learning_resources | latex_omit_solution }}</dd>{% endif %}
             <dt>Learning outcomes:</dt>
             <dd>
                 <ul class="checkboxes">

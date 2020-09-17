@@ -58,6 +58,8 @@
                 <dt>Course description:</dt>
                 <dd>{{ course.description }}</dd>
                 {% if view == 'syllabus' %}
+                <dt>Learning resources:</dt>
+                <dd>{{ course.learning_resources | latex_omit_solution }}</dd>
                 <dt>Learning outcomes:</dt>
                 <dd>
                     <ul class="checkboxes">

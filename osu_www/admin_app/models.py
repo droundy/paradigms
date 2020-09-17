@@ -425,6 +425,8 @@ class Course(models.Model):
                                        help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
     description = models.TextField(
         blank=True, null=True, verbose_name='Description in catalog')
+    learning_resources = models.TextField(
+        blank=True, verbose_name='Syllabus learning resources')
     prereq = models.TextField(blank=True, null=True,
                               verbose_name='Prerequisites')
     publication = models.BooleanField(
