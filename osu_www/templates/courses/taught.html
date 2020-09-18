@@ -140,14 +140,14 @@
                 <a href="{% url 'activity_detail_handout' da.activity.pk %}">(handout)</a>
                 {% else %}
                 {% if da.activity.has_handout %}
-                (handout hidden)
+                (<s>handout</s>)
                 {% endif %}
                 {% endif %}
                 {% if da.show_solution and da.activity.has_solution %}
                 <a href="{% url 'activity_detail_solution' da.activity.pk %}">(solution)</a>
                 {% else %}
                 {% if da.activity.has_solution %}
-                (solution hidden)
+                (<s>solution</s>)
                 {% endif %}
                 {% endif %}
             </li>
