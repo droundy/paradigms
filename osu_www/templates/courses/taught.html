@@ -138,9 +138,17 @@
             <li><a href="{% url 'activity_detail' da.activity.pk %}">{{da.activity}}</a>
                 {% if da.show_handout and da.activity.has_handout %}
                 <a href="{% url 'activity_detail_handout' da.activity.pk %}">(handout)</a>
+                {% else %}
+                {% if da.activity.has_handout %}
+                (handout hidden)
+                {% endif %}
                 {% endif %}
                 {% if da.show_solution and da.activity.has_solution %}
                 <a href="{% url 'activity_detail_solution' da.activity.pk %}">(solution)</a>
+                {% else %}
+                {% if da.activity.has_solution %}
+                (solution hidden)
+                {% endif %}
                 {% endif %}
             </li>
             {% endfor %}
