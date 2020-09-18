@@ -5,9 +5,19 @@
 {% block content %}
   <nav aria-label="breadcrumb" class="noprint">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework Problems</a></li>
-      <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
-      {% if perms.admin_app.can_edit_problem %}<li class="breadcrumb-item"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">View with Solution</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'problem_list' %}">Homework
+      Problems</a></li>
+      {% if '/problem/solution/' in request.path %}
+      <li class="breadcrumb-item active"><a href="{% url 'problem_display_html' pk=latex_problem.pk %}">{{ latex_problem.problem_title }}</a></li>
+      {% else %}
+      <li class="breadcrumb-item active" aria-current="page">{{ latex_problem.problem_title }}</li>
+      {% endif %}
+      {% if perms.admin_app.can_edit_problem %}
+      {% if '/problem/solution/' in request.path %}
+      <li class="breadcrumb-item active" aria-current="page">Solution</li>
+      {% else %}
+      <li class="breadcrumb-item active"><a href="{% url 'problem_display_html_solution' pk=latex_problem.pk %}">Solution</a></li>
+      {% endif %}
       <li class="breadcrumb-item active"><a href="{% url 'problem_edit_preview' pk=latex_problem.pk %}">Edit</a></li>
       <li class="breadcrumb-item"><a href="{% url 'figures:progress_bar_upload' problem_id=latex_problem.pk %}">Upload &amp; Manage Media</a></li>
       {% endif %}
