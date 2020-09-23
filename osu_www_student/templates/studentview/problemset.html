@@ -28,7 +28,7 @@
         </div>
         <ol>
             {% for p in day.problemset_data %}
-            <li class="homework"><strong>{{ p.problem.problem_title }}</strong> {% if p.instructions %}<em>{{ p.instructions }}</em> {% endif %}{% if view == 'solution' %}{{ p.problem.problem_latex | latex_with_solution }}{% else %}{{ p.problem.problem_latex | latex_omit_solution }}{% endif %}</li>
+            <li class="homework"><strong>{{ p.problem.problem_title }}</strong> {% if p.instructions %}<em>{{ p.instructions | latex_omit_solution }}</em> {% endif %}{% if view == 'solution' %}{{ p.problem.problem_latex | latex_with_solution }}{% else %}{{ p.problem.problem_latex | latex_omit_solution }}{% endif %}</li>
             {% endfor %}
         </ol>
     </div>
