@@ -113,31 +113,12 @@ div.center {
   width: inherit !important;
 }
 
-/* To deal with very tall mathjax characters/symbols causing vertical alignment issues we create a hanging indent rather than an absolute outer position of the li:before. This forces the counter to be properly aligned with the text baseline */
-
-.latextorender ol, #problem_latexs ol, .preview ol, .homework ol {
-  list-style: none;
-  counter-reset: list;
-  margin-left: -1em;
+ol {
+  list-style-type: decimal;
 }
 
-.latextorender li, #problem_latexs li, .preview li, .homework li {
-  text-indent: -1.2em;
-  margin-left: 1em;
-  margin-bottom: .75em;
-  /* color: red; */
-}
-
-.latextorender ol>li:before, #problem_latexs ol>li:before, .preview ol>li:before, .homework ol>li:before {
-  counter-increment: list;
-  content: counter(list, lower-alpha)') ';
-  /* font-weight: bold; */
-}
-
-.latextorender ol>li:after, #problem_latexs ol>li:after, .preview ol>li:after, .homework ol>li:after {
-  content: '';
-  display: table;
-  clear: both;
+ol ol {
+  list-style-type: lower-latin;
 }
 
 dl {
