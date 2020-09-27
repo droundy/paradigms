@@ -121,19 +121,6 @@ ol ol {
   list-style-type: lower-latin;
 }
 
-ol ol li {
-  position: relative;
-}
-
-ol ol li::before {
-  display: inline-block;
-  width: 0.3em;
-  position: absolute;
-  left: -0.578em; /* This is tuned to cover up the period after a. or b.  which is hokey but relatively harmless */
-  content: ')';
-  text-align: center;
-}
-
 dl {
   display: grid;
   grid-template-columns: fit-content(100%)  fit-content(100%);
