@@ -31,6 +31,11 @@
             {% include "public_app/problem_listview.html" %}
             {% endwith %}
             {% endif %}
+            {% if result.object.activities %}
+            {% with sequence=result.object %}
+            {% include "public_app/sequence_listview.html" %}
+            {% endwith %}
+            {% endif %}
             {% empty %}
               <p class="card-text" style="margin-bottom: 5px;">No results found</p>
             {% endfor %}
