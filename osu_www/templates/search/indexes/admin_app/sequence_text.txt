@@ -1,0 +1,8 @@
+{{ object.title }}
+
+{{ object.overview_paragraph }}
+{{ object.what_students_learn }}
+{{ object.keywords }}
+{{ object.topics }}
+
+{{ object.author.name }}
