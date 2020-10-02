@@ -6,7 +6,7 @@
                 {% if not activity.publication %}<span
                     class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
 
-        <p class="card-text" style="margin-bottom: 5px;"> {{ activity.type_of_beast|trimtob }} Activity <span
+        <p class="card-text" style="margin-bottom: 5px;"> {{ activity.type_of_beast|trimtob }} <span
                 class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min.
         </p>
         {% if activity.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
