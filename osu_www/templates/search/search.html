@@ -21,7 +21,6 @@
             <h3>Results</h3>
 
             {% for result in page.object_list %}
-            <p>Publication: {{ result.object.publication }}</p>
             {% if result.object.publication or perms.admin_pp.change_problem %}
             {% if result.object.type_of_beast %}
             {% with activity=result.object %}
