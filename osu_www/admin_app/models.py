@@ -296,20 +296,19 @@ class Activity(models.Model):
     @property
     def icon(self):
         # iterate through possible choices for type of beast
-        BEASTICONS = (
-            (choices.TBCSMALLGROUP, "puzzle-piece"),
-            (choices.TBCSMALLBOARD, "person"),
-            (choices.TBCMATHEMATICA, "code"),
-            (choices.TBCKINESTHETIC, "bolt"),
-            (choices.TBCQUIZ, "question-mark"),
-            (choices.TBCWHOLECLASS, "people"),
-            (choices.TBCEXPERIMENT, "beaker"),
-            (choices.TBCCOMPUTERSIM, "laptop"),
-            (choices.TBCLECTURE, "microphone"),
-        )
-        for beast in BEASTICONS:
-            if self.type_of_beast == beast[0]:
-                return mark_safe('<span class="oi oi-' + beast[1] + '"></span> ')
+        BEASTICONS = {
+            choices.TBCSMALLGROUP: "puzzle-piece",
+            choices.TBCSMALLBOARD: "person",
+            choices.TBCMATHEMATICA: "code",
+            choices.TBCKINESTHETIC: "bolt",
+            choices.TBCQUIZ: "question-mark",
+            choices.TBCWHOLECLASS: "people",
+            choices.TBCEXPERIMENT: "beaker",
+            choices.TBCCOMPUTERSIM: "laptop",
+            choices.TBCLECTURE: "microphone",
+        }
+        if self.type_of_beast in BEASTICONS:
+            return mark_safe('<span class="oi oi-' + BEASTICONS[self.type_of_beast] + '"></span> ')
         return ''
 
     @property
