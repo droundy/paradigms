@@ -14,29 +14,8 @@
     {% if perms.admin_app.can_add_activity %}
     <p><a class="btn-sm btn btn-success" href="{% url 'activity_new' %}" class="top-menu"><span class="oi oi-plus" title="Add new activity button" alt="Create a new activity."></span> Add Activity </a></p>
     {% endif %}
-    {% for activity in activities %}
-        <div class="card overflow-auto" style="margin-bottom: 10px;">
-          <div class="card-body">
-            <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }} {% if activity.publication_status == "Draft" or activity.publication_status == "Post-Publication Draft" or not activity.publication_status %}<span class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
-            <p class="card-text" style="margin-bottom: 5px;"> {{ activity.beast }} {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min. {% endif %}{% if activity.topics %}<span style="margin-left: 1em;">{{ activity.topics|tagbuttons }}</span>{% endif %}</p>
-            
-            {% if activity.overview_paragraph %}
-              {% if forloop.counter == 1 %}
-                <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
-              {% else %}
-                <p class="overflow-auto">{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}</p>
-              {% endif %}
-            {% endif %}
-            <!-- {% if perms.admin_app.can_view_solution %}
-            <div class="btn-group" role="group" aria-label="View and Edit Buttons for {{ problem.problem_title }}" style="margin-bottom: 5px;">
-              <a class="btn btn-primary btn-sm" href="{% url 'activity_detail_solution' pk=activity.pk %}">View</a>
-              <a class="btn btn-secondary btn-sm" href="{% url 'activity_edit' pk=activity.pk %}">Edit</a>
-            </div>
-            {% else %}
-            <a class="btn btn-primary btn-sm" href="{% url 'activity_detail' pk=activity.pk %}">View</a>
-            {% endif %} -->
-          </div>
-        </div>
+    {% for item in activities %}
+    {% include "public_app/activity_listview.html" %}
     {% endfor %}
   </div>
 {% endblock %}

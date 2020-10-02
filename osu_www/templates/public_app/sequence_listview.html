@@ -2,10 +2,10 @@
 {% load activity_extras %}
 <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
+        <p class="beast">{{ item.beast }}</p>
         <h5><a href="{% url 'sequence_detail' pk=item.pk %}">{{ item.title }}
                 {% if not item.publication %}<span
                     class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
-        <p class="card-text" style="margin-bottom: 5px;">{{ item.beast }}</p>
 
         {% if item.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
                 style="margin-right: 1em;">{{ item.topics|tagbuttons }}</span></p>{% endif %}

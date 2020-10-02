@@ -2,23 +2,21 @@
 {% load problem_extras %}
 {% block title %}Homework Problems{% endblock %}
 {% block content %}
-  <div class="container">
-    <div class="page-header">
-      <h1>Homework Problems</h1>
-    </div>
+  <div class="page-header">
+    <h1>Homework Problems</h1>
   </div>
 
+{% if perms.admin_app.can_add_problem %}
+<p><a class="btn btn-sm btn-success" href="{% url 'problem_new' %}" class="top-menu"><span class="oi oi-plus"
+      title="Add new problem button" alt="Create a new homework problem."></span> Add Problem</a></p>
+{% endif %}
+<div class="searchresults">
+  {% for item in problems %}
+  {% include "public_app/problem_listview.html" %}
+  {% empty %}
   <div class="container">
-  <!-- <p>This is the templates/public_app/problem_list.html file.</p> -->
-    {% if perms.admin_app.can_add_problem %}
-    <p><a class="btn btn-sm btn-success" href="{% url 'problem_new' %}" class="top-menu"><span class="oi oi-plus" title="Add new problem button" alt="Create a new homework problem."></span> Add Problem</a></p>
-    {% endif %}
-    <div class="row">
-    {% for item in problems %}
-        {% include "public_app/problem_listview.html" %}
-    {% empty %}
-        <div class="container"><h4>No problems have been published at this time.</h4></div>
-    {% endfor %}
-    </div><!-- end row iteration of problems with formatting for cards -->
+    <h4>No problems have been published at this time.</h4>
   </div>
+  {% endfor %}
+</div>
 {% endblock %}
