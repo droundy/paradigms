@@ -143,6 +143,7 @@ class Problem(models.Model):
 
     @property
     def icon(self):
+        return mark_safe('<i class="material-icons">assignment</i>')
         return mark_safe('<span class="oi oi-pencil"></span>')
 
     @property
@@ -297,18 +298,31 @@ class Activity(models.Model):
     def icon(self):
         # iterate through possible choices for type of beast
         BEASTICONS = {
-            choices.TBCSMALLGROUP: "puzzle-piece",
-            choices.TBCSMALLBOARD: "person",
-            choices.TBCMATHEMATICA: "code",
-            choices.TBCKINESTHETIC: "bolt",
-            choices.TBCQUIZ: "question-mark",
-            choices.TBCWHOLECLASS: "people",
-            choices.TBCEXPERIMENT: "beaker",
-            choices.TBCCOMPUTERSIM: "laptop",
-            choices.TBCLECTURE: "microphone",
+            # choices.TBCSMALLGROUP: "puzzle-piece",
+            # choices.TBCSMALLBOARD: "person",
+            # choices.TBCMATHEMATICA: "code",
+            # choices.TBCKINESTHETIC: "bolt",
+            # choices.TBCQUIZ: "question-mark",
+            # choices.TBCWHOLECLASS: "people",
+            # choices.TBCEXPERIMENT: "beaker",
+            # choices.TBCCOMPUTERSIM: "laptop",
+            # choices.TBCLECTURE: "microphone",
         }
         if self.type_of_beast in BEASTICONS:
             return mark_safe('<span class="oi oi-' + BEASTICONS[self.type_of_beast] + '"></span> ')
+        ICONS = {
+            choices.TBCSMALLGROUP: '<i class="material-icons">group_work</i>',
+            choices.TBCSMALLBOARD: '<i class="material-icons">assignment_ind</i>',
+            choices.TBCMATHEMATICA: '<i class="material-icons">insights</i>',
+            choices.TBCKINESTHETIC: '<i class="material-icons">accessibility</i>',
+            choices.TBCQUIZ: '<i class="material-icons">grading</i>',
+            choices.TBCWHOLECLASS: '<i class="material-icons">forum</i>',
+            choices.TBCEXPERIMENT: '<i class="material-icons">biotech</i>',
+            choices.TBCCOMPUTERSIM: '<i class="material-icons">computer</i>',
+            choices.TBCLECTURE: '<i class="material-icons">face</i>',
+        }
+        if self.type_of_beast in ICONS:
+            return mark_safe(ICONS[self.type_of_beast])
         return ''
 
     @property
@@ -435,6 +449,7 @@ class Sequence(models.Model):
 
     @property
     def icon(self):
+        return mark_safe('<i class="material-icons">format_list_numbered</i>')
         return mark_safe('<span class="oi oi-sort-ascending"></span>')
 
     @property

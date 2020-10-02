@@ -5,7 +5,7 @@
         <h5><a href="{% url 'sequence_detail' pk=sequence.pk %}">{{ sequence.title }}
                 {% if not sequence.publication %}<span
                     class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
-        <p class="card-text" style="margin-bottom: 5px;">{{ sequence.beast }} Sequence</p>
+        <p class="card-text" style="margin-bottom: 5px;">{{ sequence.beast }}</p>
 
         {% if sequence.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
                 style="margin-right: 1em;">{{ sequence.topics|tagbuttons }}</span></p>{% endif %}
