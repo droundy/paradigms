@@ -146,6 +146,10 @@ class Problem(models.Model):
         return mark_safe('<span class="oi oi-pencil"></span>')
 
     @property
+    def beast(self):
+        return mark_safe(self.icon + ' Homework')
+
+    @property
     def title(self):
         return self.problem_title
 
@@ -433,7 +437,7 @@ class Sequence(models.Model):
 
     @property
     def beast(self):
-        return mark_safe('<span class="oi oi-sort-ascending"></span>' + ' Sequence')
+        return mark_safe(self.icon + ' Sequence')
 
     class Meta:
         permissions = (
