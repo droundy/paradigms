@@ -358,6 +358,7 @@ class Activity(models.Model):
             return []
 
     class Meta:
+        verbose_name_plural = "activities"
         permissions = (
             ("can_edit_activity", "Edit Activity"),
             ("can_add_activity", "Add Activity"),
