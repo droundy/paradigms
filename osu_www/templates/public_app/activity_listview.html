@@ -2,23 +2,23 @@
 {% load activity_extras %}
 <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
-        <h5><a href="{% url 'activity_detail' pk=activity.pk %}">{{ activity.title }}
-                {% if not activity.publication %}<span
+        <h5><a href="{% url 'activity_detail' pk=item.pk %}">{{ item.title }}
+                {% if not item.publication %}<span
                     class="badge badge-danger"><span class="oi oi-warning"></span> Draft</span>{% endif %}</a></h5>
 
-        <p class="card-text" style="margin-bottom: 5px;"> {{ activity.beast }}
-            {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ activity.time_estimate }} min.{% endif %}
+        <p class="card-text" style="margin-bottom: 5px;"> {{ item.beast }}
+            {% if item.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em; margin-right:"></span> {{ item.time_estimate }} min.{% endif %}
         </p>
-        {% if activity.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
-                style="margin-right: 1em;">{{ activity.topics|tagbuttons }}</span></p>{% endif %}
+        {% if item.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
+                style="margin-right: 1em;">{{ item.topics|tagbuttons }}</span></p>{% endif %}
 
-        {% if activity.overview_paragraph %}
+        {% if item.overview_paragraph %}
         {% if forloop.counter == 1 %}
-        <p>{% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}
+        <p>{{ item.overview_paragraph| latex_omit_solution }}
         </p>
         {% else %}
         <p class="overflow-auto">
-            {% if perms.admin_app.can_add_activity %}{{ activity.overview_paragraph| latex_with_solution }}{% else %}{{ activity.overview_paragraph| latex_omit_solution }}{% endif %}
+            {{ item.overview_paragraph| latex_omit_solution }}
         </p>
         {% endif %}
         {% endif %}

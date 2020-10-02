@@ -14,7 +14,7 @@
     <p><a class="btn btn-sm btn-success" href="{% url 'problem_new' %}" class="top-menu"><span class="oi oi-plus" title="Add new problem button" alt="Create a new homework problem."></span> Add Problem</a></p>
     {% endif %}
     <div class="row">
-    {% for problem in problems %}
+    {% for item in problems %}
         {% include "public_app/problem_listview.html" %}
     {% empty %}
         <div class="container"><h4>No problems have been published at this time.</h4></div>
