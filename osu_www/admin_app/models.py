@@ -314,7 +314,7 @@ class Activity(models.Model):
             choices.TBCSMALLGROUP: '<i class="material-icons">group_work</i>',
             choices.TBCSMALLBOARD: '<i class="material-icons">assignment_ind</i>',
             choices.TBCMATHEMATICA: '<i class="material-icons">insights</i>',
-            choices.TBCKINESTHETIC: '<i class="material-icons">accessibility</i>',
+            choices.TBCKINESTHETIC: '<i class="material-icons">accessibility_new</i>',
             choices.TBCQUIZ: '<i class="material-icons">grading</i>',
             choices.TBCWHOLECLASS: '<i class="material-icons">forum</i>',
             choices.TBCEXPERIMENT: '<i class="material-icons">biotech</i>',
