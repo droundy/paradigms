@@ -314,7 +314,10 @@ class Activity(models.Model):
 
     @property
     def beast(self):
-        return mark_safe(str(self.icon) + ' ' + str(self.type_of_beast))
+        if self.icon is not None and self.type_of_beast is not None:
+            return mark_safe(str(self.icon) + ' ' + str(self.type_of_beast))
+        else:
+            return "???"
 
     @property
     def has_solution(self):
