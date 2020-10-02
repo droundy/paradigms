@@ -89,7 +89,7 @@
         {% endif %}
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
+        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'haystack_search' %}">
           {% csrf_token %}
           <input class="form-control-sm mr-sm-1" type="search" name="q" id="q" placeholder="Search">
           <input type="hidden" name="search_type" value="Both">

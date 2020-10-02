@@ -23,7 +23,7 @@
   </head>
   <body>
   <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3366cc;">
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #006a8e;">
 
       <a class="navbar-brand" href="/"><img src="/static/paradigms_logo.png" height="30" class="d-inline-block align-top" alt="" style="padding-right: 5px;"> Paradigms @ OSU</a>
 
@@ -89,10 +89,8 @@
         {% endif %}
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'HomeworkSearchView' %}">
-          {% csrf_token %}
+        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'haystack_search' %}">
           <input class="form-control-sm mr-sm-1" type="search" name="q" id="q" placeholder="Search">
-          <input type="hidden" name="search_type" value="Both">
           <button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass" title="Search" alt="Search Homework or Activities by title or topic"></span></button>
         </form>
 

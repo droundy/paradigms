@@ -1,6 +1,6 @@
 from django.urls import path
 from public_app import views
-from django.conf.urls import url
+from django.conf.urls import url, include
 from site_directory import views
 
 urlpatterns = [
@@ -8,5 +8,5 @@ urlpatterns = [
     
     path('keyword/<searchterm>', views.HomeworkKeywordView, name='homework_keyword'),
 
-    path('', views.HomeworkSearchView, name='HomeworkSearchView'),
+    path('', include('haystack.urls')),
 ]
