@@ -70,7 +70,7 @@
       </blockquote>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.type_of_beast|trimtob }} {% endif %}
+      <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.icon }} {{ activity.type_of_beast }} {% endif %}
         {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span>
         {{ activity.time_estimate }} min. {% endif %}
         {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span>

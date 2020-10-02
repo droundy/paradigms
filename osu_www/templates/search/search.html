@@ -22,7 +22,7 @@
 
             {% for result in page.object_list %}
             {% if result.object.publication or perms.admin_pp.change_problem %}
-            {% if result.object.type_of_beast %}
+            {% if result.object.is_activity %}
             {% with activity=result.object %}
             {% include "public_app/activity_listview.html" %}
             {% endwith %}
@@ -32,7 +32,7 @@
             {% include "public_app/problem_listview.html" %}
             {% endwith %}
             {% endif %}
-            {% if result.object.activities %}
+            {% if result.object.is_sequence %}
             {% with sequence=result.object %}
             {% include "public_app/sequence_listview.html" %}
             {% endwith %}

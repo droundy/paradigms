@@ -46,18 +46,6 @@ TYPEOFBEASTCHOICES = (
     # (TBCHOMEWORK, "Homework"),
 )
 
-BEASTICONS = (
-    (TBCSMALLGROUP, "puzzle-piece"),
-    (TBCSMALLBOARD, "person"),
-    (TBCMATHEMATICA, "code"),
-    (TBCKINESTHETIC, "bolt"),
-    (TBCQUIZ, "question-mark"),
-    (TBCWHOLECLASS, "people"),
-    (TBCEXPERIMENT, "beaker"),
-    (TBCCOMPUTERSIM, "laptop"),
-    (TBCLECTURE, "microphone"),
-)
-
 # Activity Publication Status Choices
 PSCDRAFT = "Draft"
 PSCPUBLISHED = "Published"

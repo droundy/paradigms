@@ -5,10 +5,12 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.urls import reverse
 from autoslug import AutoSlugField
+from django.utils.safestring import mark_safe
 import os
 import latex_snippet
 import cairosvg
 import re
+import admin_app.choices as choices
 # from admin_app.choices import *
 
 
@@ -138,6 +140,10 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.problem_title
+
+    @property
+    def icon(self):
+        return mark_safe('<span class="oi oi-pencil"></span>')
 
     @property
     def title(self):
@@ -280,6 +286,33 @@ class Activity(models.Model):
         return self.title
 
     @property
+    def is_activity(self):
+        return True
+
+    @property
+    def icon(self):
+        # iterate through possible choices for type of beast
+        BEASTICONS = (
+            (choices.TBCSMALLGROUP, "puzzle-piece"),
+            (choices.TBCSMALLBOARD, "person"),
+            (choices.TBCMATHEMATICA, "code"),
+            (choices.TBCKINESTHETIC, "bolt"),
+            (choices.TBCQUIZ, "question-mark"),
+            (choices.TBCWHOLECLASS, "people"),
+            (choices.TBCEXPERIMENT, "beaker"),
+            (choices.TBCCOMPUTERSIM, "laptop"),
+            (choices.TBCLECTURE, "microphone"),
+        )
+        for beast in BEASTICONS:
+            if self.type_of_beast == beast[0]:
+                return mark_safe('<span class="oi oi-' + beast[1] + '"></span> ')
+        return ''
+
+    @property
+    def beast(self):
+        return mark_safe(str(self.icon) + ' ' + str(self.type_of_beast))
+
+    @property
     def has_solution(self):
         if r'\begin{handout}' in self.instructor_guide:
             h = latex_snippet.only_handout(self.instructor_guide)
@@ -389,6 +422,18 @@ class Sequence(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def is_sequence(self):
+        return True
+
+    @property
+    def icon(self):
+        return mark_safe('<span class="oi oi-sort-ascending"></span>')
+
+    @property
+    def beast(self):
+        return mark_safe('<span class="oi oi-sort-ascending"></span>' + ' Sequence')
 
     class Meta:
         permissions = (

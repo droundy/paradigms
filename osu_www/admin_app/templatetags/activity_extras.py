@@ -17,20 +17,6 @@ register = template.Library()
 #     """Removes all values of arg from the given string"""
 #     return value.replace(arg, '')
 
-# Used to repair type_of_beast formatting
-# {{ activity.type_of_beast|trimtob }}
-def trimtob(value):
-    if value:
-        tob = value.strip("('")
-        tob = tob.strip("'),")
-        # iterate through possible choices for type of beast
-        for beast in BEASTICONS:
-            if tob == beast[0]:
-                tob = '<span class="oi oi-' + beast[1] + '"></span> ' + tob
-        return mark_safe(tob)
-    else:
-        return value
-
 @register.filter(needs_autoescape=True)
 def tagbuttons(value, autoescape=True):
     if value:
