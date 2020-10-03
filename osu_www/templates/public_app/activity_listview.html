@@ -11,6 +11,13 @@
         {% if item.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
                 style="margin-right: 1em;">{{ item.topics|tagbuttons }}</span></p>{% endif %}
 
+        {% if query %}
+        {% load highlight %}
+        {% with item.overview_paragraph|latex_omit_solution as text %}
+          {% highlight text with query %}
+        {% endwith %}
+        {% else %}
         {{ item.overview_paragraph| latex_omit_solution }}
+        {% endif %}
     </div>
 </div>

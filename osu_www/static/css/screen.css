@@ -283,3 +283,6 @@ h1, h2, h3 {
   clear: right;
   margin: 0;
 }
+.highlighted {
+  font-weight: bolder;
+}

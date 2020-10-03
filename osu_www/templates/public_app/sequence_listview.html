@@ -10,12 +10,13 @@
         {% if item.topics %}<p class="card-text" style="margin-bottom: 5px;"><span
                 style="margin-right: 1em;">{{ item.topics|tagbuttons }}</span></p>{% endif %}
 
-        {% if item.overview_paragraph %}
-        {% if forloop.counter == 1 %}
-        <p>{{ item.overview_paragraph| latex_omit_solution }}</p>
+        {% if query %}
+        {% load highlight %}
+        {% with item.overview_paragraph|latex_omit_solution as text %}
+          {% highlight text with query %}
+        {% endwith %}
         {% else %}
-        <p class="overflow-auto">{{ item.overview_paragraph| latex_omit_solution }}</p>
-        {% endif %}
+        {{ item.overview_paragraph| latex_omit_solution }}
         {% endif %}
     </div>
 </div>
