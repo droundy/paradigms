@@ -176,6 +176,7 @@ h1, h2, h3 {
 }
 .fadeout {
   height: 15em;
+  height: fit-content(15em);
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
