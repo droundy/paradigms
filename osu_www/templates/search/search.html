@@ -22,7 +22,7 @@
 
         {% for result in page.object_list %}
         {% with item=result.object %}
-        {% if item.publication or perms.admin_pp.change_problem %}
+        {% if item.publication or perms.admin_app.change_problem %}
         {% include "public_app/generic_listview.html" %}
         {% endif %}
         {% endwith %}
