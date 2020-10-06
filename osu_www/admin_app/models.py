@@ -93,9 +93,9 @@ def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
         if len(c) > 0:
             if b is None:
                 b = ''
-            if c[0] == '/' or c.startswith('https://'):
+            if c[0] == '/' or c.startswith('https://paradigms.oregonstate.edu/'):
                 if c.startswith('https://'):
-                    c = c[len('https:/'):]
+                    c = c[len('https://paradigms.oregonstate.edu'):]
                 c = '/var/www/osu_production_env/osu_www'+c
             else:
                 c = '/var/www/osu_production_env/osu_www'+imagedir+c
