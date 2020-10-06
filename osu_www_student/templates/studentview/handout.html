@@ -22,11 +22,15 @@
 <div class="container">
     <div class="card overflow-auto" style="margin-bottom: 10px;">
         <h2 class="card-header">
-            {{ activity.title }} student handout
+            {{ activity.title }} {{ view_name }}
         </h2>
         <h3>{{ day.day }}, {{taught.year}}</h3>
         <div class="card-body">
+            {% if view_name == 'Solution' %}
+            {{ activity.solution_latex | latex_with_solution }}
+            {% else %}
             {{ activity.handout_latex | latex_omit_solution }}
+            {% endif %}
         </div>
     </div>
 </div>

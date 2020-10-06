@@ -72,12 +72,14 @@ def handout(request, pk, view='html'):
         'da': da,
         'view_name': 'Handout'
     }
+    if 'solution' in view:
+        context['view_name'] = 'Solution'
+
     if view == 'pdf':
         context['latex'] = da.activity.pdf_handout_latex
         return render_to_pdf(request, 'activities/activity.tex', context, filename='handout.pdf')
     elif view == 'solution-pdf':
         context['latex'] = da.activity.solution_latex
-        context['view_name'] = 'Solution'
         return render_to_pdf(request, 'activities/activity.tex', context, filename='solution.pdf')
     else:
         return render(request, 'studentview/handout.html', context)
