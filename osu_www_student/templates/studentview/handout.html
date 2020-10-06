@@ -26,7 +26,7 @@
         </h2>
         <h3>{{ day.day }}, {{taught.year}}</h3>
         <div class="card-body">
-            {% if view_name == 'Solution' %}
+            {% if view == 'solution' %}
             {{ activity.solution_latex | latex_with_solution }}
             {% else %}
             {{ activity.handout_latex | latex_omit_solution }}
