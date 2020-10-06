@@ -6,3 +6,9 @@
 
 {{ object.attribution }}
 {{ object.author.name }}
+
+{{ object.course }}
+
+{% for dp in object.dayproblem.all %}
+  {{ dp.day.taught.number }} {{ dp.day.taught.catalog_name }} {{ dp.day.taught.short_name }}
+{% endfor %}

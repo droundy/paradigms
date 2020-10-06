@@ -10,3 +10,9 @@
 {{ object.equipment_required }}
 {{ object.type_of_beast }}
 {{ object.author.name }}
+
+{{ object.course }}
+
+{% for dp in object.dayactivity.all %}
+  {{ dp.day.taught.number }} {{ dp.day.taught.catalog_name }} {{ dp.day.taught.short_name }}
+{% endfor %}
