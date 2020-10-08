@@ -311,7 +311,7 @@ class Activity(models.Model):
         if self.type_of_beast in BEASTICONS:
             return mark_safe('<span class="oi oi-' + BEASTICONS[self.type_of_beast] + '"></span> ')
         ICONS = {
-            choices.TBCSMALLGROUP: '<i class="material-icons">group_work</i>',
+            choices.TBCSMALLGROUP: '<i class="material-icons">group</i>',
             choices.TBCSMALLBOARD: '<i class="material-icons">assignment_ind</i>',
             choices.TBCMATHEMATICA: '<i class="material-icons">insights</i>',
             choices.TBCKINESTHETIC: '<i class="material-icons">accessibility_new</i>',
