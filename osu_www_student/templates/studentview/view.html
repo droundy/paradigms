@@ -143,7 +143,7 @@
                 {% if day.show_solution %}
                 <br/>
                 <a href="{% url 'sv_solution' taught.course.number taught.slug day.problemset_slug %}">Solution</a>
-                <a href="{% url 'sv_solution_pdf' taught.course.number taught.slug day.problemset_slug %}">[PDF]</a>
+                <a href="{% url 'sv_solution_pdf' taught.course.number taught.slug day.problemset_slug %}">(PDF)</a>
                 {% endif %}
             </h5>
         </li>
