@@ -313,10 +313,10 @@ class Activity(models.Model):
         ICONS = {
             choices.TBCSMALLGROUP: '<i class="material-icons">group</i>',
             choices.TBCSMALLBOARD: '<i class="material-icons">assignment_ind</i>',
-            choices.TBCMATHEMATICA: '<i class="material-icons">insights</i>',
+            choices.TBCMATHEMATICA: '<i class="material-icons">computer</i>',
             choices.TBCKINESTHETIC: '<i class="material-icons">accessibility_new</i>',
             choices.TBCQUIZ: '<i class="material-icons">grading</i>',
-            choices.TBCWHOLECLASS: '<i class="material-icons">forum</i>',
+            choices.TBCWHOLECLASS: '<i class="material-icons">groups</i>',
             choices.TBCEXPERIMENT: '<i class="material-icons">biotech</i>',
             choices.TBCCOMPUTERSIM: '<i class="material-icons">computer</i>',
             choices.TBCLECTURE: '<i class="material-icons">face</i>',
