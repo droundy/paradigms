@@ -89,7 +89,7 @@ def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
     for a, b, c in zip(*[splitup[i::3] for i in range(3)]):
         latex += a
 
-        print('b is', b)
+        # print('b is', b)
         if len(c) > 0:
             if b is None:
                 b = ''

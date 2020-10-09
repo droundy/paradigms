@@ -158,7 +158,7 @@ def activity_pdf_guide(request, pk):
 
     context = {
         'activity': activity,
-        'latex': activity.guide_latex,
+        'latex': activity.pdf_guide_latex,
         'activity_sequences': activity_sequences,
         'this_key': this_key,
         'form': form,
@@ -172,7 +172,7 @@ def activity_pdf_solution(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     context = {
         'activity': activity,
-        'latex': activity.solution_latex,
+        'latex': activity.pdf_solution_latex,
         'view_name': 'Solution',
     }
     return render_to_pdf(request, 'activities/activity.tex', context, filename='solution.pdf')
