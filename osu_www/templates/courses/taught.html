@@ -122,7 +122,7 @@
     {% if view == 'schedule' %}
     {% if taught.today %}<a href="#today">Skip to today</a>{% endif %}
     <div class="schedule">
-        <h5 class="thisday"{% if taught.today == day %} id="today"{% endif %}>Day</h5>
+        <h5 class="thisday">Day</h5>
         {% if taught.has_topics %}<h5 class="topic">Topic</h5>{% endif %}
         {% if taught.has_activities %}<h5 class="activities">In class today</h5>{% endif %}
         {% if taught.has_resources %}<h5 class="resources">Resources</h5>{% endif %}
@@ -130,7 +130,7 @@
         <hr />
 
         {% for day in days %}
-        <div class="thisday">{{day.day}}</div>
+        <div class="thisday"{% if taught.today == day %} id="today"{% endif %}>{{day.day}}</div>
         {% if day.topic %}
         <div class="topic">{{day.topic | latex_omit_solution  }}</div>{% endif %}
         {% if day.activities.exists %}
