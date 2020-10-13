@@ -122,6 +122,7 @@
         <option value="{{ aa.problem_title }}"></option>
         {% endfor %}
     </datalist>
+    {% if taught.today %}<a href="#today">Skip to today</a>{% endif %}
     <div class="schedule">
         <h5 class="thisday">Day</h5>
         <h5 class="topic">Topic</h5>
@@ -129,12 +130,13 @@
         <h5 class="resources">Resources</h5>
         <h5 class="due">Homework</h5>
         {% for day in days %}
-        <div class="thisday">
+        <div class="thisday"{% if taught.today == day %} id="today"{% endif %}>
             <input type="text" name="day-{{day.pk}}" value="{{day.day}}" required>
             <input type="text" style="max-width: 50%;" name="day-{{day.pk}}-order" value="{{day.order}}">
             <button class="oi oi-trash" alt="Remove" type="submit"
                 onclick="return confirm('Are you sure you want to delete day {{day.day}}?')"
                 name="day-{{day.pk}}-delete"></button>
+            <input type="radio" name="today" value="today-{{day.pk}}"{% if taught.today == day %} checked="checked"{% endif %}> <label for="today-{{day.pk}}">Today</label>
         </div>
 
         <div class="topic">

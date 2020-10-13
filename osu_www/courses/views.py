@@ -94,6 +94,10 @@ def course_as_taught_edit(request, number, year):
                 if not using_old_data:
                     day.delete()
             else:
+                if 'today' in request.POST and request.POST['today'] == 'today-{}'.format(day.pk):
+                    if not using_old_data:
+                        as_taught.today = day
+                print('today-{}'.format(day.pk))
                 day.day = request.POST['day-{}'.format(day.pk)]
                 day.topic = request.POST['day-{}-topic'.format(day.pk)]
                 day.resources = request.POST['day-{}-resources'.format(day.pk)]

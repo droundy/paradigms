@@ -547,6 +547,7 @@ class CourseAsTaught(models.Model):
     slug = AutoSlugField(populate_from='year')
     instructor = models.CharField(max_length=255, blank=True, null=True)
     office_hours = models.TextField(blank=True)
+    today = models.ForeignKey('CourseDay', on_delete=models.CASCADE, null=True)
 
     evaluation = models.TextField(blank=True)
     modification_version = models.PositiveIntegerField(default=0)
