@@ -287,3 +287,7 @@ h1, h2, h3 {
 .highlighted {
   font-weight: bolder;
 }
+.material-icons {
+  font-size: unset;
+  line-height: unset;
+}

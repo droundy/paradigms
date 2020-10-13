@@ -136,7 +136,7 @@
         {% if day.activities.exists %}
         <ul class="activities">
             {% for da in day.dayactivity_set.all %}
-            <li><a href="{% url 'activity_detail' da.activity.pk %}">{{da.activity}}</a>
+            <li><a href="{% url 'activity_detail' da.activity.pk %}">{{da.activity.icon}} {{da.activity}}</a>
                 {% if da.show_handout and da.activity.has_handout %}
                 <a href="{% url 'activity_detail_handout' da.activity.pk %}">(handout)</a>
                 {% else %}
