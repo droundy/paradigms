@@ -13,12 +13,14 @@
   <p><a class="btn btn-sm btn-success" href="/admin/admin_app/course/add/" class="top-menu"><span class="oi oi-plus"
         title="Add new course button" alt="Create a new course."></span> Add Course </a></p>
   {% endif %}
+
   {% for course in courses %}
+  {% if perms.admin_app.edit_problem %}
   <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
       <h5><a
           href="{% url 'course_view' course.number %}">{{ course.catalog_name }}</a>
-  {% if course.publication != 1 %}
+  {% if not course.publication %}
         <span class="badge badge-danger">Unpublished</span>
         {% endif%}</h5>
       <p>
@@ -26,6 +28,7 @@
       </p>
     </div>
   </div>
+  {% endif %}
   {% endfor %}
 </div>
 {% endblock %}
