@@ -293,6 +293,10 @@ class Activity(models.Model):
     @property
     def published_sequences(self):
         return Sequence.objects.filter(activities=self).filter(publication="1")
+    
+    @property
+    def all_sequences(self):
+        return Sequence.objects.filter(activities=self)
 
     @property
     def published(self):
