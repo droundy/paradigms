@@ -289,6 +289,14 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def published_sequences(self):
+        return Sequence.objects.filter(activities=self).filter(publication="1")
+
+    @property
+    def published(self):
+        return self.publication_status == 'Published'
 
     @property
     def is_activity(self):
