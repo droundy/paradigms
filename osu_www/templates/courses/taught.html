@@ -28,7 +28,9 @@
         <li class="breadcrumb-item active" aria-current="page">Schedule</li>
         </li>
         {% endif %}
+        {% if perms.admin_app.change_courseastaught %}
         <li class="breadcrumb-item"><a href="{% url 'course_as_taught_edit' course.number taught.slug %}">Edit</a></li>
+        {% endif %}
     </ol>
 </nav>
 
