@@ -549,7 +549,6 @@ class Course(models.Model):
             return []
         c = []
         taught = taught[-1]
-        print(dir(taught))
         for d in CourseDay.objects.filter(taught=taught).order_by('order'):
             c.append(d)
         return c

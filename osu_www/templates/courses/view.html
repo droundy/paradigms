@@ -52,7 +52,7 @@
                 <dd>{{ course.learning_resources | latex_omit_solution }}</dd>
                 <dt>Student learning outcomes:</dt>
                 <dd>
-                    <ul>
+                    <ul class="checkboxes">
                         {% for lo in course.courselearningoutcome_set.all %}
                         <li>{{ lo.number}}) {{ lo.outcome }} </li>
                         {% endfor %}
