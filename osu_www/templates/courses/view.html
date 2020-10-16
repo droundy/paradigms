@@ -23,8 +23,10 @@
         <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a></li>
         <li class="breadcrumb-item active" aria-current="page">Years</li>
         {% endif %}
+        {% if perms.admin_app.add_course %}
         <li class="breadcrumb-item">
             <a href="/admin/admin_app/course/{{ course.pk }}/change">Edit</a></li>
+        {% endif %}
     </ol>
 </nav>
 
