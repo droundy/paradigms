@@ -42,20 +42,14 @@
                 <dt>Course number:</dt>
                 <dd>{{ course.pretty_number }}</dd>
                 <dt>Course credits:</dt>
-                <dd>3???</dd>
+                <dd>{{ course.credits }}</dd>
                 <dt>Prerequisites:</dt>
                 <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
                 <dt>Course description:</dt>
                 <dd>{{ course.description }}</dd>
-                <dt>Course content:</dt>
-                <dd>
-                    <ul>
-                        <li>Decide what we want here</li>
-                        <li>Add actual content</li>
-                    </ul>
-                </dd>
-
                 {% if view == 'syllabus' %}
+                <dt>Learning resources:</dt>
+                <dd>{{ course.learning_resources | latex_omit_solution }}</dd>
                 <dt>Student learning outcomes:</dt>
                 <dd>
                     <ul>
@@ -65,7 +59,7 @@
                     </ul>
                 </dd>
                 <dt>Evaluation of student performance:</dt>
-                <dd>Edit this please</dd>
+                <dd>{{ course.evaluation | latex_omit_solution }}</dd>
                 <dt>Statement regarding students with disabilities:</dt>
                 <dd>Accommodations for students with disabilities are determined and approved
                     by Disability Access Services (DAS). If you, as a student, believe you are
@@ -76,8 +70,10 @@
                     coordinates implementation of those accommodations. While not required,
                     students and faculty members are encouraged to discuss details of the
                     implementation of individual accommodations.</dd>
-                <dt>Expectations of student conduct:</dt>
-                <dd>Edit this please</dd>
+                <dt>Expectations of student conduct</dt>
+                <dd>Students are expected to comply with the University code of
+                    conduct, available at <a
+                    href="https://beav.es/codeofconduct">https://beav.es/codeofconduct</a>.</dd>
                 <dt>Reach out for success:</dt>
                 <dd>University students encounter setbacks from time to time. If you encounter
                     difficulties and need assistance, it’s important to reach out. Consider
@@ -87,7 +83,16 @@
                     If you are in immediate crisis, please contact
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
-                {% endif %}
+                    {% if course.content %}
+                    <dt>Course content:</dt>
+                    <dd>
+                        <dl>{% for c in course.content %}
+                            <dt>{{ c.day | latex_omit_solution }}</dt><dd>{{ c.topic | latex_omit_solution }}</dd>
+                            {% endfor %}
+                        </dl>
+                    </dd>
+                    {% endif %}
+                    {% endif %}
             </dl>
         </div>
         {% if view == 'years' %}

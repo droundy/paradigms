@@ -541,6 +541,32 @@ class Course(models.Model):
         except:
             return 13
 
+    @property
+    def content(self):
+        ''' gives a set of course content, if available '''
+        taught = list(CourseAsTaught.objects.filter(course=self))
+        if len(taught) == 0:
+            return []
+        c = []
+        taught = taught[-1]
+        print(dir(taught))
+        for d in CourseDay.objects.filter(taught=taught).order_by('order'):
+            c.append(d)
+        return c
+    @property
+    def evaluation(self):
+        ''' gives evaluation of student performance '''
+        taught = list(CourseAsTaught.objects.filter(course=self))
+        if len(taught) == 0:
+            return r'''This class will be graded based on homework and
+            exams.
+            \begin{description}
+              \item[40\%] Homework
+              \item[60\%] Exams
+            \end{description}Late homework is accepted
+            at any point prior tothe final exam, with reduced credit.'''
+        taught = taught[-1]
+        return taught.evaluation
 
 class CourseLearningOutcome(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
