@@ -79,6 +79,7 @@ def HomeworkSearchView(request):
 def HomeworkKeywordView(request, searchterm):
     query = searchterm
     print(query)
+    return redirect('/search/?q='+query)
     if request.user.has_perm("admin_app.change_problem"):
         problem_list = Problem.objects.filter(
             Q(problem_title__icontains=query) | Q(topics__icontains=query) | Q(course__icontains=query) | Q(old_name__icontains=query) | Q(problem_latex__icontains=query)
