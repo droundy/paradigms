@@ -64,7 +64,7 @@ class Timer:
         self._start_time = now
         return f"  {attr.replace('_', ' ')}: {elapsed_time:0.4f} seconds"
 
-
+@permission_required('admin_app.change_courseastaught',login_url='/')
 def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
     timer = Timer()
