@@ -15,7 +15,7 @@
   {% endif %}
 
   {% for course in courses %}
-  {% if perms.admin_app.edit_problem %}
+  {% if perms.admin_app.edit_problem or course.publication %}
   <div class="card overflow-auto" style="margin-bottom: 10px;">
     <div class="card-body">
       <h5><a
@@ -30,6 +30,5 @@
   </div>
   {% endif %}
   {% endfor %}
-  Coming soon!
 </div>
 {% endblock %}
