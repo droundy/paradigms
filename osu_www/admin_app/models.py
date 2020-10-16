@@ -542,21 +542,28 @@ class Course(models.Model):
             return 13
 
     @property
-    def content(self):
-        ''' gives a set of course content, if available '''
+    def canonical_taught(self):
+        ''' Returns the canonical as-taught if it exists '''
         taught = list(CourseAsTaught.objects.filter(course=self))
         if len(taught) == 0:
+            return None
+        return taught[-1]
+
+    @property
+    def content(self):
+        ''' gives a set of course content, if available '''
+        taught = self.canonical_taught
+        if taught is None:
             return []
         c = []
-        taught = taught[-1]
         for d in CourseDay.objects.filter(taught=taught).order_by('order'):
             c.append(d)
         return c
     @property
     def evaluation(self):
         ''' gives evaluation of student performance '''
-        taught = list(CourseAsTaught.objects.filter(course=self))
-        if len(taught) == 0:
+        taught = self.canonical_taught
+        if taught is None:
             return r'''This class will be graded based on homework and
             exams.
             \begin{description}
@@ -564,7 +571,6 @@ class Course(models.Model):
               \item[60\%] Exams
             \end{description}Late homework is accepted
             at any point prior tothe final exam, with reduced credit.'''
-        taught = taught[-1]
         return taught.evaluation
 
 class CourseLearningOutcome(models.Model):
