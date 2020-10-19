@@ -680,7 +680,7 @@ class CourseDay(models.Model):
         return slugify(self.problemsetname)
 
 def slugify(x):
-    s = x.replace(' ', '').lower()
+    s = x.replace(' ', '').replace(')', '').replace('(', '').lower()
     if s == '':
         return 'none'
     return s
