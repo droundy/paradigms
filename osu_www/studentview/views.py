@@ -25,7 +25,7 @@ user = get_user_model()
 logger = logging.getLogger(__name__)
 
 def home(request):
-    courses = sorted(CourseAsTaught.objects.all(), key=lambda c: c.course.quarter_integer)
+    courses = sorted(CourseAsTaught.objects.filter(course__publication=True), key=lambda c: c.course.quarter_integer)
     return render(request, 'studentview/home.html', {
         'as_taughts': courses,
     })
