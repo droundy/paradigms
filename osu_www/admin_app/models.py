@@ -489,7 +489,7 @@ class SequenceItems(models.Model):
 
 
 course_number_validator = RegexValidator(
-    regex=r'^ph\d+$', message='Enter a value of form ph123')
+    regex=r'^(ph|aims|mth)\d+$', message='Enter a value of form ph123')
 
 
 class Course(models.Model):
@@ -497,10 +497,10 @@ class Course(models.Model):
         max_length=255, blank=True, null=True, verbose_name="Course name in catalog")
     short_name = models.CharField(
         max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
-    number = models.CharField(max_length=255, blank=True, null=True,
+    number = models.CharField(max_length=255,
                               help_text='include ph e.g. "ph425"',
                               validators=[course_number_validator])
-    quarter_numbers = models.CharField(max_length=255, blank=True, null=True,
+    quarter_numbers = models.CharField(max_length=255, default='1',
                                        help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
     description = models.TextField(
         blank=True, null=True, verbose_name='Description in catalog')
@@ -526,6 +526,10 @@ class Course(models.Model):
         ''' like PH 365 '''
         if 'ph' == self.number[:2]:
             return 'PH ' + self.number[2:]
+        if 'aims' == self.number[:4]:
+            return 'AIMS ' + self.number[4:]
+        if 'mth' == self.number[:3]:
+            return 'MTH ' + self.number[3:]
         return self.number
 
     @property
