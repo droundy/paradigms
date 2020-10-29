@@ -32,7 +32,7 @@ def course_list(request):
         'courses': courses,
     })
 
-@permission_required('admin_app.change_courseastaught',login_url='/')
+@permission_required('admin_app.can_edit_problem',login_url='/')
 def course_as_taught(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
