@@ -219,6 +219,7 @@ def get_problem_title(query, all, key):
     except:
         return None
 
+@permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_set(request, number, year, problemset, view='html'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
