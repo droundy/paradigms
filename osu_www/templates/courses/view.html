@@ -60,7 +60,25 @@
                         {% endfor %}
                     </ul>
                 </dd>
-                <dt>Evaluation of student performance:</dt>
+                {% if course.coursecontent_set %}
+                <dt>Course content:</dt>
+                <dd>
+                    <ul class="checkboxes">
+                        {% for c in course.coursecontent_set.all %}
+                        <li>{{ c.number}}) {{ c.topic | latex_omit_solution }} </li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+                {% elif course.content %}
+                <dt>Course content:</dt>
+                <dd>
+                    <dl>{% for c in course.content %}
+                        <dt>{{ c.day | latex_omit_solution }}</dt><dd>{{ c.topic | latex_omit_solution }}</dd>
+                        {% endfor %}
+                    </dl>
+                </dd>
+                {% endif %}
+            <dt>Evaluation of student performance:</dt>
                 <dd>{{ course.evaluation | latex_omit_solution }}</dd>
                 <dt>Statement regarding students with disabilities:</dt>
                 <dd>Accommodations for students with disabilities are determined and approved
@@ -85,15 +103,6 @@
                     If you are in immediate crisis, please contact
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
-                    {% if course.content %}
-                    <dt>Course content:</dt>
-                    <dd>
-                        <dl>{% for c in course.content %}
-                            <dt>{{ c.day | latex_omit_solution }}</dt><dd>{{ c.topic | latex_omit_solution }}</dd>
-                            {% endfor %}
-                        </dl>
-                    </dd>
-                    {% endif %}
                     {% endif %}
             </dl>
         </div>

@@ -87,7 +87,19 @@
                     </ul>
                 </dd>
                 <dt>Course content:</dt>
-                <dd>See course schedule.</dd>
+                {% if course.coursecontent_set %}
+                <dd>
+                    <ul class="checkboxes">
+                        {% for c in course.coursecontent_set.all %}
+                        <li>{{ c.number}}) {{ c.topic | latex_omit_solution }} </li>
+                        {% endfor %}
+                    </ul>
+                    See also <a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">course schedule</a>.
+                </dd>
+                {% elif course.content %}
+                <dt>Course content:</dt>
+                    <dd>See <a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">schedule</a>.</dd>
+                {% endif %}
                 <dt>Evaluation of student performance:</dt>
                 <dd>{{ taught.evaluation | latex_omit_solution }}</dd>
                 <dt>Statement regarding students with disabilities:</dt>
