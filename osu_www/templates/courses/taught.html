@@ -90,8 +90,24 @@
                 {% if course.coursecontent_set %}
                 <dd>
                     <ul class="checkboxes">
-                        {% for c in course.coursecontent_set.all %}
-                        <li>{{ c.number}}) {{ c.topic | latex_omit_solution }} </li>
+                        {% for c in course_contents %}
+                        <li>
+                        {% if c.my_activities or c.my_problems %}
+                        <details>
+                            <summary>{{ c.number}}) {{ c.topic | latex_omit_solution }}</summary>
+                            <ul>
+                                {% for activity in c.my_activities %}
+                                <li>Taught: {{ activity }}</li>
+                                {% endfor %}
+                                {% for problem in c.my_problems %}
+                                <li>Assessed: {{ problem }}</li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                        {% else %}
+                        {{ c.number}}) {{ c.topic | latex_omit_solution }}
+                        {% endif %}
+                        </li>
                         {% endfor %}
                     </ul>
                     See also <a href="{% url 'course_as_taught_schedule' course.number taught.slug %}">course schedule</a>.

@@ -131,6 +131,7 @@ class Problem(models.Model):
         Figure, through='FigureAssociations', related_name='problems')
     course = models.CharField(max_length=255, blank=True, null=True)
     learning_outcomes = models.ManyToManyField('CourseLearningOutcome', related_name='problems')
+    course_topics = models.ManyToManyField('CourseContent', related_name='problems')
     publication = models.BooleanField(
         blank=False, default=False, help_text="Problem is ready for public viewing", verbose_name="Publish Problem")
 
@@ -277,6 +278,7 @@ class Activity(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     associated_paper_links = models.TextField(blank=True, null=True)
     learning_outcomes = models.ManyToManyField('CourseLearningOutcome', related_name='activities')
+    course_topics = models.ManyToManyField('CourseContent', related_name='activities')
     course = models.CharField(max_length=255, blank=True, null=True)
     author_info = models.CharField(max_length=4096, blank=True, null=True)
     media = models.ManyToManyField(

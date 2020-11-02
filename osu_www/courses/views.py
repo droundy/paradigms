@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, CourseAsTaught, Course, CourseLearningOutcome, CourseDay, DayActivity, DayProblem
+from admin_app.models import Problem, Activity, CourseAsTaught, Course, CourseLearningOutcome, CourseContent, CourseDay, DayActivity, DayProblem
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
@@ -43,6 +43,10 @@ def course_as_taught(request, number, year, view='overview'):
     for l in learning_outcomes:
         l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
         l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
+    course_contents = list(CourseContent.objects.filter(course=course))
+    for l in course_contents:
+        l.my_activities = Activity.objects.filter(day__taught=as_taught, course_topics=l)
+        l.my_problems = Problem.objects.filter(day__taught=as_taught, course_topics=l)
     for d in days:
         for a in Activity.objects.filter(day=d):
             if a.readings != '':
@@ -53,6 +57,7 @@ def course_as_taught(request, number, year, view='overview'):
         'view': view,
         'days': days,
         'learning_outcomes': learning_outcomes,
+        'course_contents': course_contents,
     })
 
 class Timer:

@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from admin_app.models import Activity, CourseLearningOutcome
+from admin_app.models import Activity, CourseLearningOutcome, CourseContent
 
 from admin_app.choices import *
 
@@ -34,12 +34,17 @@ class ActivityForm(forms.ModelForm):
     learning_outcomes = forms.ModelMultipleChoiceField(required=False,
                                                        queryset=CourseLearningOutcome.objects.all().order_by('course__number'),
                                                        widget=forms.CheckboxSelectMultiple)
+    course_topics = forms.ModelMultipleChoiceField(required=False,
+                                                       queryset=CourseContent.objects.all().order_by('course__number'),
+                                                       widget=forms.CheckboxSelectMultiple)
 
     activity_image = forms.ImageField(required=False)
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'readings', 'learning_outcomes', 'course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics',
+                  'instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author',
+                  'associated_paper_links', 'readings', 'learning_outcomes', 'course_topics', 'course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
@@ -53,9 +58,12 @@ class ActivityForm(forms.ModelForm):
             for d in self.instance.dayactivity_set.all():
                 courses.add(d.day.taught.course)
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__in=courses)
+            self.fields['course_topics'].queryset = CourseContent.objects.filter(course__in=courses)
         elif self.instance.course:
             self.fields['learning_outcomes'].queryset = CourseLearningOutcome.objects.filter(course__number=self.instance.course).order_by('course__number')
+            self.fields['course_topics'].queryset = CourseContent.objects.filter(course__number=self.instance.course).order_by('course__number')
         self.fields['learning_outcomes'].widget.attrs['class'] = 'checkboxes'
+        self.fields['course_topics'].widget.attrs['class'] = 'checkboxes'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Save Activity'))
 
@@ -94,7 +102,9 @@ class ActivityFormReadOnly(forms.ModelForm):
 
     class Meta:
         model = Activity
-        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics','instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author','associated_paper_links', 'learning_outcomes', 'course','author_info','old_name')
+        fields = ('id','title','overview_paragraph','time_estimate','what_students_learn','type_of_beast','notes','equipment_required','topics',
+                  'instructor_guide','publication_status','publication_date','prerequisite_knowledge','activity_image','keywords','author',
+                  'associated_paper_links', 'learning_outcomes', 'course','author_info','old_name')
         exclude = ()
 
     def __init__(self, *args, **kwargs):
