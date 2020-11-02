@@ -589,7 +589,7 @@ class CourseLearningOutcome(models.Model):
 
 class CourseContent(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    number = models.PositiveIntegerField()
+    number = models.CharField(max_length=255, blank=True)
     topic = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
