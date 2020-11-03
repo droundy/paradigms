@@ -45,14 +45,16 @@ def problem_set(request, number, year, problemset, view='html'):
             if 'hw'+str(which) == problemset:
                 break
             which += 1
-    if not d.show_solution:
-        raise Http404("Solution not available")
     context = {
         'course': course,
         'taught': as_taught,
         'view': view,
         'day': day,
     }
+    if 'solution' in view and not d.show_solution:
+        raise Http404("Solution not available")
+    if not d.show_problemset:
+        raise Http404("Problem set not available")
     if view == 'pdf':
         return render_to_pdf(request, 'courses/problemset.tex', context, filename=d.problemset_slug+'.pdf')
     elif view == 'solution-pdf':
