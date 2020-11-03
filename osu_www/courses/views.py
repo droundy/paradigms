@@ -32,7 +32,7 @@ def course_list(request):
         'courses': courses,
     })
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_edit_problem',login_url='/accounts/google/login')
 def course_as_taught(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
@@ -224,7 +224,7 @@ def get_problem_title(query, all, key):
     except:
         return None
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_edit_problem',login_url='/accounts/google/login')
 def problem_set(request, number, year, problemset, view='html'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
