@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
-from admin_app.models import Problem, Activity, CourseAsTaught, Course, CourseLearningOutcome, CourseDay, DayActivity, DayProblem
+from admin_app.models import Problem, Activity, CourseAsTaught, Course, CourseLearningOutcome, CourseContent, CourseDay, DayActivity, DayProblem
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import get_user_model
