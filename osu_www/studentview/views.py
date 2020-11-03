@@ -78,6 +78,11 @@ def handout(request, pk, view='html'):
     }
     if 'solution' in view:
         context['view_name'] = 'Solution'
+        if not da.show_solution:
+            raise Http404("Solution not available")
+    else:
+        if not da.show_handout:
+            raise Http404("Handout not available")
 
     if view == 'pdf':
         context['latex'] = da.activity.pdf_handout_latex
