@@ -147,10 +147,10 @@
         {% for da in day.dayactivity_set.all %}
         <li>
             {% if da.show_handout and da.activity.has_handout %}
-            <a href="{% url 'sv_handout' da.pk %}">{{da.activity}}</a>
+            <a href="{% url 'sv_handout' da.pk %}">{{da.activity.icon}} {{da.activity}}</a>
             <a href="{% url 'sv_handout_pdf' da.pk %}">(PDF)</a>
             {% else %}
-            {{ da.activity }}
+            {{da.activity.icon}} {{ da.activity }}
             {% endif %}
             {% if da.show_solution and da.activity.has_solution %}
             <a href="{% url 'sv_activity_solution' da.pk %}">(solution)</a>
