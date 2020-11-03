@@ -1,6 +1,6 @@
 from django.core.files.storage import FileSystemStorage
 from django.db import IntegrityError, transaction
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -45,6 +45,8 @@ def problem_set(request, number, year, problemset, view='html'):
             if 'hw'+str(which) == problemset:
                 break
             which += 1
+    if not d.show_solution:
+        raise Http404("Solution not available")
     context = {
         'course': course,
         'taught': as_taught,
