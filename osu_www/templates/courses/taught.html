@@ -193,7 +193,14 @@
         {% if day.problems.exists or day.problemset.exists %}
         <ul class="due">
             {% for problem in day.problems.all %}
-            <li><a href="{% url 'problem_display_html' problem.pk %}">{{problem}}</a></li>
+            <li><a href="{% url 'problem_display_html' problem.pk %}">{{problem}}</a>
+                {% for c in problem.course_topics.all %}
+                T{{ c.number }}{% empty %}
+                {% endfor %}
+                {% for c in problem.learning_outcomes.all %}
+                LO{{ c.number }}{% empty %}
+                {% endfor %}
+            </li>
             {% endfor %}
             {% if day.problemset.exists %}
             <li>
