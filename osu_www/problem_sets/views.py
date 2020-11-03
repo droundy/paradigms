@@ -37,7 +37,7 @@ def strip_whitespace(string):
 # This retrieves a Python logging instance (or creates it)
 logger = logging.getLogger(__name__)
 
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
+@permission_required('admin_app.can_edit_problem_set')
 def problem_set_add(request):
     if request.method == "POST":
         form = ProblemSetAddForm(request.POST)
@@ -55,7 +55,7 @@ def problem_set_add(request):
     return render(request, 'problem_sets/problem_set_add.html', {'form': form, 'page_title': 'Add Problem Set'})
 
 
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
+@permission_required('admin_app.can_edit_problem_set')
 def problem_set_details_solution(request, problem_set_id):
     problem_set = ProblemSet.objects.get(pk=problem_set_id)
     problem_set_items = ProblemSetItems.objects.filter(problem_set_id=problem_set_id)
@@ -80,7 +80,7 @@ def problem_set_details_solution(request, problem_set_id):
 
 ########################### EDIT PROBLEM SET ##################################
 
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
+@permission_required('admin_app.can_edit_problem_set')
 def edit_problem_set_old(request, problem_set_id):
 
     problem_group = ProblemSet.objects.get(pk=problem_set_id)
@@ -209,7 +209,7 @@ def edit_problem_set_old(request, problem_set_id):
     return render(request, 'problem_sets/problem_set_edit.html', context)
 
 ########################### EDIT PROBLEM SET NEW ##################################
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
+@permission_required('admin_app.can_edit_problem_set')
 def edit_problem_set(request, problem_set_id):
 
     SIREQUIRED = "Required"
@@ -411,7 +411,7 @@ def edit_problem_set(request, problem_set_id):
     }
     return render(request, 'problem_sets/problem_set_edit_3.html', context)
 
-@permission_required('admin_app.can_edit_problem_set',login_url='/')
+@permission_required('admin_app.can_edit_problem_set')
 def list_problem_sets(request):
     problem_set_list = ProblemSet.objects.all().order_by('title')
     # print(problem_set_list)

@@ -97,7 +97,7 @@ def homepage_render(request):
 
         return render(request, 'pages/render.html', context)
 
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_edit_problem',login_url='/accounts/google/login')
 def page_new(request):
     # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -118,7 +118,7 @@ def page_new(request):
         form = PageForm()
     return render(request, 'pages/add.html', {'form': form, 'page_title': 'Add Page or Whitepaper'})
 
-@permission_required('admin_app.can_edit_pages',login_url='/')
+@permission_required('admin_app.can_edit_pages',login_url='/accounts/google/login')
 def page_edit(request, pagename):
         this_page = get_object_or_404(Pages, slug=pagename)
         thisPrimaryKey = this_page.pk

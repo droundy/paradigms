@@ -16,7 +16,6 @@ import subprocess, os
 import unicodedata
 import logging
 
-# @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_list(request):
     if request.user.has_perm("admin_app.can_edit_problem"):
         problems = Problem.objects.all().order_by('problem_title')
@@ -24,7 +23,7 @@ def problem_list(request):
         problems = Problem.objects.filter(publication=1).order_by('problem_title')
     return render(request, 'public_app/problem_list.html', {'problems': problems, 'page_title': 'Homework Problems'})
 
-@permission_required('admin_app.can_add_problem',login_url='/')
+@permission_required('admin_app.can_add_problem')
 def problem_new(request):
     # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -47,7 +46,7 @@ def problem_new(request):
     return render(request, 'public_app/problem_multi_edit_preview.html', {'form': form, 'page_title': 'Add Homework Problem'})
 
 #@login_required
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_edit_problem')
 def problem_edit(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -65,7 +64,7 @@ def problem_edit(request, pk):
 
 ####
 #@login_required
-@permission_required('admin_app.can_edit_problem',login_url='/')
+@permission_required('admin_app.can_edit_problem')
 def problem_edit_preview(request, pk):
     problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -164,7 +163,6 @@ def problem_display_html_solution(request, pk):
     }
     return render(request, 'public_app/problem_display.html', context)
 
-# @permission_required('admin_app.can_edit_problem',login_url='/')
 def problem_display_html(request, pk):
     latex_problem = get_object_or_404(Problem, pk=pk)
     if latex_problem.publication == 1 or request.user.has_perm("admin_app.change_problem"):

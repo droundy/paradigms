@@ -17,7 +17,7 @@ import unicodedata
 import logging
 from django_tex.shortcuts import render_to_pdf
 
-@permission_required('admin_app.can_edit_activity',login_url='/')
+@permission_required('admin_app.can_edit_activity',login_url='/accounts/google/login')
 def activity_new(request):
     if request.method == "POST":
         form = ActivityForm(request.POST, request.FILES)
@@ -44,7 +44,7 @@ def activity_new(request):
         form = ActivityForm(context)
     return render(request, 'activities/activity_edit.html', {'form': form, 'page_title': 'Add Activity'})
 
-@permission_required('admin_app.can_edit_activity',login_url='/')
+@permission_required('admin_app.can_edit_activity',login_url='/accounts/google/login')
 def activity_edit(request, pk):
     activity = get_object_or_404(Activity, pk=pk)
     this_key = pk

@@ -1,7 +1,7 @@
 #from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.db import IntegrityError, transaction
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -32,7 +32,7 @@ def course_list(request):
         'courses': courses,
     })
 
-@permission_required('admin_app.can_edit_problem',login_url='/accounts/google/login')
+@permission_required('admin_app.can_edit_problem')
 def course_as_taught(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
@@ -70,7 +70,7 @@ class Timer:
         self._start_time = now
         return f"  {attr.replace('_', ' ')}: {elapsed_time:0.4f} seconds"
 
-@permission_required('admin_app.change_courseastaught',login_url='/')
+@permission_required('admin_app.change_courseastaught')
 def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
     timer = Timer()
@@ -224,7 +224,7 @@ def get_problem_title(query, all, key):
     except:
         return None
 
-@permission_required('admin_app.can_edit_problem',login_url='/accounts/google/login')
+@permission_required('admin_app.can_edit_problem')
 def problem_set(request, number, year, problemset, view='html'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
@@ -257,7 +257,8 @@ def course_view(request, number, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
     as_taught = CourseAsTaught.objects.filter(course=course)
-    print(list(as_taught))
+    if not course.publication and not request.user.has_perm('admin_app.can_edit_problem'):
+        raise Http404("Course not published")
     return render(request, 'courses/view.html', {
         'course': course,
         'view': view,

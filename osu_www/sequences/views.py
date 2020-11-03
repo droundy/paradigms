@@ -22,7 +22,7 @@ user = get_user_model()
 # This retrieves a Python logging instance (or creates it)
 logger = logging.getLogger(__name__)
 
-@permission_required('admin_app.can_edit_sequence',login_url='/')
+@permission_required('admin_app.can_edit_sequence')
 def sequence_new(request):
     # problem = get_object_or_404(Problem, pk=pk)
     if request.method == "POST":
@@ -42,7 +42,7 @@ def sequence_new(request):
         form = SequenceForm()
     return render(request, 'sequences/sequence_add.html', {'form': form, 'page_title': 'Add Sequence'})
 
-@permission_required('admin_app.can_edit_sequence',login_url='/')
+@permission_required('admin_app.can_edit_sequence')
 def sequence_edit(request, pk):
     view_name = 'sequence_edit'
     sequence = get_object_or_404(Sequence, pk=pk)
@@ -229,35 +229,3 @@ def unassociate_problem(request, sequence_id, problem_id):
 def unassociate_activity(request, sequence_id, activity_id):
     Sequence.objects.get(id=sequence_id).activities.remove(activity_id)
     return redirect('sequence_edit', pk=sequence_id)
-
-# @permission_required('admin_app.can_edit_sequence',login_url='/')
-# class update_sequence_item(UpdateView):
-#     model = SequenceItems
-#     fields = ['item_position','role_in_sequence']
-
-# @permission_required('admin_app.can_edit_sequence',login_url='/')
-# def update_sequence_item(request, sequence_id, item_id):
-#     # problem = get_object_or_404(Problem, pk=pk)
-#     sequence_item = SequenceItems.objects.get(id=item_id)
-#     if request.method == 'POST':
-#         item_form = ItemUpdateForm(request.POST, instance=sequence_item)
-#         item_form.save()
-
-    # sequence_item.item_position = '2'
-    # sequence_item.role_in_sequence =
-    # sequence_item.save()
-    # if request.method == "POST":
-    #     logging.error('FORM POSTED')
-    #     # messages.error(request, 'ONEONEONE')
-    #     item_form = ItemUpdateForm(request.POST)
-    #     if item_form.is_valid():
-    #         messages.error(request, 'TWOTWOTWO')
-    #         itemDetails = item_form.save(commit=False)
-    #         itemDetails.save()
-    #         return redirect('sequence_edit', pk=sequence_id)
-    #     else:
-    #         messages.error(request, form.errors)
-    #         #return redirect('problem_edit_preview', pk=problem.pk)
-    # else:
-    #     itemForm = ItemUpdateForm()
-    # return redirect('sequence_edit', pk=sequence_id)
