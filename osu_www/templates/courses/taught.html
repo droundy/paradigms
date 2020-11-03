@@ -178,6 +178,12 @@
                 (<s>solution</s>)
                 {% endif %}
                 {% endif %}
+                {% for c in da.activity.course_topics.all %}
+                T{{ c.number }}{% empty %}
+                {% endfor %}
+                {% for c in da.activity.learning_outcomes.all %}
+                LO{{ c.number }}{% empty %}
+                {% endfor %}
             </li>
             {% endfor %}
         </ul>

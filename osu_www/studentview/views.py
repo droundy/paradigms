@@ -96,6 +96,10 @@ def schedule(request, number, year, view='overview'):
     for l in learning_outcomes:
         l.my_activities = Activity.objects.filter(day__taught=as_taught, learning_outcomes=l)
         l.my_problems = Problem.objects.filter(day__taught=as_taught, learning_outcomes=l)
+    course_contents = list(CourseContent.objects.filter(course=course))
+    for l in course_contents:
+        l.my_activities = Activity.objects.filter(day__taught=as_taught, course_topics=l)
+        l.my_problems = Problem.objects.filter(day__taught=as_taught, course_topics=l)
     for d in days:
         for a in Activity.objects.filter(day=d):
             if a.readings != '':
@@ -106,4 +110,5 @@ def schedule(request, number, year, view='overview'):
         'view': view,
         'days': days,
         'learning_outcomes': learning_outcomes,
+        'course_contents': course_contents,
     })
