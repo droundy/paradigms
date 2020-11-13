@@ -1,0 +1,6 @@
+{
+    "files.watcherExclude": {
+        "**/__pycache__/**": true,
+        "**/venv/**": true
+    }
+}
