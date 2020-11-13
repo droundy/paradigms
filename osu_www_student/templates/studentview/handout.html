@@ -29,7 +29,7 @@
             {% if view == 'solution' %}
             {{ activity.solution_latex | latex_with_solution }}
             {% else %}
-            {{ activity.handout_latex | latex_omit_solution }}
+            {{ activity.handout_latex | latex_omit_guide }}
             {% endif %}
         </div>
     </div>

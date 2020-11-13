@@ -33,7 +33,7 @@
             <dd>{{ taught.instructor }}</dd>
             {% if taught.office_hours %}
             <dt>Office hours:</dt>
-            <dd>{{ taught.office_hours | latex_omit_solution }}</dd>
+            <dd>{{ taught.office_hours | latex_omit_guide }}</dd>
             {% endif %}
             <dt>Course credits:</dt>
             <dd>{{course.credits}}</dd>
@@ -43,7 +43,7 @@
             <dd>{{ course.description }}</dd>
             {% if course.learning_resources %}
             <dt>Learning resources:</dt>
-            <dd>{{ course.learning_resources | latex_omit_solution }}</dd>{% endif %}
+            <dd>{{ course.learning_resources | latex_omit_guide }}</dd>{% endif %}
             <dt>Learning outcomes:</dt>
             <dd>
                 <ul class="checkboxes">
@@ -76,7 +76,7 @@
                     <li>
                     {% if c.my_activities or c.my_problems %}
                     <details>
-                        <summary>{{ c.number}}) {{ c.topic | latex_omit_solution }}</summary>
+                        <summary>{{ c.number}}) {{ c.topic | latex_omit_guide }}</summary>
                         <ul>
                             {% for activity in c.my_activities %}
                             <li>Taught: {{ activity }}</li>
@@ -87,7 +87,7 @@
                         </ul>
                     </details>
                     {% else %}
-                    {{ c.number}}) {{ c.topic | latex_omit_solution }}
+                    {{ c.number}}) {{ c.topic | latex_omit_guide }}
                     {% endif %}
                     </li>
                     {% endfor %}
@@ -99,7 +99,7 @@
                 <dd>See <a href="{% url 'sv_schedule' course.number taught.slug %}">schedule</a>.</dd>
             {% endif %}
             <dt>Evaluation of student performance:</dt>
-            <dd>{{ taught.evaluation | latex_omit_solution }}</dd>
+            <dd>{{ taught.evaluation | latex_omit_guide }}</dd>
             <dt>Statement regarding students with disabilities:</dt>
             <dd>Accommodations for students with disabilities are determined and approved
                 by Disability Access Services (DAS). If you, as a student, believe you are
@@ -141,7 +141,7 @@
     {% for day in days %}
     <div class="thisday"{% if taught.today == day %} id="today"{% endif %}>{{day.day}}</div>
     {% if day.topic %}
-    <div class="topic">{{day.topic | latex_omit_solution  }}</div>{% endif %}
+    <div class="topic">{{day.topic | latex_omit_guide  }}</div>{% endif %}
     {% if day.activities.exists %}
     <ul class="activities">
         {% for da in day.dayactivity_set.all %}
@@ -160,13 +160,13 @@
     </ul>
     {% endif %}
     {% if day.resources %}
-    <div class="resources">{{ day.resources | latex_omit_solution }}</div>{% endif %}
+    <div class="resources">{{ day.resources | latex_omit_guide }}</div>{% endif %}
     {% if day.problemset.exists %}
     {% if day.show_problemset %}
     <ul class="due">
         <li>
             <h5>
-                <a href="{% url 'sv_problemset' taught.course.number taught.slug day.problemset_slug %}">{{day.problemsetname | latex_omit_solution }}
+                <a href="{% url 'sv_problemset' taught.course.number taught.slug day.problemset_slug %}">{{day.problemsetname | latex_omit_guide }}
                     due</a>
                 <a href="{% url 'sv_problemset_pdf' taught.course.number taught.slug day.problemset_slug %}">(PDF)</a>
                 {% if day.show_solution %}

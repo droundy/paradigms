@@ -28,6 +28,12 @@ def latex_omit_solution(value):
     else:
         return value
 
+@register.filter()
+def latex_omit_guide(value):
+    if value:
+        return mark_safe(modify_html(latex_snippet.html_omit_solution(latex_snippet.omit_guide(value))))
+    else:
+        return value
 
 def append_class(tag, c):
     tag['class'] = tag.get('class', []) + [c]
