@@ -71,14 +71,12 @@
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item">{% if activity.type_of_beast %} {{ activity.icon }} {{ activity.type_of_beast }} {% endif %}
-        {% if activity.time_estimate %}<span class="oi oi-clock" style="margin-left: 1em;"></span>
+        {% if activity.time_estimate %}<span class="material-icons" style="margin-left: 1em;">schedule</span>
         {{ activity.time_estimate }} min. {% endif %}
-        {% if activity.equipment_required %}<span class="oi oi-wrench" style="margin-left: 1em;"></span>
+        {% if activity.equipment_required %}<span class="material-icons" style="margin-left: 1em;">build</span>
         {{ activity.equipment_required }}{% endif %}
-        {% if activity.handout_latex %}<a
-        href="{% url 'activity_detail_handout' pk=this_key %}"><span
-        class="material-icons">description</span> Student handout</a> <a
-          href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a>{% endif %}
+        {% if activity.handout_latex %}<a href="{% url 'activity_detail_handout' pk=this_key %}">
+          <span class="material-icons" style="margin-left: 1em;">description</span> Student handout</a> <a href="{% url 'activity_pdf_handout' pk=this_key %}">(PDF)</a>{% endif %}
         {% if "Draft" in activity.publication_status %} <span class="badge badge-danger" style="margin-left: 1em;"><span
             class="oi oi-warning"></span> Draft</span>{% endif %}</li>
       {% if activity.topics %}<li class="list-group-item">Search for related topics<br>{{ activity.topics|tagbuttons }}
