@@ -619,6 +619,16 @@ class CourseAsTaught(models.Model):
         verbose_name = 'Course as taught'
         verbose_name_plural = 'Courses as taught'
 
+    def clone_me(self):
+        old_pk = self.pk
+        self.pk = None
+        self.save()
+        for day in CourseDay.objects.filter(taught=old_pk):
+            day.clone_to_taughtas(self)
+        for dayproblem in DayProblem.objects.filter(day__taught=old_pk):
+            dayproblem.clone_to_taughtas(self)
+        return self
+
     @property
     def possible_topics(self):
         keys = set()
@@ -677,6 +687,18 @@ class CourseDay(models.Model):
     problemset = models.ManyToManyField(Problem, through='DayProblem',
                                         through_fields=('due', 'problem'), related_name='due')
 
+    def clone_to_taughtas(self, new_taughtas):
+        old_pk =self.pk
+        old_activities = self.activities.all()
+        self.pk = None
+        self.taught = new_taughtas
+        self.save()
+        for p in DayActivity.objects.all():
+            if p.day.pk == old_pk:
+                p.pk = None
+                p.day = self
+                p.save()
+
     def __str__(self):
         return str(self.taught)+' day ' + self.day
 
@@ -716,6 +738,15 @@ class DayProblem(models.Model):
     order = models.CharField(max_length=8, blank=True)
     instructions = models.CharField(max_length=255, blank=True, default='')
     due = models.ForeignKey(CourseDay, on_delete=models.CASCADE, related_name='problem_due')
+
+    def clone_to_taughtas(self, taughtas):
+        due_order = self.due.order
+        day_order = self.day.order
+
+        self.pk = None
+        self.day = taughtas.courseday_set.filter(order=day_order).first()
+        self.due = taughtas.courseday_set.filter(order=due_order).first()
+        self.save()
 
     class Meta:
         ordering = ['due__order', 'order']
