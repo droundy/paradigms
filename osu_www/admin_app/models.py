@@ -622,6 +622,7 @@ class CourseAsTaught(models.Model):
     def clone_me(self):
         old_pk = self.pk
         self.pk = None
+        self.year = 'NEW'
         self.save()
         for day in CourseDay.objects.filter(taught=old_pk):
             day.clone_to_taughtas(self)

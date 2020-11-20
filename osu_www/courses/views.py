@@ -81,10 +81,11 @@ def course_as_taught_edit(request, number, year):
             as_taught = lasttime.clone_me()
             as_taught.year = "NEW"
             as_taught.slug = "NEW"
+            as_taught.instructor = request.user.get_full_name()
             print('cloning last course')
         else:
             print('creating new course')
-        as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
+            as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
         as_taught.save()
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
