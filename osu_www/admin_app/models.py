@@ -333,6 +333,7 @@ class Activity(models.Model):
             choices.TBCWHOLECLASS: '<i class="material-icons">groups</i>',
             choices.TBCEXPERIMENT: '<i class="material-icons">biotech</i>',
             choices.TBCCOMPUTERSIM: '<i class="material-icons">computer</i>',
+            choices.TBCCOMPUTATIONAL: '<i class="material-icons">keyboard</i>',
             choices.TBCLECTURE: '<i class="material-icons">face</i>',
         }
         if self.type_of_beast in ICONS:
