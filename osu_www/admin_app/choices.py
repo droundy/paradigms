@@ -30,6 +30,7 @@ TBCQUIZ = "Quiz"
 TBCWHOLECLASS = "Whole Class Activity"
 TBCEXPERIMENT = "Experiment"
 TBCCOMPUTERSIM = "Computer Simulation"
+TBCCOMPUTATIONAL = "Computational Activity"
 TBCLECTURE = "Lecture"
 # TBCHOMEWORK = "Homework"
 
@@ -42,6 +43,7 @@ TYPEOFBEASTCHOICES = (
     (TBCWHOLECLASS, "Whole Class Activity"),
     (TBCEXPERIMENT, "Experiment"),
     (TBCCOMPUTERSIM, "Computer Simulation"),
+    (TBCCOMPUTATIONAL, "Computational Activity"),
     (TBCLECTURE, "Lecture"),
     # (TBCHOMEWORK, "Homework"),
 )
