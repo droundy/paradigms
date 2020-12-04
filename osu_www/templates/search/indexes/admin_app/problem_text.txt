@@ -10,5 +10,5 @@
 {{ object.course }}
 
 {% for dp in object.dayproblem_set.all %}
-  {{ dp.day.taught.course.number }} {{ dp.day.taught.course.catalog_name }} {{ dp.day.taught.course.short_name }}
+  Course: {{ dp.day.taught.course.number }} {{ dp.day.taught.course.pretty_number }} {{ dp.day.taught.course.catalog_name }}. {{ dp.day.taught.course.short_name }}
 {% endfor %}
