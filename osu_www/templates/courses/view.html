@@ -9,7 +9,7 @@
         <!-- If this is the solution view page, show link to view only, disable link on solution -->
         {% if view == 'overview' %}
         <li class="breadcrumb-item active" aria-current="page">{{ course }}</li>
-        <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a>
+        <li class="breadcrumb-item"><a href="{% url 'course_syllabus' course.number %}">Syllabus</a></li>
         <li class="breadcrumb-item"><a href="{% url 'course_years' course.number %}">Years</a>
         </li>
         {% elif view == 'syllabus' %}

@@ -11,7 +11,7 @@
             {% if view == 'overview' %}
         <li class="breadcrumb-item active" aria-current="page">{{ taught.year }}</li>
         <li class="breadcrumb-item"><a
-                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a> (<a href="{% url 'sv_syllabus_pdf' course.number taught.slug %}">PDF</a>)</li>
         <li class="breadcrumb-item"><a
                 href="{% url 'course_as_taught_schedule' course.number taught.slug %}">Schedule</a></li>
         {% elif view == 'syllabus' %}
@@ -24,7 +24,7 @@
         <li class="breadcrumb-item"><a
                 href="{% url 'course_as_taught' course.number taught.slug %}">{{ taught.year }}</a></li>
         <li class="breadcrumb-item"><a
-                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a></li>
+                href="{% url 'course_as_taught_syllabus' course.number taught.slug %}">Syllabus</a> (<a href="{% url 'sv_syllabus_pdf' course.number taught.slug %}">PDF</a>)</li>
         <li class="breadcrumb-item active" aria-current="page">Schedule</li>
         </li>
         {% endif %}
