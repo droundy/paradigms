@@ -1,0 +1,83 @@
+\documentclass{article}
+
+\usepackage[top=1.5cm,bottom=1.5cm,left=2.5cm,right=2.5cm,includeheadfoot]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cancel}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{framed} % for the solution environment
+
+\pagestyle{fancy}
+
+%\rfoot{Name:\hspace{10em}}
+\lhead{\bf {{course.catalog_name}}}
+\rhead{\bf {{ taught.instructor }} {{taught.year}}}
+\cfoot{\thepage}
+%\lfoot{118 minutes}
+%\rhead{\total{points} points total}
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+
+\newenvironment{solution}{\def\FrameCommand{\textcolor{lightgray}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{Solution}}%
+{\endMakeFramed}
+
+\newenvironment{handout}{\def\FrameCommand{\textcolor{CornflowerBlue}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{\textcolor{CornflowerBlue}{Student handout}}}%
+{\endMakeFramed}
+
+\newenvironment{guide}{\def\FrameCommand{\textcolor{Lavender}{\vrule width 3pt} \hspace{0.5em}}%
+\MakeFramed {\advance\hsize-\width \FrameRestore}\paragraph{\textcolor{Lavender}{Instructor's guide}}}%
+{\endMakeFramed}
+
+\begin{document}
+
+\section*{Syllabus for {{taught.year}} {{ course.short_name }} }
+
+\begin{description}
+    \item[Course name] {{ course.catalog_name }}
+    \item[Course number] {{ course.pretty_number }}
+    \item[Instructor] {{ taught.instructor }}
+    {% if taught.office_hours %} \item[Office hours] {{ taught.office_hours }} {% endif %}
+    \item[Course credits] {{course.credits}}
+    \item[Prerequisites] {% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}
+    \item[Course description] {{ course.description }}
+    {% if course.learning_resources %}\item[Learning resources] {{ course.learning_resources }} {% endif %}
+    \item[Learning outcomes] Students shall be able to
+        \begin{description}  {% for lo in learning_outcomes %}
+            \item[{{ lo.number}}] {{ lo.outcome }} {% endfor %}
+        \end{description}
+    {% if course.coursecontent_set %} \item[Course content]\textcolor{white}{:}
+    \begin{description}
+        {% for c in course_contents %} \item[{{ c.number}})] {{ c.topic }} {% endfor %}
+    \end{description}  {% endif %}
+    \item[Evaluation of student performance] {{ taught.evaluation }}
+    \item[Statement regarding students with disabilities]
+        Accommodations for students with disabilities are determined and approved
+        by Disability Access Services (DAS). If you, as a student, believe you are
+        eligible for accommodations but have not obtained approval please contact
+        DAS immediately at 541-737-4098 or at
+        \url{http://ds.oregonstate.edu">http://ds.oregonstate.edu}. DAS notifies
+        students and faculty members of approved academic accommodations and
+        coordinates implementation of those accommodations. While not required,
+        students and faculty members are encouraged to discuss details of the
+        implementation of individual accommodations.
+    \item[Expectations of student conduct]
+        Students are expected to comply with the University code of
+       conduct, available at \url{href="https://beav.es/codeofconduct">https://beav.es/codeofconduct}.
+    \item[Reach out for success]
+        University students encounter setbacks from time to time. If you encounter
+        difficulties and need assistance, it’s important to reach out. Consider
+        discussing the situation with an instructor or academic advisor. Learn
+        about resources that assist with wellness and academic success at
+        \url{https://counseling.oregonstate.edu/reach-out-success}.
+        If you are in immediate crisis, please contact
+        the Crisis Text Line by texting OREGON to 741-741 or call the National
+        Suicide Prevention Lifeline at 1-800-273-TALK (8255).
+\end{description}
+
+\end{document}

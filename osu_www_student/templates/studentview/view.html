@@ -9,11 +9,11 @@
         {% if view == 'syllabus' %}
         <li class="breadcrumb-item"><a href="{% url 'sv_schedule' course.number taught.slug %}">{{ taught.year }} Schedule</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Syllabus</li>
+        <li class="breadcrumb-item active" aria-current="page">Syllabus (<a href="{% url 'sv_syllabus_pdf' course.number taught.slug %}">PDF</a>)</li>
         {% else %}
         <li class="breadcrumb-item active" aria-current="page">{{ taught.year }}
             Schedule</li>
-        <li class="breadcrumb-item"><a href="{% url 'sv_syllabus' course.number taught.slug %}">Syllabus</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'sv_syllabus' course.number taught.slug %}">Syllabus</a> (<a href="{% url 'sv_syllabus_pdf' course.number taught.slug %}">PDF</a>)</li>
         {% endif %}
     </ol>
 </nav>

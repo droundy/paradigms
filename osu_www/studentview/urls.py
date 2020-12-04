@@ -10,6 +10,7 @@ urlpatterns = [
     path('<slug:number>/<slug:year>/', views.schedule, {'view': 'schedule'}, name='sv_schedule'),
     path('<slug:number>/', views.schedule, {'view': 'schedule', 'year': 'latest'}, name='sv_latest'),
     path('<slug:number>/<slug:year>/syllabus', views.schedule, {'view': 'syllabus'}, name='sv_syllabus'),
+    path('<slug:number>/<slug:year>/syllabus.pdf', views.schedule, {'view': 'syllabus-pdf'}, name='sv_syllabus_pdf'),
     path('<slug:number>/<slug:year>/<slug:problemset>-solution.html', views.problem_set, {'view': 'solution'}, name='sv_solution'),
     path('<slug:number>/<slug:year>/<slug:problemset>-solution.pdf', views.problem_set, {'view': 'solution-pdf'}, name='sv_solution_pdf'),
     path('<slug:number>/<slug:year>/<slug:problemset>.html', views.problem_set, {'view': 'html'}, name='sv_problemset'),

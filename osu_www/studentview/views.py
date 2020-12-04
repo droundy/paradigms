@@ -113,11 +113,15 @@ def schedule(request, number, year, view='overview'):
         for a in Activity.objects.filter(day=d):
             if a.readings != '':
               d.resources += '\n\n' + a.readings
-    return render(request, 'studentview/view.html', {
+    context = {
         'course': course,
         'taught': as_taught,
         'view': view,
         'days': days,
         'learning_outcomes': learning_outcomes,
         'course_contents': course_contents,
-    })
+    }
+    if view == 'syllabus-pdf':
+        return render_to_pdf(request, 'studentview/syllabus.tex', context, filename='solution.pdf')
+    else:
+        return render(request, 'studentview/view.html', context)
