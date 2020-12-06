@@ -607,6 +607,7 @@ class CourseAsTaught(models.Model):
     instructor = models.CharField(max_length=255, blank=True, null=True)
     office_hours = models.TextField(blank=True)
     today = models.ForeignKey('CourseDay', on_delete=models.CASCADE, null=True)
+    available = models.BooleanField(default=False, help_text="Show course to students.")
 
     evaluation = models.TextField(blank=True)
     modification_version = models.PositiveIntegerField(default=0)

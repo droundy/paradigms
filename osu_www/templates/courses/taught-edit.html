@@ -29,11 +29,16 @@
     <input type="submit" name='submit' value="Save">
     {% endif %}
     {% csrf_token %}
+    <label for="available"> Available for
+        students</label>&nbsp;<input type="checkbox" id="avalable"
+            name="available" {% if taught.available %}
+        checked{% endif %}>
     <dl>
         <dt>Course name:</dt>
         <dd>{{ course.catalog_name }} {% if course.publication != 1 %}
             <span class="badge badge-danger">Unpublished</span>
-            {% endif%}</dd>
+            {% endif%}
+        </dd>
         <dt>Course number:</dt>
         <dd>{{ course.pretty_number }}</dd>
 

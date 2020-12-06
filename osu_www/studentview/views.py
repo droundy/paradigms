@@ -25,7 +25,7 @@ user = get_user_model()
 logger = logging.getLogger(__name__)
 
 def home(request):
-    courses = sorted(CourseAsTaught.objects.filter(course__publication=True), key=lambda c: c.course.quarter_integer)
+    courses = sorted(CourseAsTaught.objects.filter(available=True), key=lambda c: c.course.quarter_integer)
     return render(request, 'studentview/home.html', {
         'as_taughts': courses,
     })
@@ -33,6 +33,8 @@ def home(request):
 def problem_set(request, number, year, problemset, view='html'):
     course = get_object_or_404(Course, number=number)
     as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
+    if not as_taught.available:
+        raise Http404('Course not available')
     day = None
     for d in CourseDay.objects.filter(taught=as_taught).order_by('order'):
         if d.problemset_slug == problemset or d.pk == problemset:
@@ -66,6 +68,8 @@ def handout(request, pk, view='html'):
     da = get_object_or_404(DayActivity, pk=pk)
     day = da.day
     as_taught = day.taught
+    if not as_taught.available:
+        raise Http404('Course not available')
     course = as_taught.course
     context = {
         'course': course,
@@ -97,9 +101,11 @@ def schedule(request, number, year, view='overview'):
     # if this is a POST request we need to process the form data
     course = get_object_or_404(Course, number=number)
     if year == 'latest':
-        as_taught = CourseAsTaught.objects.filter(course=course).order_by('-pk').first()
+        as_taught = CourseAsTaught.objects.filter(course=course).order_by('-pk').filter(available=True).first()
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
+    if not as_taught.available:
+        raise Http404('Course not available')
     days = list(CourseDay.objects.filter(taught=as_taught).order_by('order'))
     learning_outcomes = list(CourseLearningOutcome.objects.filter(course=course))
     for l in learning_outcomes:
