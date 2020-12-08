@@ -1,6 +1,18 @@
 {% extends 'public_app/base_multi_editor.html' %}
 {% load crispy_forms_tags %}
 {% block title %}{{ page_title }}{% endblock %}
+{% block javascript %}
+<script>
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 's') {
+      // Prevent the Save dialog to open
+      e.preventDefault();
+      // Save the form if we type ctrl-S
+      document.getElementById('save-button').click();
+    }
+  });
+</script>
+{% endblock %}
 {% block content %}
   {% for message in messages %}
     <div class="alert alert-success">
@@ -22,7 +34,7 @@
         <p>{{ form.created_date.value }}</p>
         <div class="row">
           <div class="col">
-            <button type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework problem."></span>  Save</button>
+            <button id="save-button" type="submit" class="save btn btn-sm btn-success"><span class="oi oi-file" title="Save changes button." alt="Save changes to this homework problem."></span>  Save</button>
           </div>
         </div>
         <div class="row">
