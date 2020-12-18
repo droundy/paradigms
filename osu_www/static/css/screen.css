@@ -256,13 +256,13 @@ h1, h2, h3 {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic activities] fit-content(100%) [resources] fit-content(100%) [due] fit-content(20em) [end];
   }
+  .resources:before {
+    content: none;
+  }
 }
 @media (min-width: 75rem) {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic] auto [activities] auto [resources] auto [due] auto [end];
-  }
-  .resources:before {
-    content: none;
   }
 }
 
