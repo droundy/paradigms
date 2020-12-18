@@ -230,10 +230,10 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   /* background-color: #fdd; */
 }
-.resources:before {
+/* .resources:before {
   content: "Resources: ";
   font-weight: bold;
-}
+} */
 .resources {
   grid-column-start: resources ;
   grid-row: auto / span 1;
@@ -256,9 +256,9 @@ h1, h2, h3 {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic activities] fit-content(100%) [resources] fit-content(100%) [due] fit-content(20em) [end];
   }
-  .resources:before {
+  /* .resources:before {
     content: none;
-  }
+  } */
 }
 @media (min-width: 75rem) {
   .schedule {
