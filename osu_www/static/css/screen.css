@@ -249,20 +249,20 @@ h1, h2, h3 {
 }
 @media (min-width: 30rem) {
   .schedule {
-    grid-template-columns: [day] fit-content(5em) [topic] fit-content(100%) [activities resources due] fit-content(100%) [end];
+    grid-template-columns: [day] fit-content(5em) [topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
   }
 }
 @media (min-width: 50rem) {
   .schedule {
-    grid-template-columns: [day] fit-content(10em) [topic] fit-content(20em) [activities] fit-content(100%) [resources due] fit-content(20em) [end];
-  }
-  .resources:before {
-    content: none;
+    grid-template-columns: [day] fit-content(10em) [topic activities] fit-content(100%) [resources] fit-content(100%) [due] fit-content(20em) [end];
   }
 }
 @media (min-width: 75rem) {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic] auto [activities] auto [resources] auto [due] auto [end];
+  }
+  .resources:before {
+    content: none;
   }
 }
 
