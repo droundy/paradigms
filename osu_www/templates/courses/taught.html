@@ -150,10 +150,10 @@
     {% if taught.today %}<a href="#today">Skip to today</a>{% endif %}
     <div class="schedule">
         <h5 class="thisday">Day</h5>
-        {% if taught.has_topics %}<h5 class="topic">Topic</h5>{% endif %}
-        {% if taught.has_activities %}<h5 class="activities">In class today</h5>{% endif %}
-        {% if taught.has_resources %}<h5 class="resources">Resources</h5>{% endif %}
-        <h5 class="due">Homework</h5>
+        {% if taught.has_topics %}<h5 class="topic schedheader">Topic</h5>{% endif %}
+        {% if taught.has_activities %}<h5 class="activities schedheader">In class today</h5>{% endif %}
+        {% if taught.has_resources %}<h5 class="resources schedheader">Resources</h5>{% endif %}
+        {% if taught.has_homework %}<h5 class="due schedheader">Homework</h5>{% endif %}
         <hr />
 
         {% for day in days %}
