@@ -40,6 +40,7 @@
             {% if view == 'syllabus' %}Syllabus for{% endif %} {{taught.year}} {{ course.short_name }}
         </h2>
         <div class="card-body">
+            {% if view == 'syllabus' %}
             <dl>
                 <dt>Course name:</dt>
                 <dd>{{ course.catalog_name }} {% if course.publication != 1 %}
@@ -59,7 +60,6 @@
                 <dd>{% if course.prereq %}{{ course.prereq }}{% else %}none{% endif %}</dd>
                 <dt>Course description:</dt>
                 <dd>{{ course.description }}</dd>
-                {% if view == 'syllabus' %}
                 <dt>Learning resources:</dt>
                 <dd>{{ course.learning_resources | latex_omit_solution }}</dd>
                 <dt>Learning outcomes:</dt>
@@ -141,8 +141,8 @@
                     If you are in immediate crisis, please contact
                     the Crisis Text Line by texting OREGON to 741-741 or call the National
                     Suicide Prevention Lifeline at 1-800-273-TALK (8255)</dd>
-                {% endif %}
             </dl>
+            {% endif %}
         </div>
     </div>
 
