@@ -247,6 +247,9 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   /* background-color: #fdf; */
 }
+.due.schedheader, .activities.schedheader {
+  display: none;
+}
 @media (min-width: 30rem) {
   .schedule {
     grid-template-columns: [day topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
@@ -256,13 +259,19 @@ h1, h2, h3 {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic activities] fit-content(100%) [resources] fit-content(100%) [due] fit-content(20em) [end];
   }
-  /* .resources:before {
+  .due.schedheader {
+    display: block;
+  }
+    /* .resources:before {
     content: none;
   } */
 }
 @media (min-width: 75rem) {
   .schedule {
     grid-template-columns: [day] fit-content(10em) [topic] auto [activities] auto [resources] auto [due] auto [end];
+  }
+  .activities.schedheader {
+    display: block;
   }
 }
 
