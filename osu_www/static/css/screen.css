@@ -188,7 +188,7 @@ h1, h2, h3 {
 
 .schedule {
   display: grid;
-  grid-template-columns: [day] fit-content(5em) [topic activities resources due] fit-content(100%) [end];
+  grid-template-columns: [day topic activities resources due] fit-content(100%) [end];
   grid-auto-rows: max-content;
   grid-auto-flow: row;
   grid-gap: 0rem 0.5rem;
@@ -249,7 +249,7 @@ h1, h2, h3 {
 }
 @media (min-width: 30rem) {
   .schedule {
-    grid-template-columns: [day] fit-content(5em) [topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
+    grid-template-columns: [day topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
   }
 }
 @media (min-width: 50rem) {
