@@ -255,7 +255,7 @@ h1, h2, h3 {
     grid-template-columns: [day topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
   }
   .topic.schedheader, .resources.schedheader {
-    display: none;
+    display: block;
   }
 }
 @media (min-width: 50rem) {
