@@ -247,12 +247,15 @@ h1, h2, h3 {
   grid-row: auto / span 1;
   /* background-color: #fdf; */
 }
-.due.schedheader, .activities.schedheader {
+.due.schedheader, .activities.schedheader, .topic.schedheader, .resources.schedheader {
   display: none;
 }
 @media (min-width: 30rem) {
   .schedule {
     grid-template-columns: [day topic activities] fit-content(100%) [resources due] fit-content(100%) [end];
+  }
+  .topic.schedheader, .resources.schedheader {
+    display: none;
   }
 }
 @media (min-width: 50rem) {
