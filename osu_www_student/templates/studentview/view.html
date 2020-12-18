@@ -135,7 +135,7 @@
     {% if taught.has_topics %}<h5 class="topic">Topic</h5>{% endif %}
     {% if taught.has_activities %}<h5 class="activities">In class today</h5>{% endif %}
     {% if taught.has_resources %}<h5 class="resources">Resources</h5>{% endif %}
-    <h5 class="due">Homework</h5>
+    {% if taught.has_homework %}<h5 class="due">Homework</h5>{% endif %}
     <hr />
 
     {% for day in days %}

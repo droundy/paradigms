@@ -672,6 +672,10 @@ class CourseAsTaught(models.Model):
     def has_resources(self):
         ''' are there any resources in this course? '''
         return CourseDay.objects.filter(taught=self).exclude(resources='')
+    @property
+    def has_homework(self):
+        ''' are there any homeowrk in this course? '''
+        return CourseDay.objects.filter(taught=self).exclude(show_problemset=False)
 
 class CourseDay(models.Model):
     taught = models.ForeignKey(CourseAsTaught, on_delete=models.CASCADE)
