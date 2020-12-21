@@ -75,18 +75,22 @@ def course_as_taught_edit(request, number, year):
     # if this is a POST request we need to process the form data
     timer = Timer()
     course = get_object_or_404(Course, number=number)
-    if year == 'NEW' and CourseAsTaught.objects.filter(course=course, slug='NEW').count() == 0:
-        lasttime = CourseAsTaught.objects.filter(course=course).last()
-        if lasttime is not None:
-            as_taught = lasttime.clone_me()
-            as_taught.year = "NEW"
-            as_taught.slug = "NEW"
-            as_taught.instructor = request.user.get_full_name()
-            print('cloning last course')
-        else:
-            print('creating new course')
-            as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
-        as_taught.save()
+
+    if year == 'NEW':
+        try:
+            as_taught = CourseAsTaught.objects.get(course=course, slug=year)
+        except django.core.exceptions.ObjectDoesNotExist:
+            lasttime = CourseAsTaught.objects.filter(course=course).last()
+            if lasttime is not None:
+                as_taught = lasttime.clone_me()
+                as_taught.year = "NEW"
+                as_taught.slug = "NEW"
+                as_taught.instructor = request.user.get_full_name()
+                print('cloning last course')
+            else:
+                print('creating new course')
+                as_taught = CourseAsTaught(course=course, year='NEW', instructor=request.user.get_full_name())
+            as_taught.save()
     else:
         as_taught = get_object_or_404(CourseAsTaught, course=course, slug=year)
     
