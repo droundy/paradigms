@@ -502,6 +502,7 @@ class Course(models.Model):
         max_length=255, blank=True, null=True, help_text="A human-friendly short name of course")
     number = models.CharField(max_length=255,
                               help_text='include ph e.g. "ph425"',
+                              unique=True,
                               validators=[course_number_validator])
     quarter_numbers = models.CharField(max_length=255, default='1',
                                        help_text='e.g. Fall of Junior year = 7, comma delimit if taught at multiple stages')
