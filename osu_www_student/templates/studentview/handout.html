@@ -22,10 +22,10 @@
 <div class="container">
     <div class="card overflow-auto" style="margin-bottom: 10px;">
         <h2 class="card-header">
-            {{ activity.title }} {{ view_name }}
+            {{ activity.title | latex_omit_solution }} {{ view_name }}
         </h2>
-        <h3>{{ day.day }}, {{taught.year}}</h3>
         <div class="card-body">
+            {% if day.day and day.day.strip %}<h3>{{ day.day }}, {{taught.year}}</h3>{% endif %}
             {% if view == 'solution' %}
             {{ activity.solution_latex | latex_with_solution }}
             {% else %}
