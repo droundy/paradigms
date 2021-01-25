@@ -116,7 +116,7 @@ def convert_latex_for_pdf(latex, imagedir='/media/figures/'):
 
 class Problem(models.Model):
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # FIXME do we want this to change? Probably don't want to risk losing this.
     problem_title = models.CharField(max_length=255)
     problem_latex = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -190,7 +190,7 @@ class ProblemSet(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     instructions = models.TextField(blank=True, null=True)
     author = author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # FIXME do we want this to change? Probably don't want to risk losing this.
     author_info = models.CharField(max_length=4096, blank=True, null=True)
     publication = models.BooleanField(
         blank=False, default=False, help_text="Problem Set is ready for public viewing. Takes 5-10 seconds to generate new problem set PDFs", verbose_name="Publish Problem Set")
@@ -275,7 +275,7 @@ class Activity(models.Model):
         blank=True, null=True, upload_to='activity_images/')
     keywords = models.TextField(blank=True, null=True)
     author = author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # FIXME do we want this to change? Probably don't want to risk losing this.
     associated_paper_links = models.TextField(blank=True, null=True)
     learning_outcomes = models.ManyToManyField('CourseLearningOutcome', related_name='activities')
     course_topics = models.ManyToManyField('CourseContent', related_name='activities')
@@ -450,7 +450,7 @@ class Sequence(models.Model):
     activities = models.ManyToManyField(
         Activity, through='SequenceItems', related_name='activities')
     author = author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # FIXME do we want this to change? Probably don't want to risk losing this.
     author_info = models.CharField(max_length=4096, blank=True, null=True)
     publication = models.BooleanField(
         blank=False, default=False, help_text="Sequence is ready for public viewing", verbose_name="Publish Sequence")
