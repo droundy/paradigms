@@ -150,7 +150,7 @@
         </div>
         <dl class="activities">
             {% for da in day.dayactivity_set.all %}
-            <dt>{{da.activity}}</dt>
+            <dt>{{da.activity.id}} {{da.activity}}</dt>
             <dd><input type="text" style="max-width: 2em;" name="day-{{day.pk}}-activity-{{da.pk}}-order"
                     value="{{da.order}}">
                 <button type="submit" class="oi oi-trash" alt="Remove"
@@ -189,7 +189,7 @@
         <div class="due">
             <dl>
                 {% for problem in day.dayproblem.all %}
-                <dt>{{problem.problem}}</dt>
+                <dt>{{problem.problem.id}} {{problem.problem}}</dt>
                 <dd>
                     <input type="text" name="day-{{day.pk}}-problem-{{problem.pk}}-instructions"
                         value="{{problem.instructions}}" placeholder="instructions">
