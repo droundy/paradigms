@@ -118,7 +118,7 @@ class Problem(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # FIXME do we want this to change? Probably don't want to risk losing this.
     problem_title = models.CharField(max_length=255)
-    problem_latex = models.TextField()
+    problem_latex = models.TextField(default="Enter problem LaTeX here")
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     attribution = models.CharField(
