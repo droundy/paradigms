@@ -53,7 +53,7 @@
         \end{description}
     {% if course.coursecontent_set %} \item[Course content]\textcolor{white}{:}
     \begin{description}
-        {% for c in course_contents %} \item[{{ c.number}})] {{ c.topic }} {% endfor %}
+        {% for c in course_contents_set %} \item[{{ c.number}})] {{ c.topic }} {% endfor %}
     \end{description}  {% endif %}
     \item[Evaluation of student performance] {{ taught.evaluation }}
     \item[Statement regarding students with disabilities]
